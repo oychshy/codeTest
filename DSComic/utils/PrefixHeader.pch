@@ -1,0 +1,51 @@
+//
+//  PrefixHeader.pch
+//  DSComic
+//
+//  Created by xhkj on 2021/7/27.
+//  Copyright © 2021 oych. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#define FUll_VIEW_WIDTH     ([[UIScreen mainScreen] bounds].size.width)
+#define FUll_VIEW_HEIGHT    ([[UIScreen mainScreen] bounds].size.height)
+#define YWIDTH_SCALE(X)       (FUll_VIEW_WIDTH*X/750)
+#define YHEIGHT_SCALE(Y)       (FUll_VIEW_HEIGHT*Y/1334)
+#define YFONTSIZEFROM_PX(X)  (FUll_VIEW_WIDTH*0.5*X/375)
+
+#define STATUSHEIGHT [[UIApplication sharedApplication] statusBarFrame].size.height
+
+#define NavBarColor [UIColor colorWithRed:250/255.0 green:227/255.0 blue:111/255.0 alpha:1.0]
+#define NavLineColor [UIColor colorWithHexString:@"D1D1D1"]
+
+#import "ViewController.h"
+#import "comicViewController.h"
+#import "ReaderViewController.h"
+
+#import "ContentCollectionViewCell.h"
+#import "itemModel.h"
+
+
+#import "Tools.h"
+#import "UIColor+Expanded.h"
+#import "UIImage+Image.h"
+#import "NSObject+Model.h"
+#import "UIView+LBExtension.h"
+
+#import "MBProgressHUD.h"
+#import "MJRefresh.h"
+#import "UIImageView+WebCache.h"
+#import "SDWebImageDownloader.h"
+
+#import "CustomProgressView.h"
+#import "PanCollectionView.h"
+#import "PanTableView.h"
+#import "ContentTableViewCell.h"
+#import "CoverView.h"
+
+#endif /* PrefixHeader_pch */
