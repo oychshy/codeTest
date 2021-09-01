@@ -213,10 +213,21 @@
     UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(coverViewTappedClick:)];
     gesture.delegate = self;
     [_contentCollectionView addGestureRecognizer:gesture];
+    
+     UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGestureDetected:)];
+     [pinchGestureRecognizer setDelegate:self];
+     [_contentCollectionView addGestureRecognizer:pinchGestureRecognizer];
+
     [self.rootSV addSubview:_contentCollectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == (self.dataArray.count-1)) {
+        NSDictionary *chapterInfo = [[NSDictionary alloc] initWithDictionary:self.chaptersArray[self.chapterIndex+1]];
+        NSArray *imageArray = chapterInfo[@"chapterImages"];
+        self.chapterTitle = chapterInfo[@"chapterTitle"];
+    }
+    
     itemModel *model = self.dataArray[indexPath.row];
     ContentCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.model = model;
@@ -334,6 +345,46 @@
     }
 }
 
+
+- (void)pinchGestureDetected:(UIPinchGestureRecognizer *)sender{
+    CGFloat velocity = [sender velocity];
+    CGSize DefaultLayoutItemSize = CGSizeMake(FUll_VIEW_WIDTH, 120.0f);   //这是原先设置的默认的尺寸大小，这里每次缩放都是以默认尺寸为基数
+    UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)_contentCollectionView.collectionViewLayout;
+    layout.itemSize =  CGSizeMake(DefaultLayoutItemSize.width * velocity, DefaultLayoutItemSize.height * sender.scale);
+    [layout invalidateLayout];   //废弃旧布局，更新新布局
+        
+
+//        if (_contentCollectionView.width >= FUll_VIEW_WIDTH) {
+//            CGFloat scale = [recognizer scale];
+//            CGFloat velocity = [recognizer velocity];
+//            [recognizer.view setTransform:CGAffineTransformScale(recognizer.view.transform, scale, scale)];
+//            [recognizer setScale:1.0];
+//
+//            self.rootSV.contentSize = CGSizeMake(_contentCollectionView.frame.size.width, FUll_VIEW_HEIGHT);
+//            _contentCollectionView.x = 0;
+//            _contentCollectionView.y = 0;
+//        }else{
+//            _contentCollectionView.width = FUll_VIEW_WIDTH;
+//            _contentCollectionView.x = 0;
+//            _contentCollectionView.y = 0;
+//        }
+//    }
+    
+    
+//    if (_contentCollectionView.width <= FUll_VIEW_WIDTH) {
+//        self.rootSV.contentSize = CGSizeMake(FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT);
+//        _contentCollectionView.width = FUll_VIEW_WIDTH;
+//        _contentCollectionView.height = FUll_VIEW_HEIGHT;
+//
+//    }else{
+//        self.rootSV.contentSize = CGSizeMake(_contentCollectionView.frame.size.width, FUll_VIEW_HEIGHT);
+//    }
+    
+    
+//    _contentCollectionView.x = 0;
+//    _contentCollectionView.y = 0;
+    
+}
 
 /*
 #pragma mark - Navigation

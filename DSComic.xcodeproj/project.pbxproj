@@ -8,8 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		305EE32058EA99129AAD7F90 /* libPods-DSComic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35AC9B60691FEBFBA58ABED7 /* libPods-DSComic.a */; };
+		5B0E819D26D794B900F7AAAD /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E819C26D794B900F7AAAD /* HttpRequest.m */; };
 		5B13880226B3D8E400E4D9F3 /* comicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B13880126B3D8E400E4D9F3 /* comicViewController.m */; };
 		5B4D779E26B12B9500A82A6A /* CustomProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4D779D26B12B9500A82A6A /* CustomProgressView.m */; };
+		5B4E7BE926D891F100FA3E35 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E7BE826D891F100FA3E35 /* SearchTableViewCell.m */; };
+		5B4E7BED26D8B74D00FA3E35 /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E7BEC26D8B74D00FA3E35 /* VideoViewController.m */; };
+		5B4E7BF126D8BA2200FA3E35 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E7BF026D8BA2200FA3E35 /* SearchViewController.m */; };
+		5B4E7BF426D8DA6500FA3E35 /* MainPageVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E7BF326D8DA6500FA3E35 /* MainPageVideoCell.m */; };
+		5B4E7BF826DC848A00FA3E35 /* VideoItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E7BF726DC848A00FA3E35 /* VideoItemModel.m */; };
+		5B4E7BFB26DE212A00FA3E35 /* VideoContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E7BFA26DE212A00FA3E35 /* VideoContentViewController.m */; };
 		5B51108326AF9DB800D5E28E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B51108226AF9DB800D5E28E /* AppDelegate.m */; };
 		5B51108926AF9DB800D5E28E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B51108826AF9DB800D5E28E /* ViewController.m */; };
 		5B51108E26AF9DBC00D5E28E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B51108D26AF9DBC00D5E28E /* Assets.xcassets */; };
@@ -34,10 +41,24 @@
 /* Begin PBXFileReference section */
 		35AC9B60691FEBFBA58ABED7 /* libPods-DSComic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DSComic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C636ADE1002CD41C245B499 /* Pods-DSComic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DSComic.release.xcconfig"; path = "Target Support Files/Pods-DSComic/Pods-DSComic.release.xcconfig"; sourceTree = "<group>"; };
+		5B0E819B26D794B900F7AAAD /* HttpRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
+		5B0E819C26D794B900F7AAAD /* HttpRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
 		5B13880026B3D8E400E4D9F3 /* comicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = comicViewController.h; sourceTree = "<group>"; };
 		5B13880126B3D8E400E4D9F3 /* comicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = comicViewController.m; sourceTree = "<group>"; };
 		5B4D779C26B12B9500A82A6A /* CustomProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomProgressView.h; sourceTree = "<group>"; };
 		5B4D779D26B12B9500A82A6A /* CustomProgressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomProgressView.m; sourceTree = "<group>"; };
+		5B4E7BE726D891F100FA3E35 /* SearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
+		5B4E7BE826D891F100FA3E35 /* SearchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
+		5B4E7BEB26D8B74D00FA3E35 /* VideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
+		5B4E7BEC26D8B74D00FA3E35 /* VideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
+		5B4E7BEF26D8BA2200FA3E35 /* SearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		5B4E7BF026D8BA2200FA3E35 /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		5B4E7BF226D8DA6500FA3E35 /* MainPageVideoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPageVideoCell.h; sourceTree = "<group>"; };
+		5B4E7BF326D8DA6500FA3E35 /* MainPageVideoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainPageVideoCell.m; sourceTree = "<group>"; };
+		5B4E7BF626DC848A00FA3E35 /* VideoItemModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoItemModel.h; sourceTree = "<group>"; };
+		5B4E7BF726DC848A00FA3E35 /* VideoItemModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoItemModel.m; sourceTree = "<group>"; };
+		5B4E7BF926DE212A00FA3E35 /* VideoContentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoContentViewController.h; sourceTree = "<group>"; };
+		5B4E7BFA26DE212A00FA3E35 /* VideoContentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoContentViewController.m; sourceTree = "<group>"; };
 		5B51107E26AF9DB800D5E28E /* DSComic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DSComic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B51108126AF9DB800D5E28E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5B51108226AF9DB800D5E28E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -106,6 +127,41 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		5B4E7BEA26D8B6DE00FA3E35 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				5B4E7BF526DC843300FA3E35 /* Model */,
+				5B4E7BEE26D8B9FF00FA3E35 /* View */,
+				5B4E7BEB26D8B74D00FA3E35 /* VideoViewController.h */,
+				5B4E7BEC26D8B74D00FA3E35 /* VideoViewController.m */,
+				5B4E7BEF26D8BA2200FA3E35 /* SearchViewController.h */,
+				5B4E7BF026D8BA2200FA3E35 /* SearchViewController.m */,
+				5B4E7BF926DE212A00FA3E35 /* VideoContentViewController.h */,
+				5B4E7BFA26DE212A00FA3E35 /* VideoContentViewController.m */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		5B4E7BEE26D8B9FF00FA3E35 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5B4E7BE726D891F100FA3E35 /* SearchTableViewCell.h */,
+				5B4E7BE826D891F100FA3E35 /* SearchTableViewCell.m */,
+				5B4E7BF226D8DA6500FA3E35 /* MainPageVideoCell.h */,
+				5B4E7BF326D8DA6500FA3E35 /* MainPageVideoCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5B4E7BF526DC843300FA3E35 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5B4E7BF626DC848A00FA3E35 /* VideoItemModel.h */,
+				5B4E7BF726DC848A00FA3E35 /* VideoItemModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		5B51107526AF9DB800D5E28E = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +185,7 @@
 			children = (
 				5B51108726AF9DB800D5E28E /* ViewController.h */,
 				5B51108826AF9DB800D5E28E /* ViewController.m */,
+				5B4E7BEA26D8B6DE00FA3E35 /* Video */,
 				5B51F6A626B2C8330053B434 /* comic */,
 				5B51F69D26B2942D0053B434 /* customview */,
 				5BB9481D26AFF45600ABD6B8 /* utils */,
@@ -222,6 +279,8 @@
 			children = (
 				5BB9481C26AFF41700ABD6B8 /* PrefixHeader.pch */,
 				5BB9480C26AFF3FF00ABD6B8 /* Category */,
+				5B0E819B26D794B900F7AAAD /* HttpRequest.h */,
+				5B0E819C26D794B900F7AAAD /* HttpRequest.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -341,7 +400,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B4E7BFB26DE212A00FA3E35 /* VideoContentViewController.m in Sources */,
 				5B51F6A926B2C9130053B434 /* CoverView.m in Sources */,
+				5B0E819D26D794B900F7AAAD /* HttpRequest.m in Sources */,
 				5BB9481B26AFF3FF00ABD6B8 /* UIColor+Expanded.m in Sources */,
 				5BB9481826AFF3FF00ABD6B8 /* UIView+LBExtension.m in Sources */,
 				5B51108926AF9DB800D5E28E /* ViewController.m in Sources */,
@@ -350,7 +411,12 @@
 				5B51F6A026B294720053B434 /* PanTableView.m in Sources */,
 				5B51108326AF9DB800D5E28E /* AppDelegate.m in Sources */,
 				5B4D779E26B12B9500A82A6A /* CustomProgressView.m in Sources */,
+				5B4E7BF826DC848A00FA3E35 /* VideoItemModel.m in Sources */,
+				5B4E7BED26D8B74D00FA3E35 /* VideoViewController.m in Sources */,
+				5B4E7BE926D891F100FA3E35 /* SearchTableViewCell.m in Sources */,
 				5B51F69C26B2881E0053B434 /* ReaderViewController.m in Sources */,
+				5B4E7BF426D8DA6500FA3E35 /* MainPageVideoCell.m in Sources */,
+				5B4E7BF126D8BA2200FA3E35 /* SearchViewController.m in Sources */,
 				5B51F6A326B2980B0053B434 /* ContentTableViewCell.m in Sources */,
 				5BB9481926AFF3FF00ABD6B8 /* UIImage+Image.m in Sources */,
 				5B51109426AF9DBC00D5E28E /* main.m in Sources */,
@@ -491,14 +557,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6G5K5485TB;
+				DEVELOPMENT_TEAM = N648UCJ69N;
 				GCC_PREFIX_HEADER = /Users/js/Downloads/DSComic/DSComic/utils/PrefixHeader.pch;
 				INFOPLIST_FILE = DSComic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -510,14 +576,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6G5K5485TB;
+				DEVELOPMENT_TEAM = N648UCJ69N;
 				GCC_PREFIX_HEADER = /Users/js/Downloads/DSComic/DSComic/utils/PrefixHeader.pch;
 				INFOPLIST_FILE = DSComic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

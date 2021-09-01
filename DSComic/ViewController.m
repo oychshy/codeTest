@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "HttpRequest.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 //@property(retain,nonatomic)NSDictionary *dataInfosDic;
@@ -35,7 +36,7 @@
 //    [self configUI:loadDataRet];
     
     self.titleArray = [[NSArray alloc] init];
-    self.titleArray = @[@"comic",@"muisc"];
+    self.titleArray = @[@"Comic",@"Video"];
     [self TitleListTV];
     [_TitleListTV reloadData];
 }
@@ -78,6 +79,23 @@
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
         vc.hidesBottomBarWhenPushed = NO;
+    }else{
+        
+        UITabBarController *videoTB = [[UITabBarController alloc]init];
+        
+        
+        [[UITabBar appearance] setBackgroundImage:[[UIImage alloc]init]];
+        [[UITabBar appearance] setBackgroundColor:[UIColor blackColor]];
+        
+        videoTB.tabBar.layer.cornerRadius = 25;
+        videoTB.tabBar.layer.masksToBounds = YES;
+        videoTB.tabBar.layer.maskedCorners = UIRectCornerTopRight | UIRectCornerTopLeft;
+        
+        VideoViewController *c1 = [[VideoViewController alloc]init];
+        UINavigationController *mainNavi = [[UINavigationController alloc] initWithRootViewController:c1];
+        videoTB.viewControllers=@[mainNavi];
+        videoTB.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:videoTB animated:YES completion:nil];
     }
 }
 

@@ -30,12 +30,21 @@
 #import "ContentCollectionViewCell.h"
 #import "itemModel.h"
 
+#import "VideoViewController.h"
+#import "SearchViewController.h"
+#import "SearchTableViewCell.h"
+#import "VideoContentViewController.h"
+
+#import "MainPageVideoCell.h"
+#import "VideoItemModel.h"
+
 
 #import "Tools.h"
 #import "UIColor+Expanded.h"
 #import "UIImage+Image.h"
 #import "NSObject+Model.h"
 #import "UIView+LBExtension.h"
+#import "HttpRequest.h"
 
 #import "MBProgressHUD.h"
 #import "MJRefresh.h"

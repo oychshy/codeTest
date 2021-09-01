@@ -19,10 +19,9 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.tabBarController.tabBar.hidden = NO;
+    self.tabBarController.tabBar.hidden = YES;
     self.navigationItem.title = @"Chapter";
     self.navigationController.navigationBar.hidden = NO;
-
 }
 
 - (void)viewDidLoad {
@@ -59,9 +58,9 @@
 }
 
 
-- (UITableView *)chapterlistTV{
+-(UITableView *)chapterlistTV{
     if (!_chapterlistTV) {
-        _chapterlistTV = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-64) style:UITableViewStylePlain];
+        _chapterlistTV = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-64) style:UITableViewStyleGrouped];
         _chapterlistTV.delegate = self;
         _chapterlistTV.dataSource = self;
         _chapterlistTV.tableFooterView = [UIView new];
@@ -93,16 +92,43 @@
     return cell;
 }
 
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _chapterlistTV.width, YHEIGHT_SCALE(150))];
+    NSArray *titleArray = @[@"test",@"test",@"test",@"test"];
+    [titleArray enumerateObjectsUsingBlock:^(NSString *str, NSUInteger index, BOOL * _Nonnull stop) {
+        UIButton *topButton = [[UIButton alloc] initWithFrame:CGRectMake(index*_chapterlistTV.width/(titleArray.count), 0, _chapterlistTV.width/(titleArray.count), YHEIGHT_SCALE(150))];
+        [topButton setTitle:str forState:UIControlStateNormal];
+        [topButton setBackgroundColor:[UIColor colorWithHexString:@"D1D1D1"]];
+        [headView addSubview:topButton];
+    }];
+    return headView;
+}
+
+
+-(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return [UIView new];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return YHEIGHT_SCALE(150);
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return CGFLOAT_MIN;
+}
+
+
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *chapterInfo = [[NSDictionary alloc] initWithDictionary:self.chaptersArray[indexPath.row]];
     ReaderViewController *vc = [[ReaderViewController alloc] init];
     vc.imageArray = chapterInfo[@"chapterImages"];
     vc.chapterTitle = chapterInfo[@"chapterTitle"];
+    vc.chaptersArray = self.chaptersArray;
+    vc.chapterIndex = indexPath.row;
     vc.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:vc animated:YES];
     vc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:vc animated:NO completion:nil];
-    vc.hidesBottomBarWhenPushed = NO;
 }
 
 
