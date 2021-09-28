@@ -49,7 +49,26 @@
     // Do any additional setup after loading the view.
     self.VideoInfoDic = [[NSDictionary alloc] init];
     self.LinkArray = [[NSMutableArray alloc] init];
-    [self getVideoData];
+//    [self getVideoData];
+    
+    [self getVideoLinkData];
+}
+
+-(void)getVideoLinkData{
+    NSDictionary *post_arg = @{
+        @"videoID":@(self.model.id)
+    };
+    
+    [HttpRequest postNetWorkWithUrl:@"http://http://www.oychshy.cn:9100/php/Episode/GetVideoLinks.php" parameters:post_arg success:^(id  _Nonnull data) {
+        NSDictionary *getDataContent = data[@"content"];
+        
+        NSDictionary *diskInfosDic = getDataContent[@"diskInfos"];
+        
+        NSDictionary *downloadInfosDic = getDataContent[@"downloadInfosDic"];
+        
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===%@",error);
+    }];
 }
 
 -(void)getVideoData{
@@ -70,7 +89,7 @@
             }
         }
         
-        NSLog(@"OY === self.LinkArray:%ld",self.LinkArray.count);
+//        NSLog(@"OY=== self.LinkArray:%ld",self.LinkArray.count);
 
         
         [self configUI];
@@ -81,7 +100,7 @@
 
 -(void)configUI{
     
-    _MainTV = [[UITableView alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(100), 0, FUll_VIEW_WIDTH-YWIDTH_SCALE(100), FUll_VIEW_HEIGHT) style:UITableViewStylePlain];
+    _MainTV = [[UITableView alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(100), 0, FUll_VIEW_WIDTH-YWIDTH_SCALE(100), FUll_VIEW_HEIGHT) style:UITableViewStyleGrouped];
     _MainTV.delegate = self;
     _MainTV.dataSource = self;
     _MainTV.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -95,7 +114,7 @@
         _TitleInfoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH, YHEIGHT_SCALE(400))];
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(50), YHEIGHT_SCALE(40), YWIDTH_SCALE(400), YHEIGHT_SCALE(60))];
-        [titleLabel setText:self.model.infoTitle];
+        [titleLabel setText:self.model.videoTitleStr];
         [titleLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(40)]];
         titleLabel.textAlignment = NSTextAlignmentLeft;
         [_TitleInfoView addSubview:titleLabel];
@@ -150,7 +169,7 @@
 -(UIView *)linkView:(NSArray *)linkData{
     NSDictionary *firstDic = linkData[0];
     
-    UIView *LinkView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _MainTV.width, YHEIGHT_SCALE(200))];
+    UIView *LinkView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _MainTV.width, YHEIGHT_SCALE(100))];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(50), YHEIGHT_SCALE(40), YWIDTH_SCALE(400), YHEIGHT_SCALE(60))];
     [titleLabel setText:firstDic[@"linkTitle"]];
@@ -162,7 +181,7 @@
     for (NSDictionary *link in linkData) {
 //        UIButton
         [linkArray addObject:link[@"hrefLink"]];
-        NSLog(@"OY === hrefLink:%@",link[@"hrefLink"]);
+//        NSLog(@"OY=== hrefLink:%@",link[@"hrefLink"]);
     }
     
     return LinkView;
@@ -175,44 +194,73 @@
     }
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
 
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         self.showImageView = [[UIImageView alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(50), 0, FUll_VIEW_WIDTH-YWIDTH_SCALE(150), (FUll_VIEW_WIDTH-YWIDTH_SCALE(150))*4/3)];
         [self.showImageView setBackgroundColor:[UIColor lightGrayColor]];
         self.showImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.showImageView.layer.cornerRadius = 100;
         self.showImageView.layer.maskedCorners = UIRectCornerBottomLeft;
         self.showImageView.clipsToBounds = YES;
-        [self.showImageView sd_setImageWithURL:[NSURL URLWithString:self.model.imgSrc] placeholderImage:nil];
+        [self.showImageView sd_setImageWithURL:[NSURL URLWithString:self.model.imghref] placeholderImage:nil];
         [cell.contentView addSubview:self.showImageView];
         [cell.contentView setBackgroundColor:[UIColor clearColor]];
-
-    }else if (indexPath.row == 1){
+    }else if (indexPath.section == 1){
         [cell.contentView addSubview:[self TitleInfoView]];
     }else{
-        NSInteger index = indexPath.row-2;
+        
+        NSInteger index = indexPath.section-2;
         NSArray *linkData = self.LinkArray[index];
-        [cell.contentView addSubview:[self linkView:linkData]];
+        NSDictionary *dataDic = linkData[indexPath.row];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(50), YHEIGHT_SCALE(22), _MainTV.width-YWIDTH_SCALE(50)-YWIDTH_SCALE(40), YHEIGHT_SCALE(60))];
+        titleLabel.numberOfLines = 0;
+        [titleLabel setText:dataDic[@"hrefLink"]];
+        [titleLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(16)]];
+        titleLabel.textAlignment = NSTextAlignmentLeft;
+        [cell.contentView addSubview:titleLabel];
     }
     return cell;
 }
 
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if (section==0||section==1) {
+        return nil;
+    }else{
+        NSInteger index = section-2;
+        NSArray *linkData = self.LinkArray[index];
+        return [self linkView:linkData];
+    }
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         return (FUll_VIEW_WIDTH-YWIDTH_SCALE(150))*4/3;
-    }else if (indexPath.row == 1){
+    }else if (indexPath.section == 1){
         return YHEIGHT_SCALE(400);
     }else{
-        return YHEIGHT_SCALE(200);
+        return YHEIGHT_SCALE(88);
+    }
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (section==0||section==1) {
+        return 0;
+    }else{
+        return YHEIGHT_SCALE(120);
     }
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 2+self.LinkArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    return 2;
-    return 2+self.LinkArray.count;
+    if (section == 0||section == 1) {
+        return 1;
+    }else{
+        NSInteger index = section-2;
+        NSArray *linkData = self.LinkArray[index];
+        return linkData.count;
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

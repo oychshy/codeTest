@@ -223,6 +223,10 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == (self.dataArray.count-1)) {
+        
+        NSLog(@"OY===chaptersArray:%@",self.chaptersArray);
+
+        
         NSDictionary *chapterInfo = [[NSDictionary alloc] initWithDictionary:self.chaptersArray[self.chapterIndex+1]];
         NSArray *imageArray = chapterInfo[@"chapterImages"];
         self.chapterTitle = chapterInfo[@"chapterTitle"];

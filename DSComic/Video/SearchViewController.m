@@ -8,6 +8,7 @@
 
 #import "SearchViewController.h"
 #define NavigationHeight 64
+#define hotSearchViewTag 1000
 
 @interface SearchViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 @property(retain,nonatomic)UISearchBar *searchBar;
@@ -110,6 +111,7 @@
 
 -(void)searchBarClearBtnClick{
     self.isSearch = NO;
+    self.pageNumber = 0;
     [self.contentArray removeAllObjects];
     [self.TitleListTV reloadData];
 }
@@ -165,6 +167,8 @@
         UIScrollView *hotScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(titleLabel.x, titleLabel.y+titleLabel.height, titleLabel.width, YHEIGHT_SCALE(400))];
         CGFloat contentSizeWidth = self.hotSearchArray.count*((FUll_VIEW_WIDTH-YHEIGHT_SCALE(160))/3+YWIDTH_SCALE(60));
         hotScrollView.contentSize = CGSizeMake(contentSizeWidth, (FUll_VIEW_WIDTH-YHEIGHT_SCALE(160))/3+YHEIGHT_SCALE(160));
+        hotScrollView.showsVerticalScrollIndicator = NO;
+        hotScrollView.showsHorizontalScrollIndicator = NO;
 
         for (int i=0;i<self.hotSearchArray.count;i++) {
             NSDictionary *dataDic = self.hotSearchArray[i];
@@ -172,6 +176,10 @@
             NSString *infoTitle = dataDic[@"infoTitle"];
 
             UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(i*((FUll_VIEW_WIDTH-YHEIGHT_SCALE(160))/3+YWIDTH_SCALE(60)), 0, (FUll_VIEW_WIDTH-YHEIGHT_SCALE(160))/3, (FUll_VIEW_WIDTH-YHEIGHT_SCALE(160))/3+YHEIGHT_SCALE(160))];
+            contentView.tag = hotSearchViewTag+i;
+            UITapGestureRecognizer *hotViewTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hotViewOnClick:)];
+            [contentView addGestureRecognizer:hotViewTap];
+
             UIImageView *showImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, contentView.width, contentView.height-YHEIGHT_SCALE(60))];
             [showImageView setBackgroundColor:[UIColor lightGrayColor]];
             showImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -197,6 +205,17 @@
     return _hotSearchView;
 }
 
+-(void)hotViewOnClick:(UITapGestureRecognizer *)recognizer{
+    NSInteger index = recognizer.view.tag - 1000;
+    NSDictionary *dataDic = self.hotSearchArray[index];
+    VideoItemModel *model = [VideoItemModel ModelWithDict:dataDic];
+    VideoContentViewController *vc = [[VideoContentViewController alloc] init];
+    vc.model = model;
+    [self.navigationController pushViewController:vc animated:NO];
+}
+
+
+
 - (UITableView *)TitleListTV{
     if (!_TitleListTV) {
         _TitleListTV = [[UITableView alloc]initWithFrame:CGRectMake(0, self.searchBar.y+self.searchBar.height+YHEIGHT_SCALE(10), FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-(self.searchBar.y+self.searchBar.height+YHEIGHT_SCALE(10))) style:UITableViewStyleGrouped];
@@ -205,8 +224,12 @@
         _TitleListTV.separatorStyle = UITableViewCellSeparatorStyleNone;
         [_TitleListTV setBackgroundColor:[UIColor whiteColor]];
         _TitleListTV.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-            self.pageNumber += 10;
-            [self configSearchData:self.SearchStr StartIndex:self.pageNumber GetNumber:10];
+            if (self.contentArray.count>0) {
+                self.pageNumber += 10;
+                [self configSearchData:self.SearchStr StartIndex:self.pageNumber GetNumber:10];
+            }else{
+                [_TitleListTV.mj_footer endRefreshingWithNoMoreData];
+            }
         }];
         [self.view addSubview:_TitleListTV];
     }
@@ -261,6 +284,21 @@
     }else{
         return YHEIGHT_SCALE(460);
     }
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *dataDic = self.contentArray[indexPath.row];
+    NSDictionary *postData = @{@"id":dataDic[@"id"],@"infoTitle":dataDic[@"infoTitle"],@"videoType":dataDic[@"videoType"],@"imgSrc":dataDic[@"imgSrc"]};
+    VideoItemModel *model = [VideoItemModel ModelWithDict:postData];
+    VideoContentViewController *vc = [[VideoContentViewController alloc] init];
+    vc.model = model;
+    //    CATransition *animation = [CATransition animation];
+    //    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    //    animation.type = @"Fade";
+    //    animation.duration =0.2f;
+    //    animation.subtype =kCATransitionFromRight;
+    //    [[UIApplication sharedApplication].keyWindow.layer addAnimation:animation forKey:nil];
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 #pragma mark - KeyBroad

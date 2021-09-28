@@ -43,8 +43,8 @@
 
 
 -(void)setCellWithData:(VideoItemModel*)model{
-    NSString *imgUrl = model.imgSrc;
-    NSString *infoTitle = model.infoTitle;
+    NSString *imgUrl = model.imghref;
+    NSString *infoTitle = model.videoTitleStr;
 //    NSString *videoType = model.videoType;
     
     CGFloat infoTitleLabelHeight = [infoTitle boundingRectWithSize:CGSizeMake( self.titleLabel.width, MAXFLOAT) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:YFONTSIZEFROM_PX(24)]} context:nil].size.height;

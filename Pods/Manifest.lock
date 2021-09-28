@@ -19,12 +19,14 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
+  - YYText (1.0.7)
 
 DEPENDENCIES:
   - AFNetworking
   - MBProgressHUD
   - MJRefresh
   - SDWebImage
+  - YYText
 
 SPEC REPOS:
   https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
@@ -32,13 +34,15 @@ SPEC REPOS:
     - MBProgressHUD
     - MJRefresh
     - SDWebImage
+    - YYText
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJRefresh: 30997d30b347c8e9508a4db11e3a690da0c9b85a
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: a4d127d63b5990639ceb82eaaa6381808d633089
+PODFILE CHECKSUM: 805dd4488d36410a5030b4b597c2326ca71351f6
 
 COCOAPODS: 1.10.1

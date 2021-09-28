@@ -19,12 +19,33 @@
 #define YFONTSIZEFROM_PX(X)  (FUll_VIEW_WIDTH*0.5*X/375)
 
 #define STATUSHEIGHT [[UIApplication sharedApplication] statusBarFrame].size.height
+#define NAVHEIGHT  [[UIApplication sharedApplication] statusBarFrame].size.height + self.navigationController.navigationBar.frame.size.height
+#define TABBARHEIGHT ([[UIApplication sharedApplication] statusBarFrame].size.height>20?83:49)
+#define BLANKHEIGHT ([[UIApplication sharedApplication] statusBarFrame].size.height>20?34:0)
+#define DEVICEVERSION  [UIDevice currentDevice].systemVersion.floatValue
+
 
 #define NavBarColor [UIColor colorWithRed:250/255.0 green:227/255.0 blue:111/255.0 alpha:1.0]
 #define NavLineColor [UIColor colorWithHexString:@"D1D1D1"]
 
 #import "ViewController.h"
 #import "comicViewController.h"
+#import "MainPageViewController.h"
+
+#import "MainPageItem.h"
+#import "BannerTableViewCell.h"
+#import "MainPageTableViewCell.h"
+#import "PersonalViewController.h"
+#import "LoginViewController.h"
+#import "ComicDeatilViewController.h"
+#import "ComicDetailTableViewCell.h"
+#import "ComicChapterTableViewCell.h"
+#import "CommentTableViewCell.h"
+#import "ComicReaderViewController.h"
+#import "ComicReaderTableViewCell.h"
+
+
+
 #import "ReaderViewController.h"
 
 #import "ContentCollectionViewCell.h"
@@ -37,14 +58,22 @@
 
 #import "MainPageVideoCell.h"
 #import "VideoItemModel.h"
+#import "ChapterModel.h"
 
 
 #import "Tools.h"
+#import "UserInfo.h"
 #import "UIColor+Expanded.h"
 #import "UIImage+Image.h"
 #import "NSObject+Model.h"
 #import "UIView+LBExtension.h"
 #import "HttpRequest.h"
+#import "JJCarousel.h"
+#import "PDBannerViewWithURL.h"
+#import "MidTextField.h"
+#import "YYLabel.h"
+#import "NSAttributedString+YYText.h"
+
 
 #import "MBProgressHUD.h"
 #import "MJRefresh.h"

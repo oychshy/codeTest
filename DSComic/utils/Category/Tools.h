@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSString*)getUUID;
 +(NSString*)getIDFA;
 +(NSString*)getIDFV;
++ (NSString *)getDevice;
+
++(NSString *)currentTimeStr;
++(NSString*)dateWithString:(NSString*)str;
+
 @end
 
 NS_ASSUME_NONNULL_END

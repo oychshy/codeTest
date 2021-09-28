@@ -5,4 +5,5 @@ pod 'MJRefresh'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
 pod 'AFNetworking'
+pod 'YYText'
 end

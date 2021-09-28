@@ -7,6 +7,8 @@
 //
 
 #import "Tools.h"
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
+#import "sys/utsname.h"
 
 @implementation Tools
 + (NSString*)base64encode:(NSString*)str {
@@ -33,6 +35,9 @@
 //        //HUD = nil;
 //    }];
 //}
+
+
+
 
 +(NSString *)convertToJsonData:(NSDictionary *)dict{
     NSError *error;
@@ -86,11 +91,75 @@
 }
 
 +(NSString*)getIDFA{
-    return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    static NSString * idfa = @"" ;
+    
+    if (@available(iOS 14, *)) {
+        [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+            if (status == ATTrackingManagerAuthorizationStatusAuthorized) {
+                idfa = [[ASIdentifierManager sharedManager].advertisingIdentifier UUIDString];
+                NSLog(@"LTTest === %@",idfa);
+            } else {
+                NSLog(@"LTTest === 未允许App请求跟踪");
+            }
+        }];
+    } else {
+        if ([[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]) {
+            idfa = [[ASIdentifierManager sharedManager].advertisingIdentifier UUIDString];
+            NSLog(@"LTTest === %@",idfa);
+        } else {
+            NSLog(@"LTTest === 请在设置-隐私-广告中打开广告跟踪功能");
+        }
+    }
+    
+    NSLog(@"LTTest === idfa:%@",idfa);
+    return idfa;
 }
 
 +(NSString*)getIDFV{
     return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+}
+
++ (NSString *)getDevice{
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    // 获取设备标识Identifier
+    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    return platform;
+}
+
++ (NSString *)TimestampToTimeWtihString:(NSString *)timestamp Format:(NSString *)format
+{
+    if (timestamp.length == 13) {
+        timestamp = [NSString stringWithFormat:@"%ld",timestamp.integerValue/1000];
+    }
+    if (format.length == 0) {
+        format = @"YYYY-MM-dd HH:mm";
+    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setDateFormat:format];
+    [formatter setTimeZone:[NSTimeZone localTimeZone]];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp.doubleValue];
+    NSString *timeStr = [formatter stringFromDate:date];
+    return timeStr;
+}
+
+
++(NSString *)currentTimeStr{
+    NSDate* date = [NSDate dateWithTimeIntervalSinceNow:0];//获取当前时间0秒后的时间
+    NSTimeInterval time=[date timeIntervalSince1970]*1000;// *1000 是精确到毫秒，不乘就是精确到秒
+    NSString *timeString = [NSString stringWithFormat:@"%.0f", time];
+    return timeString;
+}
+
++(NSString*)dateWithString:(NSString*)str{
+    NSTimeInterval interval = [str doubleValue];
+    NSDate* date = [NSDate dateWithTimeIntervalSince1970:interval];
+    NSDateFormatter * formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
+    NSString* dateString = [formatter stringFromDate:date];
+    return dateString;
 }
 
 @end
