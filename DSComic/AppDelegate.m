@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
-
+@property(retain,nonatomic)NSMutableArray *MySubscribes;
 @end
 
 @implementation AppDelegate
@@ -33,7 +33,6 @@
 //    ViewController *c1=[[ViewController alloc]init];
 //    self.window.rootViewController=c1;
     
-
     [self getUserInfo];
 
     UITabBarController *tb=[[UITabBarController alloc]init];
@@ -54,17 +53,17 @@
 -(void)getUserInfo{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *userInfoDic = [defaults valueForKey:@"userInfo"];
+    self.MySubscribes = [[NSMutableArray alloc] init];
+
     if (userInfoDic.allKeys>0) {
         NSLog(@"OY===userInfoDic:%@",userInfoDic);
-
         [UserInfo shareUserInfo].isLogin = [[userInfoDic valueForKey:@"isLogin"] boolValue];
         [UserInfo shareUserInfo].uid = [userInfoDic valueForKey:@"uid"];
         [UserInfo shareUserInfo].nickname = [userInfoDic valueForKey:@"nickname"];
         [UserInfo shareUserInfo].photo = [userInfoDic valueForKey:@"photo"];
         [UserInfo shareUserInfo].dmzj_token = [userInfoDic valueForKey:@"dmzj_token"];
-        
+        [self getAllMySubscribe:0];
         NSLog(@"OY===isLogin:%d,uid:%@,nickname:%@,photo:%@",[UserInfo shareUserInfo].isLogin,[UserInfo shareUserInfo].uid,[UserInfo shareUserInfo].nickname,[UserInfo shareUserInfo].photo);
-
     }else{
         NSMutableDictionary *userInfoDic = [[NSMutableDictionary alloc] initWithDictionary:@{@"isLogin":@(NO),@"uid":@"",@"nickname":@"",@"photo":@"",@"dmzj_token":@""}];
         [UserInfo shareUserInfo].isLogin = NO;
@@ -72,13 +71,51 @@
         [UserInfo shareUserInfo].nickname = @"";
         [UserInfo shareUserInfo].photo = @"";
         [UserInfo shareUserInfo].dmzj_token = @"";
-        
+        [UserInfo shareUserInfo].mySubscribe = @[];
         NSLog(@"OY===isLogin:%d",[UserInfo shareUserInfo].isLogin);
-
         [defaults setValue:userInfoDic forKey:@"userInfo"];
-        NSLog(@"OY===ebd");
-
     }
 }
+
+-(void)getAllMySubscribe:(NSInteger)PageCount{
+    NSString *IDFA = [Tools getIDFA];
+    if (!IDFA) {
+        IDFA = @"00000000-0000-0000-0000-000000000000";
+    }
+    
+    NSDictionary *params = [[NSDictionary alloc] init];
+    NSString *urlPath = @"http://nnv3api.muwai.com/UCenter/subscribeWithLevel";
+    params = @{
+        @"app_channel":@(101),
+        @"channel":@"ios",
+        @"imei":IDFA,
+        @"iosId":@"89728b06283841e4a411c7cb600e4052",
+        @"terminal_model":[Tools getDevice],
+        @"timestamp":[Tools currentTimeStr],
+        @"uid":[UserInfo shareUserInfo].uid,
+        @"version":@"4.5.2",
+        @"dmzj_token":[UserInfo shareUserInfo].dmzj_token,
+        @"type":@(0),
+        @"letter":@"all",
+        @"sub_type":@(1),
+        @"page":@(PageCount),
+        @"size":@(100)
+    };
+
+    [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
+        NSArray *getData = data;
+        if (getData.count>0) {
+            for (NSDictionary *comicInfo in getData) {
+                [self.MySubscribes addObject:[NSString stringWithFormat:@"%@",comicInfo[@"id"]]];
+            }
+            [self getAllMySubscribe:PageCount+1];
+        }else{
+            [UserInfo shareUserInfo].mySubscribe = self.MySubscribes;
+        }
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+    }];
+}
+
 
 @end

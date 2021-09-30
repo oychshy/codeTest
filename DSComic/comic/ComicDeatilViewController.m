@@ -12,11 +12,14 @@
 @property(assign,nonatomic)BOOL isLogin;
 @property(assign,nonatomic)BOOL isAcs;
 @property(assign,nonatomic)BOOL isExpand;
+@property(assign,nonatomic)BOOL isSubscribe;
+
 @property(assign,nonatomic)NSInteger commetPage;
 
 @property(copy,nonatomic)NSString *IDFA;
 
 @property(retain,nonatomic)UIView *NaviView;
+@property(retain,nonatomic)UIView *ErrorView;
 @property(retain,nonatomic)UITableView *MainTabelView;
 
 @property(retain,nonatomic)NSMutableDictionary *ComicDetailDic;
@@ -69,6 +72,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)refreshBtnAction{
+    [self getComicDeatil];
+}
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -88,6 +97,13 @@
 
     self.CommentIdsArray = [[NSMutableArray alloc] init];
     self.CommentsDic = [[NSMutableDictionary alloc] init];
+    
+    NSMutableArray *getMySubscribe = [UserInfo shareUserInfo].mySubscribe;
+    for(NSString *subscribeID in getMySubscribe) {
+        if ([subscribeID integerValue] == self.comicId) {
+            self.isSubscribe = YES;
+        }
+    }
         
     [self getComicDeatil];
 
@@ -102,6 +118,7 @@
         @"timestamp":[Tools currentTimeStr],
     };
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
+        [self.ErrorView setHidden:YES];
         NSDictionary *getData = data;
         NSInteger errorcode = [getData[@"errorCode"] integerValue];
         if (errorcode == -1001) {
@@ -115,16 +132,16 @@
         }else{
             NSDictionary *detailDic = data;
             self.ComicDetailDic = detailDic[@"comic"];
-            
             NSString *jsonDatasStr = detailDic[@"chapter_json"];
             NSArray *jsonDatas = [NSJSONSerialization JSONObjectWithData:[jsonDatasStr dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
             NSDictionary *ChaptersDic = jsonDatas[0];
             self.ChapterArray = ChaptersDic[@"data"];
         }
         [self getComicCommentsWith:self.commetPage];
-
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [self.ErrorView setHidden:NO];
+        [self ErrorView];
     }];
 }
 
@@ -193,7 +210,22 @@
 
     [self MainTabelView];
     [self.MainTabelView reloadData];
+}
 
+-(UIView*)ErrorView{
+    if (!_ErrorView) {
+        _ErrorView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-64)];
+        [_ErrorView setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:_ErrorView];
+        
+        UIButton *refreshBtn = [[UIButton alloc] initWithFrame:CGRectMake((FUll_VIEW_WIDTH-YWIDTH_SCALE(200))/2, YHEIGHT_SCALE(400), YWIDTH_SCALE(200), YHEIGHT_SCALE(60))];
+        [refreshBtn setBackgroundColor:[UIColor lightGrayColor]];
+        [refreshBtn setTitle:@"刷新" forState:UIControlStateNormal];
+        [refreshBtn addTarget:self action:@selector(refreshBtnAction) forControlEvents:UIControlEventTouchUpInside];
+        [refreshBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_ErrorView addSubview:refreshBtn];
+    }
+    return _ErrorView;
 }
 
 -(UITableView*)MainTabelView{
@@ -217,6 +249,7 @@
         if (!cell) {
             cell = [[ComicDetailTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Title"];
         }
+        cell.isSubscribe = self.isSubscribe;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.separatorInset = UIEdgeInsetsZero;
         cell.delegate = self;
@@ -348,6 +381,10 @@
     self.isExpand = isExpand;
 }
 
+-(void)PostSubscribe:(BOOL)subscribe{
+    [self setSubscribe:subscribe];
+}
+
 -(void)PostCommentHeight:(CGFloat)CellHeight{
     self.CommentCellHeight = CellHeight;
 }
@@ -358,9 +395,7 @@
     if (isPost) {
         NSInteger comicId = [dataDic[@"comicId"] integerValue];
         NSInteger chapterId = [dataDic[@"chapterId"] integerValue];
-        
         [self getChapterDeatil:comicId chapterId:chapterId];
-        
     }
 }
 
@@ -384,6 +419,75 @@
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
     }];
+}
+
+
+-(void)setSubscribe:(BOOL)isSubscribe{
+    self.IDFA = [Tools getIDFA];
+    if (self.IDFA.length == 0) {
+        self.IDFA = @"00000000-0000-0000-0000-000000000000";
+    }
+    
+    NSMutableArray *getMySubscribe = [[NSMutableArray alloc] initWithArray:[UserInfo shareUserInfo].mySubscribe];
+    if (isSubscribe) {
+        NSString *urlStr = @"http://nnv3api.muwai.com/subscribe/add";
+        NSDictionary *params = @{
+            @"app_channel":@(101),
+            @"channel":@"ios",
+            @"dmzj_token":[UserInfo shareUserInfo].dmzj_token,
+            @"imei":self.IDFA,
+            @"iosId":@"89728b06283841e4a411c7cb600e4052",
+            @"obj_ids":@(self.comicId),
+            @"terminal_model":[Tools getDevice],
+            @"timestamp":[Tools currentTimeStr],
+            @"type":@"mh",
+            @"uid":[UserInfo shareUserInfo].uid,
+            @"version":@"4.5.2"
+        };
+        [HttpRequest postNetWorkWithUrl:urlStr parameters:params success:^(id  _Nonnull data) {
+            NSDictionary *retDic = data;
+            NSInteger code = [retDic[@"code"] integerValue];
+            if (code==0) {
+                [getMySubscribe addObject:[NSString stringWithFormat:@"%ld",self.comicId]];
+                [UserInfo shareUserInfo].mySubscribe = getMySubscribe;
+                UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:retDic[@"msg"] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
+                [actionVC addAction:okAction];
+                [self presentViewController:actionVC animated:YES completion:nil];
+            }
+        } failure:^(NSString * _Nonnull error) {
+            NSLog(@"OY===error:%@",error);
+        }];
+    }else{
+        NSString *urlStr = @"http://nnv3api.muwai.com/subscribe/cancel";
+        NSDictionary *params = @{
+            @"type":@"mh",
+            @"uid":[UserInfo shareUserInfo].uid,
+            @"obj_ids":@(self.comicId),
+            @"dmzj_token":[UserInfo shareUserInfo].dmzj_token,
+            @"app_channel":@(101),
+            @"channel":@"ios",
+            @"imei":self.IDFA,
+            @"iosId":@"89728b06283841e4a411c7cb600e4052",
+            @"terminal_model":[Tools getDevice],
+            @"timestamp":[Tools currentTimeStr],
+            @"version":@"4.5.2"
+        };
+        [HttpRequest getNetWorkWithUrl:urlStr parameters:params success:^(id  _Nonnull data) {
+            NSDictionary *retDic = data;
+            NSInteger code = [retDic[@"code"] integerValue];
+            if (code==0) {
+                [getMySubscribe removeObject:[NSString stringWithFormat:@"%ld",self.comicId]];
+                [UserInfo shareUserInfo].mySubscribe = getMySubscribe;
+                UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:retDic[@"msg"] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
+                [actionVC addAction:okAction];
+                [self presentViewController:actionVC animated:YES completion:nil];
+            }
+        } failure:^(NSString * _Nonnull error) {
+            NSLog(@"OY===error:%@",error);
+        }];
+    }
 }
 
 

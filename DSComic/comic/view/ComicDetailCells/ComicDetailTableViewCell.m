@@ -15,6 +15,8 @@
     UILabel *UpDateTimeLabel;
     UILabel *StatusLabel;
     UILabel *DescriptionLabel;
+    UIButton *SubscribeBtn;
+
     UIView *descriptionView;
     CGFloat descriptionHeight;
     BOOL isExpand;
@@ -75,6 +77,18 @@
     StatusLabel.text = @"NULL/NULL";
     [headerView addSubview:StatusLabel];
     
+    SubscribeBtn = [[UIButton alloc] initWithFrame:CGRectMake(AuthorLabel.x, StatusLabel.y+StatusLabel.height+YHEIGHT_SCALE(10), YWIDTH_SCALE(200), YWIDTH_SCALE(40))];
+    
+    SubscribeBtn.layer.cornerRadius = 5;
+    SubscribeBtn.layer.borderWidth = 1;
+    SubscribeBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+//    chapterLabel.textAlignment = NSTextAlignmentCenter;
+    [SubscribeBtn setTitle:@"NULL/NULL" forState:UIControlStateNormal];
+    [SubscribeBtn.titleLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(30)]];
+    SubscribeBtn.titleLabel.textAlignment = NSTextAlignmentLeft;
+    [SubscribeBtn addTarget:self action:@selector(SubscribeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [headerView addSubview:SubscribeBtn];
+    
     descriptionView = [[UIView alloc] initWithFrame:CGRectMake(0, headerView.y+headerView.height, FUll_VIEW_WIDTH, YHEIGHT_SCALE(100)+YHEIGHT_SCALE(20))];
     [descriptionView setBackgroundColor:[UIColor whiteColor]];
     [self addSubview:descriptionView];
@@ -114,8 +128,15 @@
         NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc]initWithString:@"内容" attributes:attribtDic];
         AuthorLabel.attributedText = attribtStr;
         [TitleImageView sd_setImageWithURL:[NSURL URLWithString:coverImage]];
+        
+        if ([UserInfo shareUserInfo].isLogin) {
+            if (self.isSubscribe) {
+                [SubscribeBtn setTitle:@"取消订阅" forState:UIControlStateNormal];
+            }else{
+                [SubscribeBtn setTitle:@"订阅漫画" forState:UIControlStateNormal];
+            }
+        }
     }
-    
 
     
     AuthorLabel.text = AuthorName;
@@ -161,6 +182,21 @@
         }
         if (self.delegate&&[self.delegate respondsToSelector:@selector(PostLabelIsExpand:)]) {
             [self.delegate PostLabelIsExpand:isExpand];
+        }
+    }
+}
+
+-(void)SubscribeBtnAction{
+    if ([UserInfo shareUserInfo].isLogin) {
+        self.isSubscribe = !self.isSubscribe;
+        if (self.isSubscribe) {
+            [SubscribeBtn setTitle:@"取消订阅" forState:UIControlStateNormal];
+        }else{
+            [SubscribeBtn setTitle:@"订阅漫画" forState:UIControlStateNormal];
+        }
+        
+        if (self.delegate&&[self.delegate respondsToSelector:@selector(PostSubscribe:)]) {
+            [self.delegate PostSubscribe:self.isSubscribe];
         }
     }
 }

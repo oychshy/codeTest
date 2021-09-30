@@ -374,8 +374,8 @@
         NSInteger result = [data[@"result"] integerValue];
         if (result == 1) {
             NSDictionary *dataDic = data[@"data"];
-//            NSLog(@"OY===dataDic:%@",dataDic);
             [self SaveUserDefault:dataDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"userRefresh" object:nil];
             [self dismissViewControllerAnimated:YES completion:nil];
 
         }else{
@@ -424,6 +424,10 @@
     [userInfoDic setValue:@(YES) forKey:@"isLogin"];
     [defaults setValue:userInfoDic forKey:@"userInfo"];
     [UserInfo shareUserInfo].isLogin = YES;
+    [UserInfo shareUserInfo].uid = [userInfoDic valueForKey:@"uid"];
+    [UserInfo shareUserInfo].nickname = [userInfoDic valueForKey:@"nickname"];
+    [UserInfo shareUserInfo].photo = [userInfoDic valueForKey:@"photo"];
+    [UserInfo shareUserInfo].dmzj_token = [userInfoDic valueForKey:@"dmzj_token"];
     [defaults synchronize];
 }
 

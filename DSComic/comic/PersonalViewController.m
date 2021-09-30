@@ -28,7 +28,7 @@
     self.navigationController.navigationBar.hidden = YES;
     
     self.isLogin = [UserInfo shareUserInfo].isLogin;
-    NSLog(@"OY===MainPage will:%d",self.isLogin);
+//    NSLog(@"OY===MainPage will:%d",self.isLogin);
 
     if (self.isLogin) {
         [self.MainPageTableView reloadData];
@@ -43,13 +43,13 @@
     
     self.titleListInfos = [[NSMutableArray alloc] init];
     
-    NSArray *data1 = @[@"订阅",@"记录",@"下载"];
-    NSArray *data2 = @[@"test1",@"test2"];
+    NSArray *data1 = @[@"订阅",@"包含被隐藏的被迫消失的订阅(古老)"];
+//    NSArray *data2 = @[@"test1",@"test2"];
     NSArray *data3 = @[@"退出"];
 
 
     [self.titleListInfos addObject:data1];
-    [self.titleListInfos addObject:data2];
+//    [self.titleListInfos addObject:data2];
     [self.titleListInfos addObject:data3];
 
     [self MainTableView];
@@ -164,14 +164,38 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSMutableDictionary *userInfoDic = [[NSMutableDictionary alloc] initWithDictionary:@{@"isLogin":@(NO),@"uid":@"",@"nickname":@"",@"photo":@"",@"dmzj_token":@""}];
         [UserInfo shareUserInfo].isLogin = NO;
         self.isLogin = NO;
+        [UserInfo shareUserInfo].isLogin = NO;
+        [UserInfo shareUserInfo].uid = @"";
+        [UserInfo shareUserInfo].nickname = @"";
+        [UserInfo shareUserInfo].photo = @"";
+        [UserInfo shareUserInfo].dmzj_token = @"";
+        [UserInfo shareUserInfo].mySubscribe = @[];
         [defaults setValue:userInfoDic forKey:@"userInfo"];
         [_MainPageTableView reloadData];
+    }else if(indexPath.section == 0){
+        if (self.isLogin) {
+            if (indexPath.row == 0) {
+                MySubscribeViewController *vc = [[MySubscribeViewController alloc] init];
+                vc.isHidenSubscribe = NO;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if(indexPath.row == 1){
+                MySubscribeViewController *vc = [[MySubscribeViewController alloc] init];
+                vc.isHidenSubscribe = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        }else{
+            UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"未登录" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
+            [actionVC addAction:okAction];
+            [self presentViewController:actionVC animated:YES completion:nil];
+        }
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"userRefresh" object:nil];
 }
 
 

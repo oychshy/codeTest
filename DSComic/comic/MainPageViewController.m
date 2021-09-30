@@ -7,25 +7,53 @@
 //
 #define titleButtonBaseTag 1000
 #define arrowBaseTag 2000
+#define kMagin 10
 
 #import "MainPageViewController.h"
 
-@interface MainPageViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,MainPageTableViewCellDelegate>
+@interface MainPageViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,MainPageTableViewCellDelegate>
 @property(copy,nonatomic)NSString *IDFA;
 
 @property(retain,nonatomic)NSArray *titleArray;
 @property(retain,nonatomic)NSMutableArray *MainDataInfos;
 @property(retain,nonatomic)NSArray *favorDataInfos;
+@property(retain,nonatomic)NSMutableDictionary *collectionCellDic;
+
+@property(retain,nonatomic)NSMutableArray *UpDateDataInfos;
+@property(retain,nonatomic)NSMutableArray *SortDataInfos;
+@property(retain,nonatomic)NSMutableArray *RankInfos;
+
 
 @property(assign,nonatomic)NSInteger selectIndex;
-
 @property(assign,nonatomic)BOOL isLogin;
-
 @property(assign,nonatomic)CGFloat rowHeight;
 
 @property(retain,nonatomic)UIView *NaviView;
+@property(retain,nonatomic)UIView *MainErrorView;
+
 @property(retain,nonatomic)UIScrollView *mainScrollView;
+
 @property(retain,nonatomic)UITableView *MainPageTableView;
+@property(retain,nonatomic)UITableView *LastUpdateTableView;
+@property(retain,nonatomic)UICollectionView *SortCollectionView;
+@property(retain,nonatomic)UITableView *RankTableView;
+@property(retain,nonatomic)UIView *RankSortView;
+@property(retain,nonatomic)UIView *TimeCoverView;
+
+@property(assign,nonatomic)BOOL isShowCover;
+@property(retain,nonatomic)NSArray *timeTypeArray;
+@property(assign,nonatomic)NSInteger timeTypeIndex;
+@property(assign,nonatomic)NSInteger rankTypeIndex;
+
+
+@property(retain,nonatomic)UIButton *TimeButton;
+@property(retain,nonatomic)UIButton *HotTypeBtn;
+@property(retain,nonatomic)UIButton *CommetTypeBtn;
+@property(retain,nonatomic)UIButton *SubscribeTypeBtn;
+
+
+@property(assign,nonatomic)NSInteger updateIndex;
+@property(assign,nonatomic)NSInteger rankIndex;
 
 @end
 
@@ -84,7 +112,6 @@
         }
     }
     [_NaviView addSubview:titleView];
-    
     return _NaviView;
 }
 
@@ -96,20 +123,108 @@
     [beforButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     NSInteger index = sender.tag-titleButtonBaseTag;
-    NSLog(@"OY===index:%@",self.titleArray[index]);
     [sender setTitleColor:[UIColor colorWithHexString:@"#1296db"] forState:UIControlStateNormal];
     UIImageView *selectArrow = (UIImageView *)[self.view viewWithTag:index+arrowBaseTag];
     [selectArrow setHidden:NO];
     
+    if (index == 0) {
+        if (self.MainDataInfos.count == 0) {
+            [self getMainPageData];
+        }
+    }else if (index == 1) {
+        if (self.UpDateDataInfos.count == 0) {
+            [self getLastUpdateData:self.updateIndex];
+        }
+    }else if (index == 2){
+        if (self.SortDataInfos.count == 0) {
+            [self getSortData];
+        }
+    }else if (index == 3){
+        [self getRankData:self.rankIndex];
+    }
     _mainScrollView.contentOffset = CGPointMake(index*_mainScrollView.width, 0);
-    
     self.selectIndex = index;
-    
 }
 
 -(void)SearchBtnAction{
     
 }
+
+-(void)TimeButtonAction:(UIButton*)sender{
+    self.isShowCover = !self.isShowCover;
+    [self TimeCoverView];
+    
+    if (self.isShowCover) {
+        [_TimeCoverView setHidden:NO];
+    }else{
+        [_TimeCoverView setHidden:YES];
+    }
+}
+
+-(void)coverViewTap{
+    self.isShowCover = NO;
+    [_TimeCoverView setHidden:YES];
+}
+
+-(void)SubscribeTypeBtnAction{
+    [self.SubscribeTypeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.CommetTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.HotTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+
+    self.rankTypeIndex = 2;
+    [self getRankData:0];
+}
+
+-(void)CommetTypeBtnAction{
+    [self.SubscribeTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.CommetTypeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.HotTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+
+    self.rankTypeIndex = 1;
+    [self getRankData:0];
+}
+
+-(void)HotTypeBtnAction{
+    [self.SubscribeTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.CommetTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.HotTypeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+
+    self.rankTypeIndex = 0;
+    [self getRankData:0];
+}
+
+-(void)TodayButtonAtion{
+    self.isShowCover = NO;
+    [_TimeCoverView setHidden:YES];
+    [self.TimeButton setTitle:@"今日" forState:UIControlStateNormal];
+    self.timeTypeIndex = 0;
+    [self getRankData:0];
+}
+-(void)WeeklyButtonAction{
+    self.isShowCover = NO;
+    [_TimeCoverView setHidden:YES];
+    [self.TimeButton setTitle:@"每周" forState:UIControlStateNormal];
+
+    self.timeTypeIndex = 1;
+    [self getRankData:0];
+}
+-(void)MonthlyButtonAction{
+    self.isShowCover = NO;
+    [_TimeCoverView setHidden:YES];
+    [self.TimeButton setTitle:@"每月" forState:UIControlStateNormal];
+
+    self.timeTypeIndex = 2;
+    [self getRankData:0];
+}
+-(void)AllButtonAction{
+    self.isShowCover = NO;
+    [_TimeCoverView setHidden:YES];
+    [self.TimeButton setTitle:@"总排行" forState:UIControlStateNormal];
+
+    self.timeTypeIndex = 3;
+    [self getRankData:0];
+}
+
 
 
 - (void)viewDidLoad {
@@ -117,17 +232,41 @@
     // Do any additional setup after loading the view.
     self.MainDataInfos = [[NSMutableArray alloc] init];
     self.favorDataInfos = [[NSArray alloc] init];
+    self.UpDateDataInfos = [[NSMutableArray alloc] init];
+    self.RankInfos = [[NSMutableArray alloc] init];
+    self.SortDataInfos = [[NSMutableArray alloc] init];
+    self.collectionCellDic = [[NSMutableDictionary alloc] init];
+    self.timeTypeArray = [[NSArray alloc] init];
+    
+    self.updateIndex = 0;
+    self.rankIndex = 0;
+    self.isShowCover = NO;
+    self.timeTypeIndex = 0;
+    self.rankTypeIndex = 0;
+    self.timeTypeArray = @[@"今日",@"本周",@"本月",@"总排行"];
     
     self.IDFA = [Tools getIDFA];
     if (!self.IDFA) {
         self.IDFA = @"00000000-0000-0000-0000-000000000000";
     }
-//    self.isLogin = [UserInfo shareUserInfo].isLogin;
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginAction) name:@"userRefresh" object:nil];
     [self configUI];
 }
 
+-(void)loginAction{
+    self.isLogin = [UserInfo shareUserInfo].isLogin;
+    [self.MainDataInfos removeAllObjects];
+    [self getMainPageData];
+}
 
+-(void)refreshBtnAction{
+//    [self getComicDeatil];
+    [self getMainPageData];
+}
+
+
+#pragma mark -- configUI
 -(void)configUI{
     _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-64-TABBARHEIGHT)];
     _mainScrollView.delegate = self;
@@ -137,37 +276,83 @@
     _mainScrollView.showsHorizontalScrollIndicator = YES;
     _mainScrollView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_mainScrollView];
+        
+    _RankSortView = [[UIView alloc] initWithFrame:CGRectMake(3*FUll_VIEW_WIDTH, 0, FUll_VIEW_WIDTH, YHEIGHT_SCALE(90))];
+    [_RankSortView setBackgroundColor:[UIColor whiteColor]];
+    [self.mainScrollView addSubview:_RankSortView];
     
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _RankSortView.height-YHEIGHT_SCALE(2), _RankSortView.width, YHEIGHT_SCALE(2))];
+    [lineView setBackgroundColor:NavLineColor];
+    [_RankSortView addSubview:lineView];
+    
+    self.TimeButton = [[UIButton alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(20), 0, YWIDTH_SCALE(150), _RankSortView.height)];
+    [self.TimeButton setTitle:[NSString stringWithFormat:@"%@",self.timeTypeArray[self.timeTypeIndex]] forState:UIControlStateNormal];
+    self.TimeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [self.TimeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.TimeButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.TimeButton addTarget:self action:@selector(TimeButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [_RankSortView addSubview:self.TimeButton];
+    
+    self.SubscribeTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(FUll_VIEW_WIDTH-YWIDTH_SCALE(170), 0, YWIDTH_SCALE(150), _RankSortView.height)];
+    self.SubscribeTypeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [self.SubscribeTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.SubscribeTypeBtn setTitle:@"订阅排行" forState:UIControlStateNormal];
+    [self.SubscribeTypeBtn.titleLabel setTextAlignment:NSTextAlignmentRight];
+    [self.SubscribeTypeBtn.titleLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(28)]];
+    [self.SubscribeTypeBtn addTarget:self action:@selector(SubscribeTypeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [_RankSortView addSubview:self.SubscribeTypeBtn];
+
+    self.CommetTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.SubscribeTypeBtn.x-YWIDTH_SCALE(160), 0, YWIDTH_SCALE(150), _RankSortView.height)];
+    self.CommetTypeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [self.CommetTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.CommetTypeBtn setTitle:@"吐槽排行" forState:UIControlStateNormal];
+    [self.CommetTypeBtn.titleLabel setTextAlignment:NSTextAlignmentRight];
+    [self.CommetTypeBtn.titleLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(28)]];
+    [self.CommetTypeBtn addTarget:self action:@selector(CommetTypeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [_RankSortView addSubview:self.CommetTypeBtn];
+
+    self.HotTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.CommetTypeBtn.x-YWIDTH_SCALE(160), 0, YWIDTH_SCALE(150), _RankSortView.height)];
+    self.HotTypeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [self.HotTypeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.HotTypeBtn setTitle:@"人气排行" forState:UIControlStateNormal];
+    [self.HotTypeBtn.titleLabel setTextAlignment:NSTextAlignmentRight];
+    [self.HotTypeBtn.titleLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(28)]];
+    [self.HotTypeBtn addTarget:self action:@selector(HotTypeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [_RankSortView addSubview:self.HotTypeBtn];
+
+    [self MainPageTableView];
     [self getMainPageData];
 }
 
-//-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//    if (scrollView == _mainScrollView) {
-//        [_mainScrollView setScrollEnabled:YES];
-//        [_MainPageTableView setScrollEnabled:NO];
-//    }else{
-//        [_mainScrollView setScrollEnabled:NO];
-//        [_MainPageTableView setScrollEnabled:YES];
-//    }
-//}
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     if (scrollView == _mainScrollView) {
         NSInteger pageIndex = scrollView.contentOffset.x/_mainScrollView.width;
-        NSLog(@"OY===index:%@",self.titleArray[pageIndex]);
+        
+        if (pageIndex == 0) {
+            if (self.MainDataInfos.count == 0) {
+                [self getMainPageData];
+            }
+        }else if (pageIndex == 1) {
+            if (self.UpDateDataInfos.count == 0) {
+                [self getLastUpdateData:self.updateIndex];
+            }
+        }else if (pageIndex == 2){
+            if (self.SortDataInfos.count == 0) {
+                [self getSortData];
+            }
+        }else if (pageIndex == 3){
+            [self getRankData:self.rankIndex];
+        }
 
         UIImageView *beforArrow = (UIImageView *)[self.view viewWithTag:self.selectIndex+arrowBaseTag];
-        NSLog(@"OY===beforArrow:%@",beforArrow);
         [beforArrow setHidden:YES];
         UIButton *beforButton = (UIButton*)[self.view viewWithTag:self.selectIndex+titleButtonBaseTag];
-        NSLog(@"OY===beforButton:%@",beforButton);
         [beforButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 
         UIImageView *selectArrow = (UIImageView *)[self.view viewWithTag:pageIndex+arrowBaseTag];
-        NSLog(@"OY===selectArrow:%@",selectArrow);
         [selectArrow setHidden:NO];
         UIButton *selectButton = (UIButton*)[self.view viewWithTag:pageIndex+titleButtonBaseTag];
-        NSLog(@"OY===selectButton:%@",selectButton);
         [selectButton setTitleColor:[UIColor colorWithHexString:@"#1296db"] forState:UIControlStateNormal];
 
         self.selectIndex = pageIndex;
@@ -175,7 +360,79 @@
     }
 }
 
+-(UIView*)TimeCoverView{
+    if (!_TimeCoverView) {
+        _TimeCoverView = [[UIView alloc] initWithFrame:CGRectMake(3*FUll_VIEW_WIDTH, _RankSortView.height, self.mainScrollView.width, self.mainScrollView.height)];
+        [_TimeCoverView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
+        _TimeCoverView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(coverViewTap)];
+        [_TimeCoverView addGestureRecognizer:tap];
+        [_mainScrollView addSubview:_TimeCoverView];
+                
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, YHEIGHT_SCALE(86), FUll_VIEW_WIDTH/3, YHEIGHT_SCALE(2))];
+        [lineView1 setBackgroundColor:NavLineColor];
+        UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(0, YHEIGHT_SCALE(86), FUll_VIEW_WIDTH/3, YHEIGHT_SCALE(2))];
+        [lineView2 setBackgroundColor:NavLineColor];
+        UIView *lineView3 = [[UIView alloc] initWithFrame:CGRectMake(0, YHEIGHT_SCALE(86), FUll_VIEW_WIDTH/3, YHEIGHT_SCALE(2))];
+        [lineView3 setBackgroundColor:NavLineColor];
+        UIView *lineView4 = [[UIView alloc] initWithFrame:CGRectMake(0, YHEIGHT_SCALE(86), FUll_VIEW_WIDTH/3, YHEIGHT_SCALE(2))];
+        [lineView4 setBackgroundColor:NavLineColor];
 
+        
+        UIButton *TodayButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH/3, YHEIGHT_SCALE(88))];
+        [TodayButton setBackgroundColor:[UIColor whiteColor]];
+        [TodayButton setTitle:@"今日" forState:UIControlStateNormal];
+        [TodayButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [TodayButton addTarget:self action:@selector(TodayButtonAtion) forControlEvents:UIControlEventTouchUpInside];
+        [_TimeCoverView addSubview:TodayButton];
+        [TodayButton addSubview:lineView1];
+
+        UIButton *WeeklyButton = [[UIButton alloc] initWithFrame:CGRectMake(0, TodayButton.y+TodayButton.height, FUll_VIEW_WIDTH/3, YHEIGHT_SCALE(88))];
+        [WeeklyButton setBackgroundColor:[UIColor whiteColor]];
+        [WeeklyButton setTitle:@"今周" forState:UIControlStateNormal];
+        [WeeklyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [WeeklyButton addTarget:self action:@selector(WeeklyButtonAction) forControlEvents:UIControlEventTouchUpInside];\
+        [_TimeCoverView addSubview:WeeklyButton];
+        [WeeklyButton addSubview:lineView2];
+
+        UIButton *MonthlyButton = [[UIButton alloc] initWithFrame:CGRectMake(0, WeeklyButton.y+WeeklyButton.height, FUll_VIEW_WIDTH/3, YHEIGHT_SCALE(88))];
+        [MonthlyButton setBackgroundColor:[UIColor whiteColor]];
+        [MonthlyButton setTitle:@"今月" forState:UIControlStateNormal];
+        [MonthlyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [MonthlyButton addTarget:self action:@selector(MonthlyButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_TimeCoverView addSubview:MonthlyButton];
+        [MonthlyButton addSubview:lineView3];
+        
+        UIButton *AllButton = [[UIButton alloc] initWithFrame:CGRectMake(0, MonthlyButton.y+MonthlyButton.height, FUll_VIEW_WIDTH/3, YHEIGHT_SCALE(88))];
+        [AllButton setBackgroundColor:[UIColor whiteColor]];
+        [AllButton setTitle:@"总排行" forState:UIControlStateNormal];
+        [AllButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [AllButton addTarget:self action:@selector(AllButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_TimeCoverView addSubview:AllButton];
+        [AllButton addSubview:lineView4];
+
+
+    }
+    return _TimeCoverView;
+}
+
+-(UIView*)MainErrorView{
+    if (!_MainErrorView) {
+        _MainErrorView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-64)];
+        [_MainErrorView setBackgroundColor:[UIColor whiteColor]];
+        [self.mainScrollView addSubview:_MainErrorView];
+        
+        UIButton *refreshBtn = [[UIButton alloc] initWithFrame:CGRectMake((FUll_VIEW_WIDTH-YWIDTH_SCALE(200))/2, YHEIGHT_SCALE(400), YWIDTH_SCALE(200), YHEIGHT_SCALE(60))];
+        [refreshBtn setBackgroundColor:[UIColor lightGrayColor]];
+        [refreshBtn setTitle:@"刷新" forState:UIControlStateNormal];
+        [refreshBtn addTarget:self action:@selector(refreshBtnAction) forControlEvents:UIControlEventTouchUpInside];
+        [refreshBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_MainErrorView addSubview:refreshBtn];
+    }
+    return _MainErrorView;
+}
+
+#pragma mark -- MainPageTableView&LastUpdateTableView
 -(UITableView*)MainPageTableView{
     if (!_MainPageTableView) {
         _MainPageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.mainScrollView.width, self.mainScrollView.height) style:UITableViewStylePlain];
@@ -187,27 +444,88 @@
     return _MainPageTableView;
 }
 
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    MainPageItem *item = self.MainDataInfos[indexPath.row];
+-(UITableView*)LastUpdateTableView{
+    if (!_LastUpdateTableView) {
+        _LastUpdateTableView = [[UITableView alloc] initWithFrame:CGRectMake(FUll_VIEW_WIDTH, 0, self.mainScrollView.width, self.mainScrollView.height) style:UITableViewStylePlain];
+        _LastUpdateTableView.delegate = self;
+        _LastUpdateTableView.dataSource = self;
+        _LastUpdateTableView.tableFooterView = [UIView new];
+        _LastUpdateTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            self.updateIndex += 1;
+            [self getLastUpdateData:self.updateIndex];
+        }];
+        [self.mainScrollView addSubview:_LastUpdateTableView];
+    }
+    return _LastUpdateTableView;
+}
 
-    if (indexPath.row == 0) {
-        BannerTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+-(UITableView*)RankTableView{
+    if (!_RankTableView) {
+        _RankTableView = [[UITableView alloc] initWithFrame:CGRectMake(3*FUll_VIEW_WIDTH, YHEIGHT_SCALE(90), self.mainScrollView.width, self.mainScrollView.height-YHEIGHT_SCALE(90)) style:UITableViewStylePlain];
+        _RankTableView.delegate = self;
+        _RankTableView.dataSource = self;
+        _RankTableView.tableFooterView = [UIView new];
+        _RankTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            self.rankIndex += 1;
+            [self getRankData:self.rankIndex];
+        }];
+        [self.mainScrollView addSubview:_RankTableView];
+    }
+    return _RankTableView;
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (tableView == _MainPageTableView) {
+        MainPageItem *item = self.MainDataInfos[indexPath.row];
+
+        if (indexPath.row == 0) {
+            BannerTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (!cell) {
+                cell = [[BannerTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"banner"];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.separatorInset = UIEdgeInsetsZero;
+            [cell setCellWithModel:item];
+            return cell;
+        }else{
+            MainPageTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (!cell) {
+                cell = [[MainPageTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+            }
+            cell.delegate = self;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.separatorInset = UIEdgeInsetsZero;
+            [cell setCellWithModel:item];
+            return cell;
+        }
+    }else if (tableView == _LastUpdateTableView){
+        UpDateTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if (!cell) {
-            cell = [[BannerTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"banner"];
+            cell = [[UpDateTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.separatorInset = UIEdgeInsetsZero;
-        [cell setCellWithModel:item];
+        [cell setCellWithData:self.UpDateDataInfos[indexPath.row]];
+        return cell;
+    }else if (tableView == _RankTableView){
+        NSDictionary *dataDic = self.RankInfos[indexPath.row];
+        RankTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if (!cell) {
+            cell = [[RankTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.separatorInset = UIEdgeInsetsZero;
+        [cell setCellWithData:dataDic];
         return cell;
     }else{
-        MainPageTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if (!cell) {
-            cell = [[MainPageTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         }
-        cell.delegate = self;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.separatorInset = UIEdgeInsetsZero;
-        [cell setCellWithModel:item];
+        cell.textLabel.text = @"test";
         return cell;
     }
 }
@@ -217,11 +535,18 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 0) {
-        return YHEIGHT_SCALE(400);
+    if (tableView == _MainPageTableView) {
+        if (indexPath.row == 0) {
+            return YHEIGHT_SCALE(400);
+        }else{
+            return _rowHeight;
+        }
+    }else if (tableView == _LastUpdateTableView){
+        return YHEIGHT_SCALE(280);
+    }else if (tableView == _RankTableView){
+        return YHEIGHT_SCALE(280);
     }else{
-        return _rowHeight;
-//        return YHEIGHT_SCALE(1000);
+        return YHEIGHT_SCALE(88);
     }
 }
 
@@ -234,12 +559,105 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.MainDataInfos.count;
+    if (tableView == _MainPageTableView) {
+        return self.MainDataInfos.count;
+    }else if (tableView == _LastUpdateTableView){
+        return self.UpDateDataInfos.count;
+    }else if (tableView == _RankTableView){
+        return self.RankInfos.count;
+    }else{
+        return 20;
+    }
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView == self.LastUpdateTableView) {
+        NSDictionary *getData = self.UpDateDataInfos[indexPath.row];
+        ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
+        NSInteger getId = [getData[@"id"] integerValue];
+        vc.comicId = getId;
+        vc.title = getData[@"name"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (tableView == self.RankTableView) {
+        NSDictionary *getData = self.RankInfos[indexPath.row];
+        ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
+        NSInteger getId = [getData[@"id"] integerValue];
+        vc.comicId = getId;
+        vc.title = getData[@"name"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+
+#pragma mark -- SortView
+-(UICollectionView*)SortCollectionView{
+    if (!_SortCollectionView) {
+        UICollectionViewFlowLayout *fl = [[UICollectionViewFlowLayout alloc]init];
+        fl.minimumInteritemSpacing = kMagin;
+        fl.minimumLineSpacing = kMagin;
+        fl.sectionInset = UIEdgeInsetsMake(kMagin, kMagin, kMagin, kMagin);
+        
+        _SortCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(2*FUll_VIEW_WIDTH, 0, self.mainScrollView.width, self.mainScrollView.height) collectionViewLayout:fl];
+        _SortCollectionView.delegate = self;
+        _SortCollectionView.dataSource = self;
+        [_SortCollectionView setBackgroundColor:[UIColor whiteColor]];
+        [self.mainScrollView addSubview:_SortCollectionView];
+    }
+    return _SortCollectionView;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSString *identifier = [_collectionCellDic objectForKey:[NSString stringWithFormat:@"%@", indexPath]];
+    // 如果取出的唯一标示符不存在，则初始化唯一标示符，并将其存入字典中，对应唯一标示符注册Cell
+    BOOL isGet = YES;
+    if (identifier == nil) {
+        identifier = [NSString stringWithFormat:@"cell%@", [NSString stringWithFormat:@"%@", indexPath]];
+        [_collectionCellDic setValue:identifier forKey:[NSString stringWithFormat:@"%@", indexPath]];
+        [_SortCollectionView registerClass:[UICollectionViewCell class]  forCellWithReuseIdentifier:identifier];
+        isGet = NO;
+    }
+    
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    if (!isGet) {
+        [cell setBackgroundColor:[UIColor whiteColor]];
+        NSDictionary *itemDic = self.SortDataInfos[indexPath.row];
+        
+        CGFloat imageWidth = (FUll_VIEW_WIDTH-4*kMagin)/3;
+        UIImageView *TitleImageView  = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageWidth, imageWidth)];
+        [TitleImageView setBackgroundColor:[UIColor lightGrayColor]];
+        TitleImageView.cornerRadius = 5;
+        TitleImageView.clipsToBounds = YES;
+        [cell addSubview:TitleImageView];
+
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, imageWidth, imageWidth, YHEIGHT_SCALE(80))];
+        nameLabel.textAlignment = NSTextAlignmentCenter;
+        [nameLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(28)]];
+        [cell addSubview:nameLabel];
+        
+        [TitleImageView sd_setImageWithURL:[NSURL URLWithString:itemDic[@"cover"]] placeholderImage:nil];
+        [nameLabel setText:itemDic[@"title"]];
+    }
+    return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake((FUll_VIEW_WIDTH-4*kMagin)/3, (FUll_VIEW_WIDTH-4*kMagin)/3+YHEIGHT_SCALE(80));
+}
+
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 1;
+}
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return self.SortDataInfos.count;
+}
+
 
 #pragma mark -- CellDelegate
 -(void)postCellHeight:(CGFloat)rowHeigt{
@@ -278,7 +696,7 @@
 
 
 
-#pragma mark -- configData
+#pragma mark -- configMainData
 -(void)getMainPageData{
     NSDictionary *params = [[NSDictionary alloc] init];
     NSString *urlPath = @"http://nnv3api.muwai.com//recommend_index.json";
@@ -307,9 +725,8 @@
         };
     }
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
-        NSLog(@"OY===recommend data:%@",data);
-
         for (NSDictionary *dataDic in data) {
+            [self.MainErrorView setHidden:YES];
             MainPageItem *model = [MainPageItem shopWithDict:dataDic];
             [self.MainDataInfos addObject:model];
         }
@@ -317,6 +734,9 @@
         [self getFavorData];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [self.MainErrorView setHidden:NO];
+        [self MainErrorView];
+
     }];
 }
 
@@ -336,8 +756,6 @@
     };
     
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
-        NSLog(@"OY===getFavorData data:%@",data);
-
         NSDictionary *getData = data;
         NSInteger code = [getData[@"code"] integerValue];
         if (code == 0) {
@@ -348,13 +766,12 @@
         if (self.isLogin) {
             [self getSubscribeData];
         }else{
-            [self MainPageTableView];
+            [self.MainPageTableView reloadData];
         }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
-        [self MainPageTableView];
+        [self.MainPageTableView reloadData];
     }];
-    
 }
 
 -(void)getSubscribeData{
@@ -371,10 +788,7 @@
         @"uid":[UserInfo shareUserInfo].uid,
         @"version":@"4.5.2"
     };
-        
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
-        NSLog(@"OY===getSubscribeData data:%@",data);
-
         NSDictionary *getData = data;
         NSInteger code = [getData[@"code"] integerValue];
         if (code == 0) {
@@ -382,14 +796,106 @@
             MainPageItem *model = [MainPageItem shopWithDict:dataDic];
             [self.MainDataInfos insertObject:model atIndex:1];
         }
-        [self MainPageTableView];
+        [self.MainPageTableView reloadData];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
-    //        [self configUI];
-        [self MainPageTableView];
+        [self.MainPageTableView reloadData];
     }];
     
 }
+
+#pragma mark -- configUpdateData
+-(void)getLastUpdateData:(NSInteger)pageIndex{
+    NSString *url = [NSString stringWithFormat:@"https://api.m.dmzj.com/recommend/latest/%ld.json",pageIndex];
+    NSDictionary *params = @{
+        @"version":@"1.0.2",
+        @"channel":@"alipay_applets",
+        @"timestamp":[Tools currentTimeStr]
+    };
+    
+    [HttpRequest getNetWorkWithUrl:url parameters:params success:^(id  _Nonnull data) {
+        NSArray *getData = data;
+        if (getData.count == 0) {
+            [self.LastUpdateTableView.mj_footer endRefreshingWithNoMoreData];
+        }else{
+            [self.UpDateDataInfos addObjectsFromArray:getData];
+            [self.LastUpdateTableView.mj_footer endRefreshing];
+        }
+        [self LastUpdateTableView];
+        [self.LastUpdateTableView reloadData];
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+        [self.LastUpdateTableView.mj_footer endRefreshing];
+    }];
+}
+
+#pragma mark -- configSortData
+-(void)getSortData{
+    NSString *url = [NSString stringWithFormat:@"http://nnv3api.muwai.com/0/category_with_level.json"];
+    NSDictionary *params = [[NSDictionary alloc] init];
+    if (self.isLogin) {
+        params = @{
+            @"app_channel":@(101),
+            @"channel":@"ios",
+            @"imei":self.IDFA,
+            @"iosId":@"89728b06283841e4a411c7cb600e4052",
+            @"terminal_model":[Tools getDevice],
+            @"timestamp":[Tools currentTimeStr],
+            @"uid":[UserInfo shareUserInfo].uid,
+            @"version":@"4.5.2"
+        };
+    }else{
+        params = @{
+            @"app_channel":@(101),
+            @"channel":@"ios",
+            @"imei":self.IDFA,
+            @"iosId":@"89728b06283841e4a411c7cb600e4052",
+            @"terminal_model":[Tools getDevice],
+            @"timestamp":[Tools currentTimeStr],
+            @"version":@"4.5.2"
+        };
+    }
+    [HttpRequest getNetWorkWithUrl:url parameters:params success:^(id  _Nonnull data) {
+        NSDictionary *itemsDic = data;
+        self.SortDataInfos = itemsDic[@"data"];
+        [self SortCollectionView];
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+    }];
+}
+
+#pragma mark -- configRankData
+-(void)getRankData:(NSInteger)PageCount{
+    NSInteger RankType = self.rankTypeIndex;//人气,吐槽,订阅
+//    NSInteger ComicType = 0;//全部
+    NSInteger TimeType = self.timeTypeIndex;//日,周,月,总
+    
+    if (PageCount == 0) {
+        [self.RankInfos removeAllObjects];
+    }
+
+    NSString *url = [NSString stringWithFormat:@"https://api.m.dmzj.com/rank/%ld-0-%ld-%ld.json",RankType,TimeType,PageCount];
+    [HttpRequest getNetWorkWithUrl:url parameters:nil success:^(id  _Nonnull data) {
+        NSArray *itemsArray = data;
+        NSLog(@"OY===itemsArray:%@",itemsArray);
+
+        if (itemsArray.count == 0) {
+            [self.RankTableView.mj_footer endRefreshingWithNoMoreData];
+        }else{
+            [self.RankInfos addObjectsFromArray:itemsArray];
+            [self.RankTableView.mj_footer endRefreshing];
+        }
+        [self RankTableView];
+        [self.RankTableView reloadData];
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+//        [self.RankTableView reloadData];
+        [self.RankTableView.mj_footer endRefreshing];
+    }];
+    
+}
+
+
 
 
 /*

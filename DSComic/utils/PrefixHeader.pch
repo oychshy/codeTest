@@ -43,6 +43,10 @@
 #import "CommentTableViewCell.h"
 #import "ComicReaderViewController.h"
 #import "ComicReaderTableViewCell.h"
+#import "UpDateTableViewCell.h"
+#import "SortCollectionViewCell.h"
+#import "MySubscribeViewController.h"
+#import "RankTableViewCell.h"
 
 
 
