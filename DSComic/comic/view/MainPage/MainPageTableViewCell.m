@@ -10,7 +10,9 @@
 
 @interface MainPageTableViewCell (){
     UILabel *titleLabel;
+    UIButton *RightButton;
     MainPageItem *getModel;
+    NSInteger rowIndex;
 }
 @end
 
@@ -31,14 +33,32 @@
 -(void)configUI{
     titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(20), 0, FUll_VIEW_WIDTH, YWIDTH_SCALE(80))];
     [self addSubview:titleLabel];
+    
+    RightButton = [[UIButton alloc] initWithFrame:CGRectMake(FUll_VIEW_WIDTH-YWIDTH_SCALE(60), YHEIGHT_SCALE(20), YWIDTH_SCALE(40), YWIDTH_SCALE(40))];
+    [RightButton addTarget:self action:@selector(RightButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [RightButton setHidden:YES];
+    [self addSubview:RightButton];
 }
 
--(void)setCellWithModel:(MainPageItem*)model{
+-(void)setCellWithModel:(MainPageItem*)model Row:(NSInteger)row{
+    
+//    NSLog(@"OY===category_id:%ld,title:%@",model.category_id,model.title);
+
+    rowIndex = row;
     getModel = model;
     [titleLabel setText:model.title];
     
-    NSArray *getDatainfos = [[NSArray alloc] initWithArray:model.data];
+    if (model.category_id==49||model.category_id==49) {
+        [RightButton setHidden:NO];
+        [RightButton setImage:[UIImage imageNamed:@"right_arrow"] forState:UIControlStateNormal];
+    }else if (model.category_id==50||model.category_id== 52||model.category_id == 54) {
+        [RightButton setHidden:NO];
+        [RightButton setImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
+    }else{
+        [RightButton setHidden:YES];
+    }
     
+    NSArray *getDatainfos = [[NSArray alloc] initWithArray:model.data];
     CGFloat CellHeight = 0;
     
     if (getDatainfos.count%3!=0) {
@@ -130,6 +150,12 @@
         [self.delegate postCellHeight:CellHeight];
     }
     
+}
+
+-(void)RightButtonAction{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(postCategoryID:Row:)]) {
+        [self.delegate postCategoryID:getModel.category_id Row:rowIndex];
+    }
 }
 
 -(void)itemViewAction:(UITapGestureRecognizer *)tap{

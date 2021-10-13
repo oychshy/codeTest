@@ -52,11 +52,11 @@
 //    [self.titleListInfos addObject:data2];
     [self.titleListInfos addObject:data3];
 
-    [self MainTableView];
+    [self MainPageTableView];
 
 }
 
--(UITableView*)MainTableView{
+-(UITableView*)MainPageTableView{
     if (!_MainPageTableView) {
         _MainPageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -STATUSHEIGHT, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-TABBARHEIGHT+STATUSHEIGHT) style:UITableViewStyleGrouped];
         _MainPageTableView.delegate = self;
@@ -165,18 +165,27 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 1) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSMutableDictionary *userInfoDic = [[NSMutableDictionary alloc] initWithDictionary:@{@"isLogin":@(NO),@"uid":@"",@"nickname":@"",@"photo":@"",@"dmzj_token":@""}];
-        [UserInfo shareUserInfo].isLogin = NO;
-        self.isLogin = NO;
-        [UserInfo shareUserInfo].isLogin = NO;
-        [UserInfo shareUserInfo].uid = @"";
-        [UserInfo shareUserInfo].nickname = @"";
-        [UserInfo shareUserInfo].photo = @"";
-        [UserInfo shareUserInfo].dmzj_token = @"";
-        [UserInfo shareUserInfo].mySubscribe = @[];
-        [defaults setValue:userInfoDic forKey:@"userInfo"];
-        [_MainPageTableView reloadData];
+        if (self.isLogin) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSMutableDictionary *userInfoDic = [[NSMutableDictionary alloc] initWithDictionary:@{@"isLogin":@(NO),@"uid":@"",@"nickname":@"",@"photo":@"",@"dmzj_token":@""}];
+            [UserInfo shareUserInfo].isLogin = NO;
+            self.isLogin = NO;
+            [UserInfo shareUserInfo].isLogin = NO;
+            [UserInfo shareUserInfo].uid = @"";
+            [UserInfo shareUserInfo].nickname = @"";
+            [UserInfo shareUserInfo].photo = @"";
+            [UserInfo shareUserInfo].dmzj_token = @"";
+            [UserInfo shareUserInfo].mySubscribe = @[];
+            [defaults setValue:userInfoDic forKey:@"userInfo"];
+            [_MainPageTableView reloadData];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"userRefresh" object:nil];
+        }else{
+            UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"未登录" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
+            [actionVC addAction:okAction];
+            [self presentViewController:actionVC animated:YES completion:nil];
+        }
+        
     }else if(indexPath.section == 0){
         if (self.isLogin) {
             if (indexPath.row == 0) {
@@ -188,6 +197,7 @@
                 vc.isHidenSubscribe = YES;
                 [self.navigationController pushViewController:vc animated:YES];
             }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"userRefresh" object:nil];
         }else{
             UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"未登录" message:nil preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
@@ -195,7 +205,6 @@
             [self presentViewController:actionVC animated:YES completion:nil];
         }
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"userRefresh" object:nil];
 }
 
 

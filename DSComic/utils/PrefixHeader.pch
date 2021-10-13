@@ -47,6 +47,14 @@
 #import "SortCollectionViewCell.h"
 #import "MySubscribeViewController.h"
 #import "RankTableViewCell.h"
+#import "SortViewController.h"
+#import "ComicSearchViewController.h"
+#import "HotSearchTableViewCell.h"
+#import "ComicSearchTableViewCell.h"
+#import "UserInfoViewController.h"
+#import "UserSubscribeViewController.h"
+#import "UserCommentViewController.h"
+#import "UserCommentTableViewCell.h"
 
 
 

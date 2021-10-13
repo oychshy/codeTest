@@ -115,6 +115,11 @@
     return _NaviView;
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    self.hidesBottomBarWhenPushed = NO;
+}
+
+
 -(void)titleButtonAction:(UIButton*)sender{
     
     UIImageView *beforArrow = (UIImageView *)[self.view viewWithTag:self.selectIndex+arrowBaseTag];
@@ -147,7 +152,9 @@
 }
 
 -(void)SearchBtnAction{
-    
+    ComicSearchViewController *vc = [[ComicSearchViewController alloc] init];
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)TimeButtonAction:(UIButton*)sender{
@@ -273,7 +280,7 @@
     _mainScrollView.contentSize = CGSizeMake(4*_mainScrollView.width, _mainScrollView.height);
     _mainScrollView.contentOffset = CGPointMake(0, 0);
     _mainScrollView.pagingEnabled = YES;
-    _mainScrollView.showsHorizontalScrollIndicator = YES;
+    _mainScrollView.showsHorizontalScrollIndicator = NO;
     _mainScrollView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_mainScrollView];
         
@@ -432,7 +439,7 @@
     return _MainErrorView;
 }
 
-#pragma mark -- MainPageTableView&LastUpdateTableView
+#pragma mark -- MainPageTableView & LastUpdateTableView & RankTableView
 -(UITableView*)MainPageTableView{
     if (!_MainPageTableView) {
         _MainPageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.mainScrollView.width, self.mainScrollView.height) style:UITableViewStylePlain];
@@ -496,7 +503,7 @@
             cell.delegate = self;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.separatorInset = UIEdgeInsetsZero;
-            [cell setCellWithModel:item];
+            [cell setCellWithModel:item Row:indexPath.row];
             return cell;
         }
     }else if (tableView == _LastUpdateTableView){
@@ -581,6 +588,7 @@
         NSInteger getId = [getData[@"id"] integerValue];
         vc.comicId = getId;
         vc.title = getData[@"name"];
+        self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }else if (tableView == self.RankTableView) {
         NSDictionary *getData = self.RankInfos[indexPath.row];
@@ -588,6 +596,7 @@
         NSInteger getId = [getData[@"id"] integerValue];
         vc.comicId = getId;
         vc.title = getData[@"name"];
+        self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -658,10 +667,32 @@
     return self.SortDataInfos.count;
 }
 
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *itemDic = self.SortDataInfos[indexPath.row];
+    SortViewController *vc = [[SortViewController alloc] init];
+    NSInteger tagId = [itemDic[@"tag_id"] integerValue];
+    vc.tagID = tagId;
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 #pragma mark -- CellDelegate
 -(void)postCellHeight:(CGFloat)rowHeigt{
     _rowHeight = rowHeigt;
+}
+
+-(void)postCategoryID:(NSInteger)CategoryID Row:(NSInteger)row{
+//    NSLog(@"OY===category_id:%ld,row:%ld",CategoryID,row);
+    
+    if (CategoryID == 49) {
+        MySubscribeViewController *vc = [[MySubscribeViewController alloc] init];
+        vc.isHidenSubscribe = NO;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        [self ReloadCategoryDatas:CategoryID Row:row];
+    }
 }
 
 -(void)SelectItem:(MainPageItem *)model index:(NSInteger)index{
@@ -689,6 +720,7 @@
 //        }
         vc.comicId = getId;
         vc.title = getData[@"title"];
+        self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -801,8 +833,41 @@
         NSLog(@"OY===error:%@",error);
         [self.MainPageTableView reloadData];
     }];
+}
+
+-(void)ReloadCategoryDatas:(NSInteger)CategoryID Row:(NSInteger)rowIndex{
+    NSString *urlPath = @"http://nnv3api.muwai.com/recommend/batchUpdateWithLevel";
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{
+        @"app_channel":@(101),
+        @"category_id":@(CategoryID),
+        @"channel":@"ios",
+        @"imei":self.IDFA,
+        @"iosId":@"89728b06283841e4a411c7cb600e4052",
+        @"terminal_model":[Tools getDevice],
+        @"timestamp":[Tools currentTimeStr],
+        @"version":@"4.5.2"
+    }];
+    if (self.isLogin) {
+        [params setValue:[UserInfo shareUserInfo].uid forKey:@"uid"];
+    }
+    
+    [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
+        NSDictionary *getData = data;
+        NSInteger code = [getData[@"code"] integerValue];
+        if (code == 0) {
+            NSDictionary *dataDic = getData[@"data"];
+            MainPageItem *model = [MainPageItem shopWithDict:dataDic];
+            [self.MainDataInfos replaceObjectAtIndex:rowIndex withObject:model];
+//            [self.MainPageTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:rowIndex inSection:0],nil] withRowAnimation:UITableViewRowAnimationNone];
+//            [self.MainPageTableView reloadRowsAtIndexPaths: withRowAnimation:UITableViewRowAnimationNone];
+            [self.MainPageTableView reloadData];
+        }
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+    }];
     
 }
+
 
 #pragma mark -- configUpdateData
 -(void)getLastUpdateData:(NSInteger)pageIndex{

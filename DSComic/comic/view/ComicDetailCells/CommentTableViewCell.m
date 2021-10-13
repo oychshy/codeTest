@@ -13,6 +13,8 @@
     UILabel *NameLabel;
     UILabel *ContentLabel;
     UILabel *TimeLabel;
+    
+    NSInteger sender_uid;
 }
 @end
 
@@ -37,6 +39,9 @@
     [HeaderView setBackgroundColor:[UIColor lightGrayColor]];
     HeaderView.cornerRadius = HeaderView.height/2;
     HeaderView.clipsToBounds = YES;
+    HeaderView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerPicTap)];
+    [HeaderView addGestureRecognizer:tap];
     [self addSubview:HeaderView];
     
     NameLabel = [[UILabel alloc] initWithFrame:CGRectMake(HeaderView.x+HeaderView.width+YWIDTH_SCALE(40), HeaderView.y, FUll_VIEW_WIDTH-HeaderView.x+HeaderView.width-YWIDTH_SCALE(100), HeaderView.height)];
@@ -58,14 +63,25 @@
 
 -(void)setCellWithData:(NSArray*)dataArray{
     
-    NSDictionary *dataDic = dataArray[0];
+//    NSLog(@"OY===CommentTableViewCell dataArray:%@",dataArray);
     
-    NSString *headerPicUrl = dataDic[@"avatar_url"];
-    NSString *nameStr = dataDic[@"nickname"];
-    NSString *contentStr = dataDic[@"content"];
-    NSString *createTimeStr = [Tools dateWithString:dataDic[@"create_time"]];
+    NSString *nameStr = @"Null";
+    NSString *contentStr = @"Null";
+    NSString *createTimeStr = @"Null";
     
-    [HeaderView sd_setImageWithURL:[NSURL URLWithString:headerPicUrl]];
+    if (dataArray.count>0) {
+        NSDictionary *dataDic = dataArray[0];
+
+        NSString *headerPicUrl = dataDic[@"avatar_url"];
+        [HeaderView sd_setImageWithURL:[NSURL URLWithString:headerPicUrl]];
+
+        nameStr = dataDic[@"nickname"];
+        contentStr = dataDic[@"content"];
+        createTimeStr = [Tools dateWithString:dataDic[@"create_time"]];
+        
+        sender_uid = [dataDic[@"sender_uid"] integerValue];
+    }
+    
     [NameLabel setText:nameStr];
     [ContentLabel setText:contentStr];
     [TimeLabel setText:createTimeStr];
@@ -77,6 +93,14 @@
         [self.delegate PostCommentHeight:TimeLabel.y+TimeLabel.height+YHEIGHT_SCALE(10)];
     }
     
+}
+
+-(void)headerPicTap{
+//    NSLog(@"OY===sender_uid:%ld",sender_uid);
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(PostSenderID:)]) {
+        [self.delegate PostSenderID:sender_uid];
+    }
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

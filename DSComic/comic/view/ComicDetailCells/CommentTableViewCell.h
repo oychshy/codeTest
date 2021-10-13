@@ -11,6 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 @protocol CommentCellDelegate <NSObject>
 -(void)PostCommentHeight:(CGFloat)CellHeight;
+-(void)PostSenderID:(NSInteger)senderID;
+
 @end
 
 @interface CommentTableViewCell : UITableViewCell

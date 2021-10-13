@@ -10,6 +10,8 @@
 
 @interface ComicReaderTableViewCell (){
     UIImageView *showImageView;
+    UIButton *ReTryButton;
+    itemModel *getModel;
 }
 @end
 
@@ -39,17 +41,54 @@
 
 -(void)setCellWithModel:(itemModel*)model{
     [self addProgressView:nil];
-    [showImageView sd_setImageWithURL:[NSURL URLWithString:model.link] placeholderImage:nil options:SDWebImageQueryMemoryData progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+    [showImageView sd_setImageWithURL:[NSURL URLWithString:model.link] placeholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
         CGFloat progress = ((CGFloat)receivedSize / (CGFloat)expectedSize);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self updateProgress:progress];
         });
     } completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         [self removeProgressView];
-        CGFloat contentHeight = (FUll_VIEW_WIDTH-YWIDTH_SCALE(40))/ image.size.width * image.size.height;
-        showImageView.frame = CGRectMake(YWIDTH_SCALE(20), YHEIGHT_SCALE(20), FUll_VIEW_WIDTH-YWIDTH_SCALE(40), contentHeight);
+//        NSLog(@"OY===image.size.width:%f,image.size.height:%f",image.size.width , image.size.height);
+        
+        if (image.size.width!=0&&image.size.height!=0) {
+            CGFloat contentHeight = (FUll_VIEW_WIDTH-YWIDTH_SCALE(40))/ image.size.width * image.size.height;
+            self->showImageView.frame = CGRectMake(YWIDTH_SCALE(20), YHEIGHT_SCALE(20), FUll_VIEW_WIDTH-YWIDTH_SCALE(40), contentHeight);            
+        }else{
+            self->ReTryButton = [[UIButton alloc] initWithFrame:CGRectMake((self->showImageView.width-YWIDTH_SCALE(120))/2, (self->showImageView.height-YHEIGHT_SCALE(60))/2, YWIDTH_SCALE(120), YHEIGHT_SCALE(60))];
+            [self->ReTryButton setTitle:@"重新加载" forState:UIControlStateNormal];
+            [self->ReTryButton setBackgroundColor:[UIColor yellowColor]];
+            [self->ReTryButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [self->ReTryButton addTarget:self action:@selector(addReTryButton) forControlEvents:UIControlEventTouchUpInside];
+            [self->showImageView addSubview:self->ReTryButton];
+        }
+        
+        
         if (self.delegate&&[self.delegate respondsToSelector:@selector(postCellHeight:Row:)]) {
-            [self.delegate postCellHeight:showImageView.y+showImageView.height+YHEIGHT_SCALE(20) Row:model.index];
+            [self.delegate postCellHeight:self->showImageView.y+self->showImageView.height+YHEIGHT_SCALE(20) Row:model.index];
+        }
+    }];
+}
+
+- (void)addReTryButton{
+    [showImageView sd_setImageWithURL:[NSURL URLWithString:getModel.link] placeholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+        CGFloat progress = ((CGFloat)receivedSize / (CGFloat)expectedSize);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateProgress:progress];
+        });
+    } completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [self removeProgressView];
+        NSLog(@"OY===image.size.width:%f,image.size.height:%f",image.size.width , image.size.height);
+        
+        if (image.size.width!=0&&image.size.height!=0) {
+            [self->ReTryButton removeFromSuperview];
+            CGFloat contentHeight = (FUll_VIEW_WIDTH-YWIDTH_SCALE(40))/ image.size.width * image.size.height;
+            NSLog(@"OY===model.link2:%f",contentHeight);
+
+            self->showImageView.frame = CGRectMake(YWIDTH_SCALE(20), YHEIGHT_SCALE(20), FUll_VIEW_WIDTH-YWIDTH_SCALE(40), contentHeight);
+            NSLog(@"OY===model.link3");
+        }
+        if (self.delegate&&[self.delegate respondsToSelector:@selector(postCellHeight:Row:)]) {
+            [self.delegate postCellHeight:self->showImageView.y+self->showImageView.height+YHEIGHT_SCALE(20) Row:getModel.index];
         }
     }];
 }

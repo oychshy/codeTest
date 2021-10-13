@@ -32,6 +32,7 @@
 		5B53556026F09AD400BBEBB9 /* JJCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B53555E26F09AD300BBEBB9 /* JJCarousel.m */; };
 		5B53556326F17B3700BBEBB9 /* PDBannerViewWithURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B53556226F17B3700BBEBB9 /* PDBannerViewWithURL.m */; };
 		5B6E8F3E26B3EEDE00DE699A /* filename1.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B6E8F3D26B3EEDE00DE699A /* filename1.json */; };
+		5B86112427118E260029339E /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B86112327118E260029339E /* SortViewController.m */; };
 		5B8D7EFA26FAC2EA00DE6892 /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7EF926FAC2EA00DE6892 /* MainPageViewController.m */; };
 		5B8D7EFD26FB123700DE6892 /* MainPageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7EFC26FB123700DE6892 /* MainPageItem.m */; };
 		5B8D7F0026FB1A1000DE6892 /* BannerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7EFF26FB1A1000DE6892 /* BannerTableViewCell.m */; };
@@ -47,6 +48,13 @@
 		5B8D7F1F26FD7F4E00DE6892 /* ComicDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7F1E26FD7F4E00DE6892 /* ComicDetailTableViewCell.m */; };
 		5B8D7F2226FD7F9A00DE6892 /* ComicChapterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7F2126FD7F9A00DE6892 /* ComicChapterTableViewCell.m */; };
 		5B8D7F2526FD7FAF00DE6892 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7F2426FD7FAF00DE6892 /* CommentTableViewCell.m */; };
+		5BA51CE22713DB6300E08294 /* ComicSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */; };
+		5BA51CE627140FB500E08294 /* HotSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CE527140FB500E08294 /* HotSearchTableViewCell.m */; };
+		5BA51CF22715558300E08294 /* ComicSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CF12715558300E08294 /* ComicSearchTableViewCell.m */; };
+		5BA51CF5271673F100E08294 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CF4271673F100E08294 /* UserInfoViewController.m */; };
+		5BA51CF82716C26D00E08294 /* UserSubscribeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CF72716C26D00E08294 /* UserSubscribeViewController.m */; };
+		5BA51CFB2716CE4E00E08294 /* UserCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CFA2716CE4E00E08294 /* UserCommentViewController.m */; };
+		5BA51CFE2716D52E00E08294 /* UserCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CFD2716D52E00E08294 /* UserCommentTableViewCell.m */; };
 		5BAB7C482701C2050093E9F3 /* ComicReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAB7C472701C2050093E9F3 /* ComicReaderViewController.m */; };
 		5BAB7C4B27029F830093E9F3 /* ComicReaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAB7C4A27029F830093E9F3 /* ComicReaderTableViewCell.m */; };
 		5BB9481726AFF3FF00ABD6B8 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9480E26AFF3FF00ABD6B8 /* Tools.m */; };
@@ -110,6 +118,8 @@
 		5B53556126F17B3700BBEBB9 /* PDBannerViewWithURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDBannerViewWithURL.h; sourceTree = "<group>"; };
 		5B53556226F17B3700BBEBB9 /* PDBannerViewWithURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDBannerViewWithURL.m; sourceTree = "<group>"; };
 		5B6E8F3D26B3EEDE00DE699A /* filename1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = filename1.json; sourceTree = "<group>"; };
+		5B86112227118E260029339E /* SortViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
+		5B86112327118E260029339E /* SortViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		5B8D7EF826FAC2EA00DE6892 /* MainPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
 		5B8D7EF926FAC2EA00DE6892 /* MainPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainPageViewController.m; sourceTree = "<group>"; };
 		5B8D7EFB26FB123700DE6892 /* MainPageItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPageItem.h; sourceTree = "<group>"; };
@@ -139,6 +149,20 @@
 		5B8D7F2126FD7F9A00DE6892 /* ComicChapterTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicChapterTableViewCell.m; sourceTree = "<group>"; };
 		5B8D7F2326FD7FAF00DE6892 /* CommentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
 		5B8D7F2426FD7FAF00DE6892 /* CommentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommentTableViewCell.m; sourceTree = "<group>"; };
+		5BA51CE02713DB6300E08294 /* ComicSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicSearchViewController.h; sourceTree = "<group>"; };
+		5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicSearchViewController.m; sourceTree = "<group>"; };
+		5BA51CE427140FB500E08294 /* HotSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HotSearchTableViewCell.h; sourceTree = "<group>"; };
+		5BA51CE527140FB500E08294 /* HotSearchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HotSearchTableViewCell.m; sourceTree = "<group>"; };
+		5BA51CF02715558300E08294 /* ComicSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicSearchTableViewCell.h; sourceTree = "<group>"; };
+		5BA51CF12715558300E08294 /* ComicSearchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicSearchTableViewCell.m; sourceTree = "<group>"; };
+		5BA51CF3271673F100E08294 /* UserInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
+		5BA51CF4271673F100E08294 /* UserInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
+		5BA51CF62716C26D00E08294 /* UserSubscribeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserSubscribeViewController.h; sourceTree = "<group>"; };
+		5BA51CF72716C26D00E08294 /* UserSubscribeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserSubscribeViewController.m; sourceTree = "<group>"; };
+		5BA51CF92716CE4E00E08294 /* UserCommentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCommentViewController.h; sourceTree = "<group>"; };
+		5BA51CFA2716CE4E00E08294 /* UserCommentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCommentViewController.m; sourceTree = "<group>"; };
+		5BA51CFC2716D52E00E08294 /* UserCommentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCommentTableViewCell.h; sourceTree = "<group>"; };
+		5BA51CFD2716D52E00E08294 /* UserCommentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCommentTableViewCell.m; sourceTree = "<group>"; };
 		5BAB7C462701C2050093E9F3 /* ComicReaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicReaderViewController.h; sourceTree = "<group>"; };
 		5BAB7C472701C2050093E9F3 /* ComicReaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicReaderViewController.m; sourceTree = "<group>"; };
 		5BAB7C4927029F830093E9F3 /* ComicReaderTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicReaderTableViewCell.h; sourceTree = "<group>"; };
@@ -310,17 +334,10 @@
 		5B51F6A526B2C81D0053B434 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				5BA51CE327140E6500E08294 /* MainPage */,
 				5B8D7F1C26FD7F2300DE6892 /* ComicDetailCells */,
-				5B51F6A126B2980B0053B434 /* ContentTableViewCell.h */,
-				5B51F6A226B2980B0053B434 /* ContentTableViewCell.m */,
-				5BB9482126AFFEBA00ABD6B8 /* ContentCollectionViewCell.h */,
-				5BB9482226AFFEBA00ABD6B8 /* ContentCollectionViewCell.m */,
 				5B51F6A726B2C9130053B434 /* CoverView.h */,
 				5B51F6A826B2C9130053B434 /* CoverView.m */,
-				5B8D7EFE26FB1A1000DE6892 /* BannerTableViewCell.h */,
-				5B8D7EFF26FB1A1000DE6892 /* BannerTableViewCell.m */,
-				5B8D7F0126FB204F00DE6892 /* MainPageTableViewCell.h */,
-				5B8D7F0226FB204F00DE6892 /* MainPageTableViewCell.m */,
 				5BAB7C4927029F830093E9F3 /* ComicReaderTableViewCell.h */,
 				5BAB7C4A27029F830093E9F3 /* ComicReaderTableViewCell.m */,
 				5BD9C28B2702F089003DFF76 /* UpDateTableViewCell.h */,
@@ -329,6 +346,12 @@
 				5BD9C28F2703379B003DFF76 /* SortCollectionViewCell.m */,
 				5BD9C29427049571003DFF76 /* RankTableViewCell.h */,
 				5BD9C29527049571003DFF76 /* RankTableViewCell.m */,
+				5BA51CE427140FB500E08294 /* HotSearchTableViewCell.h */,
+				5BA51CE527140FB500E08294 /* HotSearchTableViewCell.m */,
+				5BA51CF02715558300E08294 /* ComicSearchTableViewCell.h */,
+				5BA51CF12715558300E08294 /* ComicSearchTableViewCell.m */,
+				5BA51CFC2716D52E00E08294 /* UserCommentTableViewCell.h */,
+				5BA51CFD2716D52E00E08294 /* UserCommentTableViewCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -340,6 +363,10 @@
 				5B8D7F1026FC22E200DE6892 /* LoginViewController.m */,
 				5B8D7EF826FAC2EA00DE6892 /* MainPageViewController.h */,
 				5B8D7EF926FAC2EA00DE6892 /* MainPageViewController.m */,
+				5BA51CE02713DB6300E08294 /* ComicSearchViewController.h */,
+				5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */,
+				5B86112227118E260029339E /* SortViewController.h */,
+				5B86112327118E260029339E /* SortViewController.m */,
 				5B8D7F1926FC9BED00DE6892 /* ComicDeatilViewController.h */,
 				5B8D7F1A26FC9BED00DE6892 /* ComicDeatilViewController.m */,
 				5BAB7C462701C2050093E9F3 /* ComicReaderViewController.h */,
@@ -348,6 +375,12 @@
 				5B8D7F0D26FC0AB500DE6892 /* PersonalViewController.m */,
 				5BD9C29127044395003DFF76 /* MySubscribeViewController.h */,
 				5BD9C29227044395003DFF76 /* MySubscribeViewController.m */,
+				5BA51CF3271673F100E08294 /* UserInfoViewController.h */,
+				5BA51CF4271673F100E08294 /* UserInfoViewController.m */,
+				5BA51CF62716C26D00E08294 /* UserSubscribeViewController.h */,
+				5BA51CF72716C26D00E08294 /* UserSubscribeViewController.m */,
+				5BA51CF92716CE4E00E08294 /* UserCommentViewController.h */,
+				5BA51CFA2716CE4E00E08294 /* UserCommentViewController.m */,
 				5B51F6A426B2C80B0053B434 /* model */,
 				5B51F6A526B2C81D0053B434 /* view */,
 				5B51109A26AFA97400D5E28E /* resource */,
@@ -370,6 +403,10 @@
 		5B8D7F1826FC9BB000DE6892 /* util */ = {
 			isa = PBXGroup;
 			children = (
+				5B51F6A126B2980B0053B434 /* ContentTableViewCell.h */,
+				5B51F6A226B2980B0053B434 /* ContentTableViewCell.m */,
+				5BB9482126AFFEBA00ABD6B8 /* ContentCollectionViewCell.h */,
+				5BB9482226AFFEBA00ABD6B8 /* ContentCollectionViewCell.m */,
 				5B13880026B3D8E400E4D9F3 /* comicViewController.h */,
 				5B13880126B3D8E400E4D9F3 /* comicViewController.m */,
 				5B51109D26AFAA1600D5E28E /* ReaderViewController.h */,
@@ -389,6 +426,17 @@
 				5B8D7F2426FD7FAF00DE6892 /* CommentTableViewCell.m */,
 			);
 			path = ComicDetailCells;
+			sourceTree = "<group>";
+		};
+		5BA51CE327140E6500E08294 /* MainPage */ = {
+			isa = PBXGroup;
+			children = (
+				5B8D7EFE26FB1A1000DE6892 /* BannerTableViewCell.h */,
+				5B8D7EFF26FB1A1000DE6892 /* BannerTableViewCell.m */,
+				5B8D7F0126FB204F00DE6892 /* MainPageTableViewCell.h */,
+				5B8D7F0226FB204F00DE6892 /* MainPageTableViewCell.m */,
+			);
+			path = MainPage;
 			sourceTree = "<group>";
 		};
 		5BB9480C26AFF3FF00ABD6B8 /* Category */ = {
@@ -546,11 +594,15 @@
 				5B4E7BFB26DE212A00FA3E35 /* VideoContentViewController.m in Sources */,
 				5B51F6A926B2C9130053B434 /* CoverView.m in Sources */,
 				5B8D7EFD26FB123700DE6892 /* MainPageItem.m in Sources */,
+				5BA51CFB2716CE4E00E08294 /* UserCommentViewController.m in Sources */,
 				5B0E819D26D794B900F7AAAD /* HttpRequest.m in Sources */,
 				5BB9481B26AFF3FF00ABD6B8 /* UIColor+Expanded.m in Sources */,
+				5BA51CF5271673F100E08294 /* UserInfoViewController.m in Sources */,
 				5BD9C29327044395003DFF76 /* MySubscribeViewController.m in Sources */,
+				5B86112427118E260029339E /* SortViewController.m in Sources */,
 				5BB9481826AFF3FF00ABD6B8 /* UIView+LBExtension.m in Sources */,
 				5B8D7F0B26FB4E2C00DE6892 /* RSA.m in Sources */,
+				5BA51CF22715558300E08294 /* ComicSearchTableViewCell.m in Sources */,
 				5B51108926AF9DB800D5E28E /* ViewController.m in Sources */,
 				5BB9482626B0023A00ABD6B8 /* itemModel.m in Sources */,
 				5BB9481726AFF3FF00ABD6B8 /* Tools.m in Sources */,
@@ -571,17 +623,21 @@
 				5B8D7F2526FD7FAF00DE6892 /* CommentTableViewCell.m in Sources */,
 				5B51F6A326B2980B0053B434 /* ContentTableViewCell.m in Sources */,
 				5B8D7F2226FD7F9A00DE6892 /* ComicChapterTableViewCell.m in Sources */,
+				5BA51CE22713DB6300E08294 /* ComicSearchViewController.m in Sources */,
 				5B8D7F0826FB49FD00DE6892 /* RSAEncryptor.m in Sources */,
 				5B8D7F1126FC22E200DE6892 /* LoginViewController.m in Sources */,
 				5BAB7C4B27029F830093E9F3 /* ComicReaderTableViewCell.m in Sources */,
 				5BD9C29627049571003DFF76 /* RankTableViewCell.m in Sources */,
 				5B8D7F0326FB204F00DE6892 /* MainPageTableViewCell.m in Sources */,
+				5BA51CFE2716D52E00E08294 /* UserCommentTableViewCell.m in Sources */,
 				5BB9481926AFF3FF00ABD6B8 /* UIImage+Image.m in Sources */,
 				5B53556326F17B3700BBEBB9 /* PDBannerViewWithURL.m in Sources */,
 				5B8D7F1726FC761900DE6892 /* UserInfo.m in Sources */,
 				5B51109426AF9DBC00D5E28E /* main.m in Sources */,
 				5B51F69426B176A70053B434 /* PanCollectionView.m in Sources */,
+				5BA51CF82716C26D00E08294 /* UserSubscribeViewController.m in Sources */,
 				5B4634362700223C00EA6623 /* ChapterModel.m in Sources */,
+				5BA51CE627140FB500E08294 /* HotSearchTableViewCell.m in Sources */,
 				5B8D7EFA26FAC2EA00DE6892 /* MainPageViewController.m in Sources */,
 				5BB9482326AFFEBA00ABD6B8 /* ContentCollectionViewCell.m in Sources */,
 				5B8D7F1426FC30BA00DE6892 /* MidTextField.m in Sources */,

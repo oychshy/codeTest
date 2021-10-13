@@ -20,6 +20,8 @@
     SDWebImageDownloader *downloader = [SDWebImageManager sharedManager].imageLoader;
     [downloader setValue:@"gzip, deflate, br" forHTTPHeaderField:@"Accept-Encoding"];
     [downloader setValue:@"http://images.dmzj.com/" forHTTPHeaderField:@"Referer"];
+    [downloader setValue:@"%E5%8A%A8%E6%BC%AB%E4%B9%8B%E5%AE%B6/3 CFNetwork/1206 Darwin/20.1.0" forHTTPHeaderField:@"User-Agent"];
+    [downloader setValue:@"zh-cn" forHTTPHeaderField:@"Accept-Language"];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -42,6 +44,12 @@
 //    VideoViewController *c1=[[VideoViewController alloc]init];
     UINavigationController *mainNavi = [[UINavigationController alloc] initWithRootViewController:c1];
     UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c2];
+    
+    mainNavi.tabBarItem.title = @"主页";
+    PersonalNavi.tabBarItem.title = @"我的";
+    mainNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"home"] Size:CGSizeMake(30, 30)];
+    PersonalNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"account"] Size:CGSizeMake(20, 20)];
+    
     tb.viewControllers=@[mainNavi,PersonalNavi];
     self.window.rootViewController=tb;
 
@@ -117,5 +125,14 @@
     }];
 }
 
+-(UIImage*)SetImageSize:(UIImage*)sendImage Size:(CGSize)size{
+//    UIImage *sendImage = [UIImage imageNamed:@"home"];
+//    CGSize size = CGSizeMake(30, 30);
+    UIGraphicsBeginImageContext(size);
+    [sendImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
 
 @end

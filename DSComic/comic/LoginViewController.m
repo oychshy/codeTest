@@ -295,7 +295,7 @@
         NSInteger code = [data[@"code"] integerValue];
         if (code == 0) {
             NSDictionary *dataDic = data[@"data"];
-//            NSLog(@"OY===dataDic:%@",dataDic);
+            NSLog(@"OY===phone_login_data:%@",dataDic);
             [self SaveUserDefault:dataDic];
             [self dismissViewControllerAnimated:YES completion:nil];
         }else{
@@ -374,6 +374,7 @@
         NSInteger result = [data[@"result"] integerValue];
         if (result == 1) {
             NSDictionary *dataDic = data[@"data"];
+            NSLog(@"OY===account_login_data:%@",dataDic);
             [self SaveUserDefault:dataDic];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"userRefresh" object:nil];
             [self dismissViewControllerAnimated:YES completion:nil];

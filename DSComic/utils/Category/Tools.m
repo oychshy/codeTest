@@ -162,4 +162,17 @@
     return dateString;
 }
 
++(NSString *)URLEncodedString:(NSString*)unencodedString{
+    // CharactersToBeEscaped = @":/?&=;+!@#$()~',*";
+    // CharactersToLeaveUnescaped = @"[].";
+//    NSString *unencodedString = self;
+    NSString *encodedString = (NSString *)
+    CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                              (CFStringRef)unencodedString,
+                                                              NULL,
+                                                              (CFStringRef)@"!*'();:@&=+$,/?%#[]",                                                       kCFStringEncodingUTF8));
+    return encodedString;
+}
+
+
 @end

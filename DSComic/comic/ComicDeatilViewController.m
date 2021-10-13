@@ -24,6 +24,7 @@
 
 @property(retain,nonatomic)NSMutableDictionary *ComicDetailDic;
 @property(retain,nonatomic)NSMutableArray *ChapterArray;
+@property(retain,nonatomic)NSDictionary *ComicLogDic;
 
 @property(retain,nonatomic)NSMutableArray *CommentIdsArray;
 @property(retain,nonatomic)NSMutableDictionary *CommentsDic;
@@ -92,6 +93,7 @@
         self.IDFA = @"00000000-0000-0000-0000-000000000000";
     }
     
+    self.ComicLogDic = [[NSDictionary alloc] init];
     self.ComicDetailDic = [[NSMutableDictionary alloc] init];
     self.ChapterArray = [[NSMutableArray alloc] init];
 
@@ -104,9 +106,34 @@
             self.isSubscribe = YES;
         }
     }
-        
-    [self getComicDeatil];
+    
+    [self getComicLogChapter];
+//    [self getComicDeatil];
 
+}
+
+
+-(void)getComicLogChapter{
+    NSString *urlPath = [NSString stringWithFormat:@"https://nninterface.muwai.com/api/getReInfo/comic/%@/%ld/",[UserInfo shareUserInfo].uid,self.comicId];
+    NSDictionary *params = @{
+        @"app_channel":@(101),
+        @"channel":@"ios",
+        @"imei":self.IDFA,
+        @"iosId":@"89728b06283841e4a411c7cb600e4052",
+        @"terminal_model":[Tools getDevice],
+        @"timestamp":[Tools currentTimeStr],
+        @"uid":[UserInfo shareUserInfo].uid,
+        @"version":@"4.5.2"
+    };
+    
+    [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
+        NSDictionary *getDic = data;
+        self.ComicLogDic = getDic;
+        [self getComicDeatil];
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+        [self getComicDeatil];
+    }];
 }
 
 -(void)getComicDeatil{
@@ -177,6 +204,7 @@
     }
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
         NSDictionary *CommentInfoDic = data;
+//        NSLog(@"OY===CommentInfoDic:%@",CommentInfoDic);
         NSInteger total = [CommentInfoDic[@"total"] integerValue];
         if (total == 0) {
             self.CommentIdsArray = [[NSMutableArray alloc] init];
@@ -184,14 +212,18 @@
             [self.MainTabelView.mj_footer endRefreshingWithNoMoreData];
         }else{
             NSArray *getCommentArray = CommentInfoDic[@"commentIds"];
-            [self.CommentIdsArray addObjectsFromArray:getCommentArray];
-
-            NSDictionary *getCommentsDic = [[NSDictionary alloc] initWithDictionary:CommentInfoDic[@"comments"]];
-            NSMutableDictionary *tmpDic = [[NSMutableDictionary alloc] init];
-            tmpDic = self.CommentsDic;
-            [tmpDic addEntriesFromDictionary:getCommentsDic];
-            self.CommentsDic = tmpDic;
-            [self.MainTabelView.mj_footer endRefreshing];
+            if (getCommentArray.count != 0) {
+                [self.CommentIdsArray addObjectsFromArray:getCommentArray];
+                NSDictionary *getCommentsDic = [[NSDictionary alloc] initWithDictionary:CommentInfoDic[@"comments"]];
+                
+                NSMutableDictionary *tmpDic = [[NSMutableDictionary alloc] init];
+                tmpDic = self.CommentsDic;
+                [tmpDic addEntriesFromDictionary:getCommentsDic];
+                self.CommentsDic = tmpDic;
+                [self.MainTabelView.mj_footer endRefreshing];
+            }else{
+                [self.MainTabelView.mj_footer endRefreshingWithNoMoreData];
+            }
         }
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
@@ -200,6 +232,7 @@
     }];
     
 }
+
 
 -(void)configUI{
     
@@ -265,12 +298,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.separatorInset = UIEdgeInsetsZero;
         [cell setCellWithData:self.ChapterArray isAcs:self.isAcs];
+
         return cell;
     }
     else{
         NSString *commetIdStr = self.CommentIdsArray[indexPath.row];
         NSArray *commetIds = [commetIdStr componentsSeparatedByString:@","];
-        
+//        NSLog(@"OY===commetIds:%@",commetIds);
         
         NSMutableArray *CommetInfos = [[NSMutableArray alloc] init];
         for (NSString *commetId in commetIds) {
@@ -288,6 +322,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.separatorInset = UIEdgeInsetsZero;
         [cell setCellWithData:CommetInfos];
+
         return cell;
     }
 }
@@ -389,20 +424,32 @@
     self.CommentCellHeight = CellHeight;
 }
 
+-(void)PostSenderID:(NSInteger)senderID{
+    UserInfoViewController *vc = [[UserInfoViewController alloc] init];
+    vc.UserID = senderID;
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 -(void)SelectedChapter:(NSDictionary*)dataDic{
-    BOOL isPost = dataDic[@"isPost"];
-    
+    BOOL isPost = [dataDic[@"isPost"] boolValue];
     if (isPost) {
         NSInteger comicId = [dataDic[@"comicId"] integerValue];
         NSInteger chapterId = [dataDic[@"chapterId"] integerValue];
         [self getChapterDeatil:comicId chapterId:chapterId];
+    }else{
+        NSLog(@"OY===stop more");
+        
     }
 }
 
 
+#pragma mark -- Requests
 -(void)getChapterDeatil:(NSInteger)comicId chapterId:(NSInteger)chapterId{
 //    self.comicId = 38890;
     NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/comic/chapter/%ld/%ld.html",comicId,chapterId];
+    NSLog(@"OY===chapterId urlPath:%@",urlPath);
+
     [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
         NSDictionary *chapterDic = data;
         NSDictionary *ChapterDetailDic = chapterDic[@"chapter"];

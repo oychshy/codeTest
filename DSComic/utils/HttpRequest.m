@@ -52,7 +52,7 @@
         NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:jsonData
                                                                 options:NSJSONReadingMutableContainers
                                                                   error:&err];
-        NSLog(@"OY===dataDic:%@",dataDic);
+//        NSLog(@"OY===dataDic:%@",dataDic);
 
         if (dataDic) {
             successBlock(dataDic);

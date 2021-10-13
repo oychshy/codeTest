@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(NSString *)currentTimeStr;
 +(NSString*)dateWithString:(NSString*)str;
++(NSString *)URLEncodedString:(NSString*)unencodedString;
 
 @end
 

@@ -25,6 +25,8 @@
 
 @property(nonatomic,assign) CGFloat cellHeight;
 
+@property(nonatomic,retain)NSMutableDictionary *cellHeightDic;
+
 @end
 
 @implementation ComicReaderViewController
@@ -56,12 +58,15 @@
     self.isShowMeune = NO;
         
     self.dataArray = [[NSMutableArray alloc] init];
+    self.cellHeightDic = [[NSMutableDictionary alloc] init];
     [self initData];
     [self ConfigUI];
 }
 
 
 -(void)initData{
+    NSLog(@"OY===initData 1");
+
     for (int i=0;i<self.imageArray.count;i++) {
         NSString *imageUrl = self.imageArray[i];
         NSDictionary *ImageInfo = @{
@@ -74,6 +79,7 @@
 }
 
 -(void)ConfigUI{
+    NSLog(@"OY===ConfigUI 2");
     [self MainTableView];
 }
 
@@ -110,11 +116,14 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"OY===update CellHeight:%f,row:%ld",self.cellHeight,indexPath.row);
 
     if (self.cellHeight == 0) {
         return YHEIGHT_SCALE(800);
     }else{
+        CGFloat cellHeightCache = [[self.cellHeightDic valueForKey:[NSString stringWithFormat:@"%ld",indexPath.row]] floatValue];
+        if (cellHeightCache>0) {
+            return cellHeightCache;
+        }
         return self.cellHeight;
     }
 }
@@ -128,7 +137,8 @@
 }
 
 -(void)postCellHeight:(CGFloat)CellHeight Row:(NSInteger)row{
-    NSLog(@"OY===set row height:%ld",row);
+//    NSLog(@"OY===set row height:%ld",row);
+    [self.cellHeightDic setValue:@(CellHeight) forKey:[NSString stringWithFormat:@"%ld",row]];
 
     self.cellHeight = CellHeight;
     [_MainTableView beginUpdates];

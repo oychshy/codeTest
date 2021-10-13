@@ -45,6 +45,7 @@
     
     TitleImageView  = [[UIImageView alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(40), YWIDTH_SCALE(40), (FUll_VIEW_WIDTH-YWIDTH_SCALE(120))/3, YHEIGHT_SCALE(240))];
     [TitleImageView setBackgroundColor:[UIColor lightGrayColor]];
+    TitleImageView.contentMode = UIViewContentModeScaleAspectFill;
     TitleImageView.cornerRadius = 10;
     TitleImageView.clipsToBounds = YES;
     [headerView addSubview:TitleImageView];
@@ -78,11 +79,9 @@
     [headerView addSubview:StatusLabel];
     
     SubscribeBtn = [[UIButton alloc] initWithFrame:CGRectMake(AuthorLabel.x, StatusLabel.y+StatusLabel.height+YHEIGHT_SCALE(10), YWIDTH_SCALE(200), YWIDTH_SCALE(40))];
-    
     SubscribeBtn.layer.cornerRadius = 5;
     SubscribeBtn.layer.borderWidth = 1;
     SubscribeBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-//    chapterLabel.textAlignment = NSTextAlignmentCenter;
     [SubscribeBtn setTitle:@"NULL/NULL" forState:UIControlStateNormal];
     [SubscribeBtn.titleLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(30)]];
     SubscribeBtn.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -114,6 +113,9 @@
     NSString *StatusStr = dataDic[@"status"];
     NSString *coverImage = dataDic[@"cover"];
     NSString *descriptionStr = dataDic[@"description"];
+    
+//    NSLog(@"OY===ComicDetailTableViewCell:%@",dataDic);
+
     
     BOOL isHexie = [dataDic[@"hexie"] boolValue];
     if (isHexie) {
