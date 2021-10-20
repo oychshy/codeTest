@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Tools : NSObject
 + (NSString*)base64encode:(NSString*)str;
-+ (NSString *)dencode:(NSString *)base64String;
++ (NSString *)base64decode:(NSString *)base64String;
+
 + (void)setHUD:(NSString *)string sleepTime:(NSInteger) sleepTime;
 +(NSString *)convertToJsonData:(NSDictionary *)dict;
 + (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString;
@@ -22,10 +23,14 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSString*)getIDFA;
 +(NSString*)getIDFV;
 + (NSString *)getDevice;
++(NSString*)getOSversion;
 
 +(NSString *)currentTimeStr;
 +(NSString*)dateWithString:(NSString*)str;
 +(NSString *)URLEncodedString:(NSString*)unencodedString;
+
+//+(NSString *)base64Encode:(NSString *)string;
+//+(NSString *)base64Dencode:(NSString *)base64String;
 
 @end
 

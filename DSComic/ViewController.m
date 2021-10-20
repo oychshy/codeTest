@@ -47,66 +47,83 @@
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-//    self.dataInfosDic = [[NSDictionary alloc] init];
-//    BOOL loadDataRet = [self initData];
-//    [self configUI:loadDataRet];
-    
-    self.bannerArray = [[NSMutableArray alloc] init];
-    self.titleArray = [[NSArray alloc] init];
-    self.titleArray = @[@"Comic",@"Video"];
-//    [self configUI];
-    
-//    [self htmlVideoTest];
-//    [self getBannerDatas];
-    
-    NSString *privateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAK8nNR1lTnIfIes6oRWJNj3mB6OssDGx0uGMpgpbVCpf6+VwnuI2stmhZNoQcM417Iz7WqlPzbUmu9R4dEKmLGEEqOhOdVaeh9Xk2IPPjqIu5TbkLZRxkY3dJM1htbz57d/roesJLkZXqssfG5EJauNc+RcABTfLb4IiFjSMlTsnAgMBAAECgYEAiz/pi2hKOJKlvcTL4jpHJGjn8+lL3wZX+LeAHkXDoTjHa47g0knYYQteCbv+YwMeAGupBWiLy5RyyhXFoGNKbbnvftMYK56hH+iqxjtDLnjSDKWnhcB7089sNKaEM9Ilil6uxWMrMMBH9v2PLdYsqMBHqPutKu/SigeGPeiB7VECQQDizVlNv67go99QAIv2n/ga4e0wLizVuaNBXE88AdOnaZ0LOTeniVEqvPtgUk63zbjl0P/pzQzyjitwe6HoCAIpAkEAxbOtnCm1uKEp5HsNaXEJTwE7WQf7PrLD4+BpGtNKkgja6f6F4ld4QZ2TQ6qvsCizSGJrjOpNdjVGJ7bgYMcczwJBALvJWPLmDi7ToFfGTB0EsNHZVKE66kZ/8Stx+ezueke4S556XplqOflQBjbnj2PigwBN/0afT+QZUOBOjWzoDJkCQClzo+oDQMvGVs9GEajS/32mJ3hiWQZrWvEzgzYRqSf3XVcEe7PaXSd8z3y3lACeeACsShqQoc8wGlaHXIJOHTcCQQCZw5127ZGs8ZDTSrogrH73Kw/HvX55wGAeirKYcv28eauveCG7iyFR0PFB/P/EDZnyb+ifvyEFlucPUI0+Y87F";
-    
-    static NSString *getData = @"AEROYKdyoI7qmjh+N/aHlBRPtpaXZ4G+sCHYcAONbyvBLnHwYIgD83em03M1RqyWXaiiUrnHIMrmh37HGMBjcM01FT8EZWn9kUDlqUu7SAN2x3toiDWoFcJfYDGNCKSd2K3qAdeplBQMTuDaL4O/BH0Oop7FMLOM8snkSzFPCGktWUHRuU6THj5YSr+50tbHS7aU4T9qWtE7ifiEA2irmqtXNk28/sekGUGfJNQRA1IqBUt8qV3KhK17DLUCGAFbDle1A0yGyZEqUAqIzfxmZcOixxyUg79Rgf1xxkTDNwK+npu9sVyBIt5OQ6eEOw1GXfJKANxVRH8SxxxbjXP/V3uDUj9yqu+GUYLWf0jo5gHUGdtmdLhGJL3E+cJl23ZzDt0arQ4LF0c/vAiTSMNE5CsIzF7odA1MHpOLCgYDbWQ/rXtoGLpbmQjSNwrS5QdpibQ5RYaJhjKOsy9CYKxfXZkhHjagGIjlbUvufXf0IyOWPN/7e0v7h+MasqjJr3egOv+Ty6BXn+kKtipiF2td10ahIO8dyO6geCNdN2iDmOkVqJjZvYlAAx0K803QHPCvlTwBbv171S8waYmnO5gEi95+MBZ2aEkXPGLirCtthMBGpUaZ9mka2dhfZhjD2um7csiC8XcHFf9QWNVOzWSP0Y7ktunCXomitg7u5FxrzkiL6BRgnUTWR3F3AQCXQhpjw4iAZrY25eWRy6AjfHHxOYZmqPNiFZD6CMcweTnIb51cYWzKdTMK/7tFGc58tG5ngZ/1djAog0h+PnXfjVBnxzMzFkYqESqFQeQl3lJHZXh0CE1YNCfMGOrGru8lVnrjrXOasqjNCWc+hNaLJ3T1Eg==";
-    
-    NSData *sData = [[NSData alloc]initWithBase64EncodedString:getData options:NSDataBase64DecodingIgnoreUnknownCharacters];
-    NSString *dataString = [[NSString alloc]initWithData:sData encoding:NSUTF8StringEncoding];
-    
-//    NSString *base46Str = [self dencode:getData];
-    NSLog(@"OY===base46:%@",dataString);
-    
-    NSString *decrypeStr = [RSA decryptString:dataString privateKey:privateKey];
-    NSLog(@"OY===decrypeStr:%@",decrypeStr);
+    [self v4apitest];
 
-    
-    
+//    [self getChapterDeatil:48782 chapterId:116285];
 
-    
-    
-//    [self testUI:getData];
-    
-//    NSString *url = @"https://nnv4api.muwai.com/novel/detail/3945";
-//    NSDictionary *header = @{
-//        @"User-Agent": @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36",
-//        @"Accept-Language": @"zh-cn",
-//        @"Accept-Encoding": @"gzip, deflate"
-//    };
-//
-//    AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
-//    AFHTTPRequestSerializer *requestSerializer =  [AFJSONRequestSerializer serializer];
-//    AFJSONResponseSerializer *response = [AFJSONResponseSerializer serializer];
-//    response.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];
-//    manger.requestSerializer = requestSerializer;
-//    manger.responseSerializer = [AFHTTPResponseSerializer serializer];
-//
-//    NSString * encodingString = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    [manger GET:url parameters:nil headers:header progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSString *dataStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"OY=== dataStr:%@",dataStr);
-//        getData = dataStr;
-//        [self testUI:getData];
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        NSString *Des = [NSString stringWithFormat:@"%@",error.description];
-//        NSLog(@"OY=== error:%@",Des);
-//        getData = Des;
-//        [self testUI:getData];
-//    }];
 }
 
+-(void)v4apitest{
+    NSDictionary *params = [[NSDictionary alloc] init];
+    NSString *urlPath = @"http://nnv4api.muwai.com/novel/detail/2597";
+    params = @{
+        @"app_channel":@(101),
+        @"channel":@"ios",
+        @"imei":@"C545EEFF-1D0C-46CD-808B-DC5B3C524038",
+        @"iosId":@"50999ee4f52444dda55c67639cfb66dc",
+        @"terminal_model":[Tools getDevice],
+        @"timestamp":[Tools currentTimeStr],
+        @"uid":@"107335181",
+        @"version":@"4.5.2"
+    };
+    
+    [HttpRequest getNetWorkDataWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
+        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        [self V4decrypt:dataStr];
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+    }];
+}
+
+-(void)V4decrypt:(NSString*)base64String{
+    NSData *data = [[NSData alloc]initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"id_rsa" ofType:@"txt"];
+    // 将文件数据化
+    NSData *privateKeyData = [[NSData alloc] initWithContentsOfFile:path];
+    NSString *privateKeyStr = [[NSString alloc]initWithData:privateKeyData encoding:NSUTF8StringEncoding];
+    NSLog(@"OY===privateKeyStr:%@",privateKeyStr);
+
+    NSData *decrypeData = [RSA decryptData:data privateKey:privateKeyStr];
+    NSLog(@"OY===decrypeData:%@",decrypeData);
+    
+    
+    
+}
+
+
+
+-(void)getChapterDeatil:(NSInteger)comicId chapterId:(NSInteger)chapterId{
+//    self.comicId = 38890;
+    NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/comic/chapter/%ld/%ld.html",comicId,chapterId];
+    NSLog(@"OY===chapterId urlPath:%@",urlPath);
+
+    [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
+        NSDictionary *chapterDic = data;
+        NSDictionary *ChapterDetailDic = chapterDic[@"chapter"];
+        NSArray *pageUrlArray = ChapterDetailDic[@"page_url"];
+        NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
+        
+        NSString *umageUrlStr = pageUrlArray[0];
+        
+        UIImageView *showImageView = [[UIImageView alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(20), YHEIGHT_SCALE(100), FUll_VIEW_WIDTH-YWIDTH_SCALE(40), YHEIGHT_SCALE(760))];
+        showImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [showImageView setBackgroundColor:[UIColor colorWithHexString:@"F6F6F6"]];
+        [self.view addSubview:showImageView];
+        
+        [showImageView sd_setImageWithURL:[NSURL URLWithString:umageUrlStr] placeholderImage:nil options:SDWebImageRetryFailed];
+        
+//        ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
+//        vc.imageArray = pageUrlArray;
+//        vc.chapterTitle = self.title;
+//        vc.hidesBottomBarWhenPushed = YES;
+//        vc.modalPresentationStyle = UIModalPresentationFullScreen;
+//        [self presentViewController:vc animated:NO completion:nil];
+        
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+    }];
+}
 
 -(void)testUI:(NSString *)data{
     testTF = [[UITextView alloc] initWithFrame:CGRectMake(50, 100, FUll_VIEW_WIDTH-100, 100)];

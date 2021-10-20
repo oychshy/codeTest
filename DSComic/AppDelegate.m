@@ -22,35 +22,32 @@
     [downloader setValue:@"http://images.dmzj.com/" forHTTPHeaderField:@"Referer"];
     [downloader setValue:@"%E5%8A%A8%E6%BC%AB%E4%B9%8B%E5%AE%B6/3 CFNetwork/1206 Darwin/20.1.0" forHTTPHeaderField:@"User-Agent"];
     [downloader setValue:@"zh-cn" forHTTPHeaderField:@"Accept-Language"];
+    [downloader setValue:@"Accept" forHTTPHeaderField:@"image/*,*/*;q=0.8"];
 
+        
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    NSMutableDictionary *userInfoDic = [[NSMutableDictionary alloc] initWithDictionary:@{@"isLogin":@(NO),@"uid":@"",@"nickname":@"",@"photo":@"",@"dmzj_token":@""}];
-//    [UserInfo shareUserInfo].isLogin = NO;
-//    [defaults setValue:userInfoDic forKey:@"userInfo"];
-//
-//    ViewController *c1=[[ViewController alloc]init];
-//    self.window.rootViewController=c1;
-    
-    [self getUserInfo];
-
     UITabBarController *tb=[[UITabBarController alloc]init];
-    MainPageViewController *c1 = [[MainPageViewController alloc] init];
-    PersonalViewController *c2 = [[PersonalViewController alloc] init];
-//    ViewController *c1=[[ViewController alloc]init];
-//    VideoViewController *c1=[[VideoViewController alloc]init];
-    UINavigationController *mainNavi = [[UINavigationController alloc] initWithRootViewController:c1];
-    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c2];
+    ViewController *c1=[[ViewController alloc]init];
+    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c1];
+    tb.viewControllers=@[PersonalNavi];
     
-    mainNavi.tabBarItem.title = @"主页";
-    PersonalNavi.tabBarItem.title = @"我的";
-    mainNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"home"] Size:CGSizeMake(30, 30)];
-    PersonalNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"account"] Size:CGSizeMake(20, 20)];
     
-    tb.viewControllers=@[mainNavi,PersonalNavi];
+//    [self getUserInfo];
+//    UITabBarController *tb=[[UITabBarController alloc]init];
+//    MainPageViewController *c1 = [[MainPageViewController alloc] init];
+//    PersonalViewController *c2 = [[PersonalViewController alloc] init];
+//    UINavigationController *mainNavi = [[UINavigationController alloc] initWithRootViewController:c1];
+//    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c2];
+//
+//    mainNavi.tabBarItem.title = @"主页";
+//    PersonalNavi.tabBarItem.title = @"我的";
+//    mainNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"home"] Size:CGSizeMake(30, 30)];
+//    PersonalNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"account"] Size:CGSizeMake(20, 20)];
+//    tb.viewControllers=@[mainNavi,PersonalNavi];
+    
     self.window.rootViewController=tb;
 
     [self.window makeKeyAndVisible];
@@ -83,6 +80,8 @@
         NSLog(@"OY===isLogin:%d",[UserInfo shareUserInfo].isLogin);
         [defaults setValue:userInfoDic forKey:@"userInfo"];
     }
+    
+    NSLog(@"OY===userInfoDic:%@",userInfoDic);
 }
 
 -(void)getAllMySubscribe:(NSInteger)PageCount{

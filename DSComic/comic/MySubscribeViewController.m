@@ -134,8 +134,6 @@
                 [self.MySubscribesArray addObject:comicInfo];
             }
         }
-//        NSLog(@"OY===self.MySubscribesArray:%@",self.MySubscribesArray);
-//        NSLog(@"OY===self.MySubscribesArray.count:%ld",self.MySubscribesArray.count);
 
         [self configUI];
     } failure:^(NSString * _Nonnull error) {

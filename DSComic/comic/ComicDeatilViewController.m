@@ -24,6 +24,7 @@
 
 @property(retain,nonatomic)NSMutableDictionary *ComicDetailDic;
 @property(retain,nonatomic)NSMutableArray *ChapterArray;
+@property(retain,nonatomic)NSMutableArray *TagInfoArray;
 @property(retain,nonatomic)NSDictionary *ComicLogDic;
 
 @property(retain,nonatomic)NSMutableArray *CommentIdsArray;
@@ -96,6 +97,7 @@
     self.ComicLogDic = [[NSDictionary alloc] init];
     self.ComicDetailDic = [[NSMutableDictionary alloc] init];
     self.ChapterArray = [[NSMutableArray alloc] init];
+    self.TagInfoArray = [[NSMutableArray alloc] init];
 
     self.CommentIdsArray = [[NSMutableArray alloc] init];
     self.CommentsDic = [[NSMutableDictionary alloc] init];
@@ -108,8 +110,6 @@
     }
     
     [self getComicLogChapter];
-//    [self getComicDeatil];
-
 }
 
 
@@ -145,17 +145,19 @@
         @"timestamp":[Tools currentTimeStr],
     };
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
-        [self.ErrorView setHidden:YES];
         NSDictionary *getData = data;
         NSInteger errorcode = [getData[@"errorCode"] integerValue];
         if (errorcode == -1001) {
             NSString *content = getData[@"content"];
             if ([content containsString:@"此漫画暂不提供观看"]) {
-                self.ComicDetailDic = [NSMutableDictionary dictionaryWithDictionary:@{@"hexie":@(YES)}];
+//                self.ComicDetailDic = [NSMutableDictionary dictionaryWithDictionary:@{@"hexie":@(YES)}];
+                [self getComicDeatilV1];
             }else{
+                [self.ErrorView setHidden:YES];
                 self.ComicDetailDic = nil;
+                self.ChapterArray = nil;
+                [self getComicCommentsWith:self.commetPage];
             }
-            self.ChapterArray = nil;
         }else{
             NSDictionary *detailDic = data;
             self.ComicDetailDic = detailDic[@"comic"];
@@ -163,6 +165,35 @@
             NSArray *jsonDatas = [NSJSONSerialization JSONObjectWithData:[jsonDatasStr dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
             NSDictionary *ChaptersDic = jsonDatas[0];
             self.ChapterArray = ChaptersDic[@"data"];
+            self.TagInfoArray = [NSMutableArray arrayWithArray:detailDic[@"tag_info"]];
+            [self getComicCommentsWith:self.commetPage];
+        }
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+        [self.ErrorView setHidden:NO];
+        [self ErrorView];
+    }];
+}
+
+-(void)getComicDeatilV1{
+    NSLog(@"OY===getComicDeatilV1");
+
+    NSString *urlPath = [NSString stringWithFormat:@"https://api.dmzj.com/dynamic/comicinfo/%ld.json",self.comicId];
+    [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
+        [self.ErrorView setHidden:YES];
+        NSDictionary *getData = data;
+        NSLog(@"OY===getComicDeatilV1 getData:%@",getData);
+        NSInteger errorcode = [getData[@"result"] integerValue];
+        if (errorcode == 1) {
+            NSDictionary *detailDic = getData[@"data"];
+            self.ComicDetailDic = detailDic[@"info"];
+//            NSString *jsonDatasStr = detailDic[@"list"];
+//            NSArray *jsonDatas = detailDic[@"list"];
+//            NSDictionary *ChaptersDic = jsonDatas[0];
+            self.ChapterArray = detailDic[@"list"];
+//            self.TagInfoArray = [NSMutableArray arrayWithArray:detailDic[@"tag_info"]];
+        }else{
+            self.ComicDetailDic = [NSMutableDictionary dictionaryWithDictionary:@{@"hexie":@(YES)}];
         }
         [self getComicCommentsWith:self.commetPage];
     } failure:^(NSString * _Nonnull error) {
@@ -171,6 +202,7 @@
         [self ErrorView];
     }];
 }
+
 
 -(void)getComicCommentsWith:(NSInteger)pageIndex{
     NSString *urlPath = [NSString stringWithFormat:@"http://nnv3comment.muwai.com/v1/4/latest/%ld",self.comicId];
@@ -286,10 +318,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.separatorInset = UIEdgeInsetsZero;
         cell.delegate = self;
-        [cell setCellWithData:self.ComicDetailDic isExpand:self.isExpand];
+//        [cell setCellWithData:self.ComicDetailDic isExpand:self.isExpand];
+        [cell setCellWithComicInfo:self.ComicDetailDic TagInfo:self.TagInfoArray isExpand:self.isExpand];
         return cell;
     }
     else if (indexPath.section == 1){
+//        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//        if (!cell) {
+//            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Title"];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.separatorInset = UIEdgeInsetsZero;
+//        cell.textLabel.text = [NSString stringWithFormat:@"%ld",self.ChapterArray.count];
         ComicChapterTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if (!cell) {
             cell = [[ComicChapterTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Title"];
@@ -304,7 +344,6 @@
     else{
         NSString *commetIdStr = self.CommentIdsArray[indexPath.row];
         NSArray *commetIds = [commetIdStr componentsSeparatedByString:@","];
-//        NSLog(@"OY===commetIds:%@",commetIds);
         
         NSMutableArray *CommetInfos = [[NSMutableArray alloc] init];
         for (NSString *commetId in commetIds) {
@@ -438,8 +477,27 @@
         NSInteger chapterId = [dataDic[@"chapterId"] integerValue];
         [self getChapterDeatil:comicId chapterId:chapterId];
     }else{
-        NSLog(@"OY===stop more");
+//        NSLog(@"OY===stop more");
         
+    }
+}
+
+-(void)PostAuthorIsUser:(BOOL)isUser ID:(NSInteger)ID{
+    if (ID != 0) {
+        if (isUser) {
+            NSLog(@"OY===User:%ld",ID);
+            UserInfoViewController *vc = [[UserInfoViewController alloc] init];
+            vc.UserID = ID;
+            self.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+            NSLog(@"OY===Author:%ld",ID);
+            ComicAuthorViewController *vc = [[ComicAuthorViewController alloc] init];
+            vc.AuthorID = ID;
+            vc.isUser = isUser;
+            self.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 
@@ -453,19 +511,45 @@
     [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
         NSDictionary *chapterDic = data;
         NSDictionary *ChapterDetailDic = chapterDic[@"chapter"];
-        NSArray *pageUrlArray = ChapterDetailDic[@"page_url"];
-        NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
-        
-        ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
-        vc.imageArray = pageUrlArray;
-        vc.chapterTitle = self.title;
-        vc.hidesBottomBarWhenPushed = YES;
-        vc.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:vc animated:NO completion:nil];
-        
+        if (ChapterDetailDic != nil) {
+            NSArray *pageUrlArray = ChapterDetailDic[@"page_url"];
+            NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
+            
+            ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
+            vc.imageArray = pageUrlArray;
+            vc.chapterTitle = self.title;
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:vc animated:NO completion:nil];
+        }else{
+            [self getChapterDeatilV1:comicId chapterId:chapterId];
+        }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
     }];
+}
+
+-(void)getChapterDeatilV1:(NSInteger)comicId chapterId:(NSInteger)chapterId{
+    NSString *urlPath = [NSString stringWithFormat:@"https://m.dmzj.com/chapinfo/%ld/%ld.html",comicId,chapterId];
+    NSLog(@"OY===chapterId urlPath:%@",urlPath);
+    
+    [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
+        NSDictionary *chapterDic = data;
+        if (chapterDic != nil) {
+            NSArray *pageUrlArray = chapterDic[@"page_url"];
+            NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
+            
+            ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
+            vc.imageArray = pageUrlArray;
+            vc.chapterTitle = self.title;
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:vc animated:NO completion:nil];
+        }
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+    }];
+    
 }
 
 

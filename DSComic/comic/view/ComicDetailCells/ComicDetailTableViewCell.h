@@ -13,13 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)PostHeaderHeight:(CGFloat)CellHeight;
 -(void)PostLabelIsExpand:(BOOL)isExpand;
 -(void)PostSubscribe:(BOOL)subscribe;
+-(void)PostAuthorIsUser:(BOOL)isUser ID:(NSInteger)ID;
 
 @end
 
 @interface ComicDetailTableViewCell : UITableViewCell
 @property(nonatomic,weak)id<DetailHeaderCellDelegate>delegate;
 @property(assign,nonatomic)BOOL isSubscribe;
--(void)setCellWithData:(NSDictionary*)dataDic isExpand:(BOOL)expand;
+-(void)setCellWithComicInfo:(NSDictionary*)comicDic TagInfo:(NSArray*)tagArray isExpand:(BOOL)expand;
 @end
 
 NS_ASSUME_NONNULL_END

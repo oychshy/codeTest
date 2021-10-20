@@ -20,6 +20,11 @@
     UIView *descriptionView;
     CGFloat descriptionHeight;
     BOOL isExpand;
+    BOOL isHexie;
+    BOOL isUser;
+
+    NSString *uid;
+    NSDictionary *getDataDic;
 }
 @end
 
@@ -55,6 +60,9 @@
     AuthorLabel.font = [UIFont systemFontOfSize:YFONTSIZEFROM_PX(30)];
     AuthorLabel.textColor = [UIColor whiteColor];
     AuthorLabel.text = @"NULL/NULL";
+    AuthorLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *AuthorTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AuthorLabelAction)];
+    [AuthorLabel addGestureRecognizer:AuthorTap];
     [headerView addSubview:AuthorLabel];
     
     TypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(AuthorLabel.x, AuthorLabel.y+AuthorLabel.height+YHEIGHT_SCALE(10), YWIDTH_SCALE(400), YWIDTH_SCALE(40))];
@@ -98,26 +106,42 @@
     DescriptionLabel.backgroundColor = [UIColor clearColor];
     DescriptionLabel.font = [UIFont systemFontOfSize:16];
     DescriptionLabel.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(DescriptionLabelAction)];
-    [DescriptionLabel addGestureRecognizer:tap];
+    UITapGestureRecognizer *DescriptionTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(DescriptionLabelAction)];
+    [DescriptionLabel addGestureRecognizer:DescriptionTap];
     [descriptionView addSubview:DescriptionLabel];
 
 }
 
--(void)setCellWithData:(NSDictionary*)dataDic isExpand:(BOOL)expand{
+-(void)setCellWithComicInfo:(NSDictionary*)comicDic TagInfo:(NSArray*)tagArray isExpand:(BOOL)expand{
+    getDataDic = comicDic;
     isExpand = expand;
-    NSString *timeStamp = [NSString stringWithFormat:@"%@",dataDic[@"last_updatetime"]];
-    NSString *AuthorName = dataDic[@"authors"];
-    NSString *TypeStr = dataDic[@"types"];
+    NSString *timeStamp = [NSString stringWithFormat:@"%@",comicDic[@"last_updatetime"]];
+    NSString *AuthorName = comicDic[@"authors"];
+    NSString *TypeStr = comicDic[@"types"];
     NSString *UpDateTimeStr = [Tools dateWithString:timeStamp];
-    NSString *StatusStr = dataDic[@"status"];
-    NSString *coverImage = dataDic[@"cover"];
-    NSString *descriptionStr = dataDic[@"description"];
+    NSString *StatusStr = comicDic[@"status"];
+    NSString *coverImage = comicDic[@"cover"];
+    NSString *descriptionStr = comicDic[@"description"];
+    uid = [NSString stringWithFormat:@"%@",comicDic[@"uid"]];
     
-//    NSLog(@"OY===ComicDetailTableViewCell:%@",dataDic);
+    if ([uid isEqualToString:@"<null>"]||uid==nil) {
+        for (NSDictionary *tagDic in tagArray) {
+            NSInteger tagType = [tagDic[@"tag_type"] integerValue];
+            if (tagType == 2) {
+                uid = [NSString stringWithFormat:@"%@",tagDic[@"id"]];
+                break;
+            }
+        }
+        isUser = NO;
+    }else{
+        isUser = YES;
+    }
+    
+//    NSLog(@"OY===ComicDetailTableViewCell:%@",comicDic);
+//    NSLog(@"OY===uid:%@",uid);
 
     
-    BOOL isHexie = [dataDic[@"hexie"] boolValue];
+    isHexie = [comicDic[@"hexie"] boolValue];
     if (isHexie) {
         [TitleImageView setImage:[UIImage imageNamed:@"hexie"]];
         AuthorName = @"叔叔";
@@ -161,6 +185,12 @@
     
 }
 
+
+-(void)AuthorLabelAction{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(PostAuthorIsUser:ID:)]) {
+        [self.delegate PostAuthorIsUser:isUser ID:[uid integerValue]];
+    }
+}
 
 -(void)DescriptionLabelAction{
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, DescriptionLabel.width, 0)];

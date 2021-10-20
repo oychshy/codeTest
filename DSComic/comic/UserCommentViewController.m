@@ -110,6 +110,7 @@
         _MainPageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-64) style:UITableViewStylePlain];
         _MainPageTableView.delegate = self;
         _MainPageTableView.dataSource = self;
+        _MainPageTableView.tableFooterView = [UIView new];
         _MainPageTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             self.pageCount += 1;
             [self ConfigUserDataPage:self.pageCount];

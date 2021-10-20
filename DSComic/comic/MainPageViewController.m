@@ -121,7 +121,8 @@
 
 
 -(void)titleButtonAction:(UIButton*)sender{
-    
+    NSLog(@"OY===titleButtonAction");
+
     UIImageView *beforArrow = (UIImageView *)[self.view viewWithTag:self.selectIndex+arrowBaseTag];
     [beforArrow setHidden:YES];
     UIButton *beforButton = (UIButton*)[self.view viewWithTag:self.selectIndex+titleButtonBaseTag];
@@ -328,11 +329,15 @@
     [_RankSortView addSubview:self.HotTypeBtn];
 
     [self MainPageTableView];
+    
+    NSLog(@"OY===Config");
     [self getMainPageData];
 }
 
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    NSLog(@"OY===scrollViewDidEndDecelerating");
+
     if (scrollView == _mainScrollView) {
         NSInteger pageIndex = scrollView.contentOffset.x/_mainScrollView.width;
         
@@ -620,9 +625,7 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     NSString *identifier = [_collectionCellDic objectForKey:[NSString stringWithFormat:@"%@", indexPath]];
-    // 如果取出的唯一标示符不存在，则初始化唯一标示符，并将其存入字典中，对应唯一标示符注册Cell
     BOOL isGet = YES;
     if (identifier == nil) {
         identifier = [NSString stringWithFormat:@"cell%@", [NSString stringWithFormat:@"%@", indexPath]];
@@ -699,11 +702,29 @@
     
     //zhuanti
     if (model.category_id==48) {
+        NSArray *dataArray = model.data;
+        NSDictionary *getData = dataArray[index];
+        NSInteger TopicID = [getData[@"obj_id"] integerValue];
+        NSString *titleStr = getData[@"title"];
+        
+        TopicViewController *vc = [[TopicViewController alloc] init];
+        vc.TitleStr = titleStr;
+        vc.TopicID = TopicID;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
         
     }
     //author
     else if (model.category_id==51){
-        
+        NSArray *dataArray = model.data;
+        NSDictionary *getData = dataArray[index];
+//        NSLog(@"OY===getData:%@",getData);
+        NSInteger AuthorID = [getData[@"obj_id"] integerValue];
+        ComicAuthorViewController *vc = [[ComicAuthorViewController alloc] init];
+        vc.AuthorID = AuthorID;
+        vc.isUser = NO;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     }
     else{
         NSArray *dataArray = model.data;
@@ -713,11 +734,6 @@
         if(!getId){
             getId = [getData[@"id"] integerValue];
         }
-//        if (model.category_id==50 || model.category_id == 56){
-//            vc.comicId = [getData[@"id"] integerValue];
-//        }else{
-//            vc.comicId = [getData[@"obj_id"] integerValue];
-//        }
         vc.comicId = getId;
         vc.title = getData[@"title"];
         self.hidesBottomBarWhenPushed = YES;

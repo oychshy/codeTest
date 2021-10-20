@@ -16,9 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign)NSInteger comic_id;
 @property(nonatomic,assign)NSInteger chaptertype;
 @property(nonatomic,assign)NSInteger chapter_order;
+@property(nonatomic,assign)NSInteger filesize;
 
 @property(nonatomic,copy)NSString *title;
 @property(nonatomic,copy)NSString *chapter_name;
+@property(nonatomic,copy)NSString *createtime;
+@property(nonatomic,copy)NSString *updatetime;
 
 - (instancetype)initWithDict:(NSDictionary *)dict;
 + (instancetype)shopWithDict:(NSDictionary *)dict;

@@ -37,12 +37,6 @@
     self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBar.hidden = YES;
     
-    self.isLogin = [UserInfo shareUserInfo].isLogin;
-    self.IDFA = [Tools getIDFA];
-    if (!self.IDFA) {
-        self.IDFA = @"00000000-0000-0000-0000-000000000000";
-    }
-    
     if (!_NaviView) {
         [self.view addSubview:[self NavigationView]];
     }
@@ -148,6 +142,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    self.isLogin = [UserInfo shareUserInfo].isLogin;
+    self.IDFA = [Tools getIDFA];
+    if (!self.IDFA) {
+        self.IDFA = @"00000000-0000-0000-0000-000000000000";
+    }
+    
     self.isShowSearchData = NO;
     self.pageIndex = 0;
     
@@ -179,6 +180,7 @@
     NSString *urlStr = @"http://nnv3api.muwai.com/search/hot/0.json";
     NSDictionary *params = [[NSDictionary alloc] init];
     if (self.isLogin) {
+        NSLog(@"OY===configHotDatas login");
         params = @{
             @"app_channel":@(101),
             @"channel":@"ios",
@@ -190,6 +192,7 @@
             @"version":@"4.5.2"
         };
     }else{
+        NSLog(@"OY===configHotDatas logout");
         params = @{
             @"app_channel":@(101),
             @"channel":@"ios",
@@ -200,6 +203,9 @@
             @"version":@"4.5.2"
         };
     }
+    
+    NSLog(@"OY===configHotDatas:%@",params);
+
     
     [HttpRequest getNetWorkWithUrl:urlStr parameters:params success:^(id  _Nonnull data) {
         NSArray *dataArray = data;

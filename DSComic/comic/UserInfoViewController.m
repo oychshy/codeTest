@@ -23,7 +23,7 @@
 @property(copy,nonatomic)NSString *UserName;
 @property(copy,nonatomic)NSString *UserHeadPic;
 
-
+@property(copy,nonatomic)NSArray *UserPortfolioArray;
 
 @property(retain,nonatomic)UIImageView *headerPicButton;
 @property(retain,nonatomic)UILabel *nameLabel;
@@ -57,12 +57,13 @@
     self.titleListInfos = [[NSMutableArray alloc] init];
     self.tempDatasDic = [[NSMutableDictionary alloc] init];
     
-    NSArray *data1 = @[@"他的订阅",@"包含被隐藏的被迫消失的订阅(古老)"];
+//    NSArray *data1 = @[@"他的订阅",@"包含被隐藏的被迫消失的订阅(古老)"];
+    
+    NSArray *data1 = @[];
     NSArray *data2 = @[@"他的评论"];
     
     [self.titleListInfos addObject:data1];
     [self.titleListInfos addObject:data2];
-//    [self MainTableView];
     [self ConfigUserData];
 }
 
@@ -83,7 +84,14 @@
         NSDictionary *getDic = data;
         self.UserName = getDic[@"nickname"];
         self.UserHeadPic = getDic[@"cover"];
-//        NSLog(@"OY===self.UserName:%@,self.UserHeadPic:%@",self.UserName,self.UserHeadPic);
+        NSArray *getData = getDic[@"data"];
+        
+        NSMutableArray *titleArray = [NSMutableArray arrayWithArray:self.titleListInfos[0]];
+        if (getData.count>0) {
+            [titleArray addObject:@"他的作品"];
+            [self.titleListInfos replaceObjectAtIndex:0 withObject:titleArray];
+            self.UserPortfolioArray = getData;
+        }
         [self ConfigUserSubscribeData];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
@@ -105,10 +113,12 @@
     
     [HttpRequest getNetWorkWithUrl:urlStr parameters:params success:^(id  _Nonnull data) {
         NSArray *getData = data;
-//        NSLog(@"OY===UserSubscribesArray:%@",getData);
 
+        NSMutableArray *titleArray = [NSMutableArray arrayWithArray:self.titleListInfos[0]];
         if (getData.count>0) {
             [self.UserSubscribesArray addObjectsFromArray:getData];
+            [titleArray addObject:@"他的订阅"];
+            [self.titleListInfos replaceObjectAtIndex:0 withObject:titleArray];
         }
         [self HiddenSubscribes];
     } failure:^(NSString * _Nonnull error) {
@@ -132,17 +142,23 @@
     
     [HttpRequest getNetWorkWithUrl:urlStr parameters:params success:^(id  _Nonnull data) {
         NSArray *getData = data;
-//        NSLog(@"OY===HiddenSubscribes:%@",getData);
-
+        NSMutableArray *titleArray = [NSMutableArray arrayWithArray:self.titleListInfos[0]];
         if (getData.count>0) {
             [self.HiddenSubscribesArray addObjectsFromArray:getData];
+            [titleArray addObject:@"包含被隐藏的被迫消失的订阅(古老)"];
+            [self.titleListInfos replaceObjectAtIndex:0 withObject:titleArray];
         }
-        [self MainPageTableView];
+        [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
     }];
 }
 
+-(void)configUI{
+    NSLog(@"OY===self.titleListInfos:%@",self.titleListInfos);
+    [self MainPageTableView];
+    [self.MainPageTableView reloadData];
+}
 
 -(UITableView*)MainPageTableView{
     if (!_MainPageTableView) {
@@ -158,6 +174,14 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *dataArray = self.titleListInfos[indexPath.section];
     NSString *titleStr = dataArray[indexPath.row];
+    NSInteger type = 0;
+    if ([titleStr isEqualToString:@"他的作品"]) {
+        type = 1;
+    }else if ([titleStr isEqualToString:@"他的订阅"]) {
+        type = 2;
+    }else if ([titleStr isEqualToString:@"包含被隐藏的被迫消失的订阅(古老)"]) {
+        type = 3;
+    }
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
@@ -168,13 +192,19 @@
     
     if (indexPath.section == 0) {
         NSArray *dataArray = [[NSArray alloc] init];
-        if (indexPath.row == 0) {
+        if (type == 1) {
+            if (self.UserPortfolioArray.count>5) {
+                dataArray = [self.UserPortfolioArray subarrayWithRange:NSMakeRange(0, 5)];
+            }else{
+                dataArray = self.UserPortfolioArray;
+            }
+        }else if (type == 2) {
             if (self.UserSubscribesArray.count>5) {
                 dataArray = [self.UserSubscribesArray subarrayWithRange:NSMakeRange(0, 5)];
             }else{
                 dataArray = self.UserSubscribesArray;
             }
-        }else{
+        }else if (type == 3) {
             if (self.HiddenSubscribesArray.count>5) {
                 dataArray = [self.HiddenSubscribesArray subarrayWithRange:NSMakeRange(0, 5)];
             }else{
@@ -190,7 +220,6 @@
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, titleLabel.y+titleLabel.height+YHEIGHT_SCALE(20)-YHEIGHT_SCALE(2), FUll_VIEW_WIDTH, YHEIGHT_SCALE(2))];
         [lineView setBackgroundColor:NavLineColor];
         [cell addSubview:lineView];
-
         
         UIButton *RightButton = [[UIButton alloc] initWithFrame:CGRectMake(FUll_VIEW_WIDTH-YWIDTH_SCALE(60), YHEIGHT_SCALE(30), YWIDTH_SCALE(40), YWIDTH_SCALE(40))];
         [RightButton setImage:[UIImage imageNamed:@"right_arrow"] forState:UIControlStateNormal];
@@ -205,12 +234,15 @@
             
             NSString *ImageUrl = getDic[@"cover"];
             NSString *ComicName;
-            NSInteger ComicID;
+            NSInteger ComicID = 0;
 
-            if (indexPath.row==0) {
+            if (type==1) {
+                ComicID = [getDic[@"id"] integerValue];
+                ComicName = getDic[@"name"];
+            }else if (type==2) {
                 ComicID = [getDic[@"obj_id"] integerValue];
                 ComicName = getDic[@"name"];
-            }else{
+            }else if (type == 3){
                 ComicID = [getDic[@"comic_id"] integerValue];
                 ComicName = getDic[@"comic_name"];
             }
@@ -339,14 +371,35 @@
 
 -(void)RightButtonAction:(UIButton*)sender{
     NSInteger tag  = sender.tag;
-    BOOL isHidenSubscribe = NO;
-    if (tag == 1) {
-        isHidenSubscribe = YES;
+    
+    NSArray *dataArray = self.titleListInfos[0];
+    NSString *titleStr = dataArray[tag];
+    NSInteger type = 0;
+    if ([titleStr isEqualToString:@"他的作品"]) {
+        type = 1;
+    }else if ([titleStr isEqualToString:@"他的订阅"]) {
+        type = 2;
+    }else if ([titleStr isEqualToString:@"包含被隐藏的被迫消失的订阅(古老)"]) {
+        type = 3;
     }
-    UserSubscribeViewController *vc = [[UserSubscribeViewController alloc] init];
-    vc.isHidenSubscribe = isHidenSubscribe;
-    vc.UserID = self.UserID;
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    if (type == 1) {
+        ComicAuthorViewController *vc = [[ComicAuthorViewController alloc] init];
+        vc.AuthorID = self.UserID;
+        vc.isUser = YES;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (type == 2) {
+        UserSubscribeViewController *vc = [[UserSubscribeViewController alloc] init];
+        vc.isHidenSubscribe = NO;
+        vc.UserID = self.UserID;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (type == 3) {
+        UserSubscribeViewController *vc = [[UserSubscribeViewController alloc] init];
+        vc.isHidenSubscribe = YES;
+        vc.UserID = self.UserID;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 -(void)showImageViewTap:(UITapGestureRecognizer*)tap{

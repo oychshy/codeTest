@@ -32,6 +32,8 @@
 		5B53556026F09AD400BBEBB9 /* JJCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B53555E26F09AD300BBEBB9 /* JJCarousel.m */; };
 		5B53556326F17B3700BBEBB9 /* PDBannerViewWithURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B53556226F17B3700BBEBB9 /* PDBannerViewWithURL.m */; };
 		5B6E8F3E26B3EEDE00DE699A /* filename1.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B6E8F3D26B3EEDE00DE699A /* filename1.json */; };
+		5B7A8B4B2720370900FDC441 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7A8B462720369200FDC441 /* libProtocolBuffers.a */; };
+		5B7A8B57272039B200FDC441 /* NovelDetail.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A8B53272039B000FDC441 /* NovelDetail.pbobjc.m */; };
 		5B86112427118E260029339E /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B86112327118E260029339E /* SortViewController.m */; };
 		5B8D7EFA26FAC2EA00DE6892 /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7EF926FAC2EA00DE6892 /* MainPageViewController.m */; };
 		5B8D7EFD26FB123700DE6892 /* MainPageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7EFC26FB123700DE6892 /* MainPageItem.m */; };
@@ -48,6 +50,7 @@
 		5B8D7F1F26FD7F4E00DE6892 /* ComicDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7F1E26FD7F4E00DE6892 /* ComicDetailTableViewCell.m */; };
 		5B8D7F2226FD7F9A00DE6892 /* ComicChapterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7F2126FD7F9A00DE6892 /* ComicChapterTableViewCell.m */; };
 		5B8D7F2526FD7FAF00DE6892 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7F2426FD7FAF00DE6892 /* CommentTableViewCell.m */; };
+		5B91B673271FECCA0086C779 /* id_rsa.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5B91B672271FECCA0086C779 /* id_rsa.txt */; };
 		5BA51CE22713DB6300E08294 /* ComicSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */; };
 		5BA51CE627140FB500E08294 /* HotSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CE527140FB500E08294 /* HotSearchTableViewCell.m */; };
 		5BA51CF22715558300E08294 /* ComicSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CF12715558300E08294 /* ComicSearchTableViewCell.m */; };
@@ -57,6 +60,11 @@
 		5BA51CFE2716D52E00E08294 /* UserCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BA51CFD2716D52E00E08294 /* UserCommentTableViewCell.m */; };
 		5BAB7C482701C2050093E9F3 /* ComicReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAB7C472701C2050093E9F3 /* ComicReaderViewController.m */; };
 		5BAB7C4B27029F830093E9F3 /* ComicReaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAB7C4A27029F830093E9F3 /* ComicReaderTableViewCell.m */; };
+		5BB186A42717C78400735E20 /* ComicAuthorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB186A32717C78400735E20 /* ComicAuthorViewController.m */; };
+		5BB186A72717D8FC00735E20 /* AuthorComicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB186A62717D8FC00735E20 /* AuthorComicTableViewCell.m */; };
+		5BB186AA27182F0100735E20 /* TopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB186A927182F0100735E20 /* TopicViewController.m */; };
+		5BB186AD2719095D00735E20 /* TopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB186AC2719095D00735E20 /* TopicTableViewCell.m */; };
+		5BB186B02719818700735E20 /* ChapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB186AF2719818700735E20 /* ChapterViewController.m */; };
 		5BB9481726AFF3FF00ABD6B8 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9480E26AFF3FF00ABD6B8 /* Tools.m */; };
 		5BB9481826AFF3FF00ABD6B8 /* UIView+LBExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9480F26AFF3FF00ABD6B8 /* UIView+LBExtension.m */; };
 		5BB9481926AFF3FF00ABD6B8 /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9481026AFF3FF00ABD6B8 /* UIImage+Image.m */; };
@@ -69,6 +77,37 @@
 		5BD9C29327044395003DFF76 /* MySubscribeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C29227044395003DFF76 /* MySubscribeViewController.m */; };
 		5BD9C29627049571003DFF76 /* RankTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C29527049571003DFF76 /* RankTableViewCell.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5B7A8B452720369200FDC441 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7461B52E0F94FAF800A0C422;
+			remoteInfo = ProtocolBuffers;
+		};
+		5B7A8B472720369200FDC441 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BBEA4A6147C727100C4ADB7;
+			remoteInfo = UnitTests;
+		};
+		5B7A8B492720369200FDC441 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F4487C6E1A9F8F8100531423;
+			remoteInfo = TestSingleSourceBuild;
+		};
+		5B7A8B4C2720387600FDC441 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7461B52D0F94FAF800A0C422;
+			remoteInfo = ProtocolBuffers;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		35AC9B60691FEBFBA58ABED7 /* libPods-DSComic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DSComic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +157,9 @@
 		5B53556126F17B3700BBEBB9 /* PDBannerViewWithURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDBannerViewWithURL.h; sourceTree = "<group>"; };
 		5B53556226F17B3700BBEBB9 /* PDBannerViewWithURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDBannerViewWithURL.m; sourceTree = "<group>"; };
 		5B6E8F3D26B3EEDE00DE699A /* filename1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = filename1.json; sourceTree = "<group>"; };
+		5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers_iOS.xcodeproj; path = DSComic/ProtocolBuffer/ProtocolBuffers_iOS.xcodeproj; sourceTree = SOURCE_ROOT; };
+		5B7A8B53272039B000FDC441 /* NovelDetail.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NovelDetail.pbobjc.m; sourceTree = "<group>"; };
+		5B7A8B55272039B200FDC441 /* NovelDetail.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NovelDetail.pbobjc.h; sourceTree = "<group>"; };
 		5B86112227118E260029339E /* SortViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
 		5B86112327118E260029339E /* SortViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		5B8D7EF826FAC2EA00DE6892 /* MainPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
@@ -149,6 +191,7 @@
 		5B8D7F2126FD7F9A00DE6892 /* ComicChapterTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicChapterTableViewCell.m; sourceTree = "<group>"; };
 		5B8D7F2326FD7FAF00DE6892 /* CommentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
 		5B8D7F2426FD7FAF00DE6892 /* CommentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommentTableViewCell.m; sourceTree = "<group>"; };
+		5B91B672271FECCA0086C779 /* id_rsa.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = id_rsa.txt; sourceTree = "<group>"; };
 		5BA51CE02713DB6300E08294 /* ComicSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicSearchViewController.h; sourceTree = "<group>"; };
 		5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicSearchViewController.m; sourceTree = "<group>"; };
 		5BA51CE427140FB500E08294 /* HotSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HotSearchTableViewCell.h; sourceTree = "<group>"; };
@@ -167,6 +210,16 @@
 		5BAB7C472701C2050093E9F3 /* ComicReaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicReaderViewController.m; sourceTree = "<group>"; };
 		5BAB7C4927029F830093E9F3 /* ComicReaderTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicReaderTableViewCell.h; sourceTree = "<group>"; };
 		5BAB7C4A27029F830093E9F3 /* ComicReaderTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicReaderTableViewCell.m; sourceTree = "<group>"; };
+		5BB186A22717C78300735E20 /* ComicAuthorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicAuthorViewController.h; sourceTree = "<group>"; };
+		5BB186A32717C78400735E20 /* ComicAuthorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicAuthorViewController.m; sourceTree = "<group>"; };
+		5BB186A52717D8FC00735E20 /* AuthorComicTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthorComicTableViewCell.h; sourceTree = "<group>"; };
+		5BB186A62717D8FC00735E20 /* AuthorComicTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthorComicTableViewCell.m; sourceTree = "<group>"; };
+		5BB186A827182F0100735E20 /* TopicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicViewController.h; sourceTree = "<group>"; };
+		5BB186A927182F0100735E20 /* TopicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicViewController.m; sourceTree = "<group>"; };
+		5BB186AB2719095D00735E20 /* TopicTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicTableViewCell.h; sourceTree = "<group>"; };
+		5BB186AC2719095D00735E20 /* TopicTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicTableViewCell.m; sourceTree = "<group>"; };
+		5BB186AE2719818700735E20 /* ChapterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChapterViewController.h; sourceTree = "<group>"; };
+		5BB186AF2719818700735E20 /* ChapterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChapterViewController.m; sourceTree = "<group>"; };
 		5BB9480D26AFF3FF00ABD6B8 /* NSObject+Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Model.h"; sourceTree = "<group>"; };
 		5BB9480E26AFF3FF00ABD6B8 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		5BB9480F26AFF3FF00ABD6B8 /* UIView+LBExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LBExtension.m"; sourceTree = "<group>"; };
@@ -198,6 +251,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B7A8B4B2720370900FDC441 /* libProtocolBuffers.a in Frameworks */,
 				5B8D7F0526FB499A00DE6892 /* Security.framework in Frameworks */,
 				305EE32058EA99129AAD7F90 /* libPods-DSComic.a in Frameworks */,
 			);
@@ -299,6 +353,7 @@
 		5B51109A26AFA97400D5E28E /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				5B91B672271FECCA0086C779 /* id_rsa.txt */,
 				5B6E8F3D26B3EEDE00DE699A /* filename1.json */,
 				5B51109B26AFA9B100D5E28E /* filename2.json */,
 			);
@@ -352,6 +407,10 @@
 				5BA51CF12715558300E08294 /* ComicSearchTableViewCell.m */,
 				5BA51CFC2716D52E00E08294 /* UserCommentTableViewCell.h */,
 				5BA51CFD2716D52E00E08294 /* UserCommentTableViewCell.m */,
+				5BB186A52717D8FC00735E20 /* AuthorComicTableViewCell.h */,
+				5BB186A62717D8FC00735E20 /* AuthorComicTableViewCell.m */,
+				5BB186AB2719095D00735E20 /* TopicTableViewCell.h */,
+				5BB186AC2719095D00735E20 /* TopicTableViewCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -359,16 +418,21 @@
 		5B51F6A626B2C8330053B434 /* comic */ = {
 			isa = PBXGroup;
 			children = (
+				5B91B674272030360086C779 /* Proto */,
 				5B8D7F0F26FC22E200DE6892 /* LoginViewController.h */,
 				5B8D7F1026FC22E200DE6892 /* LoginViewController.m */,
 				5B8D7EF826FAC2EA00DE6892 /* MainPageViewController.h */,
 				5B8D7EF926FAC2EA00DE6892 /* MainPageViewController.m */,
+				5BB186A827182F0100735E20 /* TopicViewController.h */,
+				5BB186A927182F0100735E20 /* TopicViewController.m */,
 				5BA51CE02713DB6300E08294 /* ComicSearchViewController.h */,
 				5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */,
 				5B86112227118E260029339E /* SortViewController.h */,
 				5B86112327118E260029339E /* SortViewController.m */,
 				5B8D7F1926FC9BED00DE6892 /* ComicDeatilViewController.h */,
 				5B8D7F1A26FC9BED00DE6892 /* ComicDeatilViewController.m */,
+				5BB186AE2719818700735E20 /* ChapterViewController.h */,
+				5BB186AF2719818700735E20 /* ChapterViewController.m */,
 				5BAB7C462701C2050093E9F3 /* ComicReaderViewController.h */,
 				5BAB7C472701C2050093E9F3 /* ComicReaderViewController.m */,
 				5B8D7F0C26FC0AB500DE6892 /* PersonalViewController.h */,
@@ -381,6 +445,8 @@
 				5BA51CF72716C26D00E08294 /* UserSubscribeViewController.m */,
 				5BA51CF92716CE4E00E08294 /* UserCommentViewController.h */,
 				5BA51CFA2716CE4E00E08294 /* UserCommentViewController.m */,
+				5BB186A22717C78300735E20 /* ComicAuthorViewController.h */,
+				5BB186A32717C78400735E20 /* ComicAuthorViewController.m */,
 				5B51F6A426B2C80B0053B434 /* model */,
 				5B51F6A526B2C81D0053B434 /* view */,
 				5B51109A26AFA97400D5E28E /* resource */,
@@ -398,6 +464,16 @@
 				5B53555F26F09AD300BBEBB9 /* JJCarousel.h */,
 			);
 			path = JJCarousel;
+			sourceTree = "<group>";
+		};
+		5B7A8B3F2720369100FDC441 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5B7A8B462720369200FDC441 /* libProtocolBuffers.a */,
+				5B7A8B482720369200FDC441 /* UnitTests.xctest */,
+				5B7A8B4A2720369200FDC441 /* libTestSingleSourceBuild.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		5B8D7F1826FC9BB000DE6892 /* util */ = {
@@ -426,6 +502,15 @@
 				5B8D7F2426FD7FAF00DE6892 /* CommentTableViewCell.m */,
 			);
 			path = ComicDetailCells;
+			sourceTree = "<group>";
+		};
+		5B91B674272030360086C779 /* Proto */ = {
+			isa = PBXGroup;
+			children = (
+				5B7A8B55272039B200FDC441 /* NovelDetail.pbobjc.h */,
+				5B7A8B53272039B000FDC441 /* NovelDetail.pbobjc.m */,
+			);
+			path = Proto;
 			sourceTree = "<group>";
 		};
 		5BA51CE327140E6500E08294 /* MainPage */ = {
@@ -467,6 +552,7 @@
 		5BB9481D26AFF45600ABD6B8 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */,
 				5B53555D26F09AD300BBEBB9 /* JJCarousel */,
 				5BB9481C26AFF41700ABD6B8 /* PrefixHeader.pch */,
 				5BB9480C26AFF3FF00ABD6B8 /* Category */,
@@ -492,6 +578,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5B7A8B4D2720387600FDC441 /* PBXTargetDependency */,
 			);
 			name = DSComic;
 			productName = DSComic;
@@ -523,12 +610,42 @@
 			mainGroup = 5B51107526AF9DB800D5E28E;
 			productRefGroup = 5B51107F26AF9DB800D5E28E /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 5B7A8B3F2720369100FDC441 /* Products */;
+					ProjectRef = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				5B51107D26AF9DB800D5E28E /* DSComic */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		5B7A8B462720369200FDC441 /* libProtocolBuffers.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libProtocolBuffers.a;
+			remoteRef = 5B7A8B452720369200FDC441 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5B7A8B482720369200FDC441 /* UnitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UnitTests.xctest;
+			remoteRef = 5B7A8B472720369200FDC441 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5B7A8B4A2720369200FDC441 /* libTestSingleSourceBuild.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTestSingleSourceBuild.a;
+			remoteRef = 5B7A8B492720369200FDC441 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5B51107C26AF9DB800D5E28E /* Resources */ = {
@@ -539,6 +656,7 @@
 				5B51109126AF9DBC00D5E28E /* LaunchScreen.storyboard in Resources */,
 				5B51108E26AF9DBC00D5E28E /* Assets.xcassets in Resources */,
 				5B51109C26AFA9B100D5E28E /* filename2.json in Resources */,
+				5B91B673271FECCA0086C779 /* id_rsa.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,6 +713,7 @@
 				5B51F6A926B2C9130053B434 /* CoverView.m in Sources */,
 				5B8D7EFD26FB123700DE6892 /* MainPageItem.m in Sources */,
 				5BA51CFB2716CE4E00E08294 /* UserCommentViewController.m in Sources */,
+				5B7A8B57272039B200FDC441 /* NovelDetail.pbobjc.m in Sources */,
 				5B0E819D26D794B900F7AAAD /* HttpRequest.m in Sources */,
 				5BB9481B26AFF3FF00ABD6B8 /* UIColor+Expanded.m in Sources */,
 				5BA51CF5271673F100E08294 /* UserInfoViewController.m in Sources */,
@@ -603,17 +722,20 @@
 				5BB9481826AFF3FF00ABD6B8 /* UIView+LBExtension.m in Sources */,
 				5B8D7F0B26FB4E2C00DE6892 /* RSA.m in Sources */,
 				5BA51CF22715558300E08294 /* ComicSearchTableViewCell.m in Sources */,
+				5BB186AD2719095D00735E20 /* TopicTableViewCell.m in Sources */,
 				5B51108926AF9DB800D5E28E /* ViewController.m in Sources */,
 				5BB9482626B0023A00ABD6B8 /* itemModel.m in Sources */,
 				5BB9481726AFF3FF00ABD6B8 /* Tools.m in Sources */,
 				5B51F6A026B294720053B434 /* PanTableView.m in Sources */,
 				5B51108326AF9DB800D5E28E /* AppDelegate.m in Sources */,
+				5BB186A72717D8FC00735E20 /* AuthorComicTableViewCell.m in Sources */,
 				5B4D779E26B12B9500A82A6A /* CustomProgressView.m in Sources */,
 				5B8D7F1B26FC9BED00DE6892 /* ComicDeatilViewController.m in Sources */,
 				5B8D7F0026FB1A1000DE6892 /* BannerTableViewCell.m in Sources */,
 				5B53556026F09AD400BBEBB9 /* JJCarousel.m in Sources */,
 				5B4E7BF826DC848A00FA3E35 /* VideoItemModel.m in Sources */,
 				5B4E7BED26D8B74D00FA3E35 /* VideoViewController.m in Sources */,
+				5BB186AA27182F0100735E20 /* TopicViewController.m in Sources */,
 				5B4E7BE926D891F100FA3E35 /* SearchTableViewCell.m in Sources */,
 				5B51F69C26B2881E0053B434 /* ReaderViewController.m in Sources */,
 				5B4E7BF426D8DA6500FA3E35 /* MainPageVideoCell.m in Sources */,
@@ -634,7 +756,9 @@
 				5B53556326F17B3700BBEBB9 /* PDBannerViewWithURL.m in Sources */,
 				5B8D7F1726FC761900DE6892 /* UserInfo.m in Sources */,
 				5B51109426AF9DBC00D5E28E /* main.m in Sources */,
+				5BB186A42717C78400735E20 /* ComicAuthorViewController.m in Sources */,
 				5B51F69426B176A70053B434 /* PanCollectionView.m in Sources */,
+				5BB186B02719818700735E20 /* ChapterViewController.m in Sources */,
 				5BA51CF82716C26D00E08294 /* UserSubscribeViewController.m in Sources */,
 				5B4634362700223C00EA6623 /* ChapterModel.m in Sources */,
 				5BA51CE627140FB500E08294 /* HotSearchTableViewCell.m in Sources */,
@@ -650,6 +774,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5B7A8B4D2720387600FDC441 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ProtocolBuffers;
+			targetProxy = 5B7A8B4C2720387600FDC441 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		5B51108F26AF9DBC00D5E28E /* LaunchScreen.storyboard */ = {
@@ -781,6 +913,16 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6G5K5485TB;
 				GCC_PREFIX_HEADER = /Users/js/Downloads/DSComic/DSComic/utils/PrefixHeader.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/YYText\"",
+					"$(PROJECT)/ProtocolBuffer",
+				);
 				INFOPLIST_FILE = DSComic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -788,6 +930,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REZ_SEARCH_PATHS = "$(PROJECT)/ProtocolBuffer";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -800,6 +943,16 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6G5K5485TB;
 				GCC_PREFIX_HEADER = /Users/js/Downloads/DSComic/DSComic/utils/PrefixHeader.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/YYText\"",
+					"$(PROJECT)/ProtocolBuffer",
+				);
 				INFOPLIST_FILE = DSComic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -807,6 +960,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REZ_SEARCH_PATHS = "$(PROJECT)/ProtocolBuffer";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

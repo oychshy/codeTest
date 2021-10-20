@@ -6,4 +6,5 @@ pod 'MBProgressHUD'
 pod 'SDWebImage'
 pod 'AFNetworking'
 pod 'YYText'
+pod  'Protobuf'
 end

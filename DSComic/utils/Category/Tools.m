@@ -17,7 +17,7 @@
     return stringBase64;
 }
 
-+ (NSString *)dencode:(NSString *)base64String{
++ (NSString *)base64decode:(NSString *)base64String{
     NSData *data = [[NSData alloc]initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
     NSString *string = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     return string;
@@ -127,6 +127,11 @@
     return platform;
 }
 
++(NSString*)getOSversion{
+    NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
+    return phoneVersion;
+}
+
 + (NSString *)TimestampToTimeWtihString:(NSString *)timestamp Format:(NSString *)format
 {
     if (timestamp.length == 13) {
@@ -173,6 +178,24 @@
                                                               (CFStringRef)@"!*'();:@&=+$,/?%#[]",                                                       kCFStringEncodingUTF8));
     return encodedString;
 }
+
+//+(NSString *)base64Encode:(NSString *)string
+//{
+//    //先将string转换成data
+//    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+//    NSData *base64Data = [data base64EncodedDataWithOptions:0];
+//    NSString *baseString = [[NSString alloc]initWithData:base64Data encoding:NSUTF8StringEncoding];
+//    return baseString;
+//}
+//
+//+(NSString *)base64Dencode:(NSString *)base64String
+//{
+//    //NSData *base64data = [string dataUsingEncoding:NSUTF8StringEncoding];
+//    
+//    NSData *data = [[NSData alloc]initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
+//    NSString *string = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//    return string;
+//}
 
 
 @end

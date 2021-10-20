@@ -19,8 +19,10 @@
     manger.responseSerializer = [AFHTTPResponseSerializer serializer];
     [manger.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
     NSString * encodingString = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    
-    [manger POST:encodingString parameters:params headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    NSString *setValueStr = [NSString stringWithFormat:@"iOS,DMZJ,%@",[Tools getOSversion]];
+    NSDictionary *header = @{@"User-Agent":setValueStr};
+
+    [manger POST:encodingString parameters:params headers:header constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *jsonStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSData *jsonData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
         NSError *err;
@@ -44,8 +46,9 @@
     manger.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     NSString * encodingString = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    [manger GET:encodingString parameters:dict headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    NSString *setValueStr = [NSString stringWithFormat:@"iOS,DMZJ,%@",[Tools getOSversion]];
+    NSDictionary *header = @{@"User-Agent":setValueStr};
+    [manger GET:encodingString parameters:dict headers:header progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *jsonStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSData *jsonData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
         NSError *err;
@@ -74,8 +77,10 @@
     manger.responseSerializer = [AFHTTPResponseSerializer serializer];
     [manger.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
     NSString * encodingString = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    
-    [manger POST:encodingString parameters:params headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    NSString *setValueStr = [NSString stringWithFormat:@"iOS,DMZJ,%@",[Tools getOSversion]];
+    NSDictionary *header = @{@"User-Agent":setValueStr};
+
+    [manger POST:encodingString parameters:params headers:header constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSString *Des = [NSString stringWithFormat:@"%@",error.description];
@@ -91,10 +96,12 @@
     response.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];
     manger.requestSerializer = requestSerializer;
     manger.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
+    NSString *setValueStr = [NSString stringWithFormat:@"iOS,DMZJ,%@",[Tools getOSversion]];
+    NSDictionary *header = @{@"User-Agent":setValueStr};
+
     NSString * encodingString = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    [manger GET:encodingString parameters:dict headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manger GET:encodingString parameters:dict headers:header progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSString *Des = [NSString stringWithFormat:@"%@",error.description];

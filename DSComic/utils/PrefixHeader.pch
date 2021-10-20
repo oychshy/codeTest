@@ -55,6 +55,11 @@
 #import "UserSubscribeViewController.h"
 #import "UserCommentViewController.h"
 #import "UserCommentTableViewCell.h"
+#import "ComicAuthorViewController.h"
+#import "AuthorComicTableViewCell.h"
+#import "TopicViewController.h"
+#import "TopicTableViewCell.h"
+#import "ChapterViewController.h"
 
 
 

@@ -142,7 +142,7 @@
     
     NSDictionary *postDic = [[NSDictionary alloc] init];
     if ((self.ChapterInfosArray.count>12)&&(index==11)) {
-        NSLog(@"OY===More");
+//        NSLog(@"OY===More");
         postDic = @{
             @"isPost":@(NO)
         };

@@ -28,7 +28,6 @@
     self.navigationController.navigationBar.hidden = YES;
     
     self.isLogin = [UserInfo shareUserInfo].isLogin;
-//    NSLog(@"OY===MainPage will:%d",self.isLogin);
 
     if (self.isLogin) {
         [self.MainPageTableView reloadData];
@@ -127,7 +126,6 @@
             [_nameLabel setText:[UserInfo shareUserInfo].nickname];
         }
         
-        
         return headerView;
     }else{
         return [UIView new];
@@ -197,7 +195,6 @@
                 vc.isHidenSubscribe = YES;
                 [self.navigationController pushViewController:vc animated:YES];
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"userRefresh" object:nil];
         }else{
             UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"未登录" message:nil preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
