@@ -32,8 +32,6 @@
 		5B53556026F09AD400BBEBB9 /* JJCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B53555E26F09AD300BBEBB9 /* JJCarousel.m */; };
 		5B53556326F17B3700BBEBB9 /* PDBannerViewWithURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B53556226F17B3700BBEBB9 /* PDBannerViewWithURL.m */; };
 		5B6E8F3E26B3EEDE00DE699A /* filename1.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B6E8F3D26B3EEDE00DE699A /* filename1.json */; };
-		5B7A8B4B2720370900FDC441 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7A8B462720369200FDC441 /* libProtocolBuffers.a */; };
-		5B7A8B57272039B200FDC441 /* NovelDetail.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A8B53272039B000FDC441 /* NovelDetail.pbobjc.m */; };
 		5B86112427118E260029339E /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B86112327118E260029339E /* SortViewController.m */; };
 		5B8D7EFA26FAC2EA00DE6892 /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7EF926FAC2EA00DE6892 /* MainPageViewController.m */; };
 		5B8D7EFD26FB123700DE6892 /* MainPageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8D7EFC26FB123700DE6892 /* MainPageItem.m */; };
@@ -77,37 +75,6 @@
 		5BD9C29327044395003DFF76 /* MySubscribeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C29227044395003DFF76 /* MySubscribeViewController.m */; };
 		5BD9C29627049571003DFF76 /* RankTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C29527049571003DFF76 /* RankTableViewCell.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		5B7A8B452720369200FDC441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7461B52E0F94FAF800A0C422;
-			remoteInfo = ProtocolBuffers;
-		};
-		5B7A8B472720369200FDC441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8BBEA4A6147C727100C4ADB7;
-			remoteInfo = UnitTests;
-		};
-		5B7A8B492720369200FDC441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F4487C6E1A9F8F8100531423;
-			remoteInfo = TestSingleSourceBuild;
-		};
-		5B7A8B4C2720387600FDC441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 7461B52D0F94FAF800A0C422;
-			remoteInfo = ProtocolBuffers;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		35AC9B60691FEBFBA58ABED7 /* libPods-DSComic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DSComic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,9 +124,6 @@
 		5B53556126F17B3700BBEBB9 /* PDBannerViewWithURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDBannerViewWithURL.h; sourceTree = "<group>"; };
 		5B53556226F17B3700BBEBB9 /* PDBannerViewWithURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDBannerViewWithURL.m; sourceTree = "<group>"; };
 		5B6E8F3D26B3EEDE00DE699A /* filename1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = filename1.json; sourceTree = "<group>"; };
-		5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers_iOS.xcodeproj; path = DSComic/ProtocolBuffer/ProtocolBuffers_iOS.xcodeproj; sourceTree = SOURCE_ROOT; };
-		5B7A8B53272039B000FDC441 /* NovelDetail.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NovelDetail.pbobjc.m; sourceTree = "<group>"; };
-		5B7A8B55272039B200FDC441 /* NovelDetail.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NovelDetail.pbobjc.h; sourceTree = "<group>"; };
 		5B86112227118E260029339E /* SortViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
 		5B86112327118E260029339E /* SortViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		5B8D7EF826FAC2EA00DE6892 /* MainPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
@@ -251,7 +215,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B7A8B4B2720370900FDC441 /* libProtocolBuffers.a in Frameworks */,
 				5B8D7F0526FB499A00DE6892 /* Security.framework in Frameworks */,
 				305EE32058EA99129AAD7F90 /* libPods-DSComic.a in Frameworks */,
 			);
@@ -466,16 +429,6 @@
 			path = JJCarousel;
 			sourceTree = "<group>";
 		};
-		5B7A8B3F2720369100FDC441 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5B7A8B462720369200FDC441 /* libProtocolBuffers.a */,
-				5B7A8B482720369200FDC441 /* UnitTests.xctest */,
-				5B7A8B4A2720369200FDC441 /* libTestSingleSourceBuild.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		5B8D7F1826FC9BB000DE6892 /* util */ = {
 			isa = PBXGroup;
 			children = (
@@ -507,8 +460,6 @@
 		5B91B674272030360086C779 /* Proto */ = {
 			isa = PBXGroup;
 			children = (
-				5B7A8B55272039B200FDC441 /* NovelDetail.pbobjc.h */,
-				5B7A8B53272039B000FDC441 /* NovelDetail.pbobjc.m */,
 			);
 			path = Proto;
 			sourceTree = "<group>";
@@ -552,7 +503,6 @@
 		5BB9481D26AFF45600ABD6B8 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */,
 				5B53555D26F09AD300BBEBB9 /* JJCarousel */,
 				5BB9481C26AFF41700ABD6B8 /* PrefixHeader.pch */,
 				5BB9480C26AFF3FF00ABD6B8 /* Category */,
@@ -578,7 +528,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				5B7A8B4D2720387600FDC441 /* PBXTargetDependency */,
 			);
 			name = DSComic;
 			productName = DSComic;
@@ -610,42 +559,12 @@
 			mainGroup = 5B51107526AF9DB800D5E28E;
 			productRefGroup = 5B51107F26AF9DB800D5E28E /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 5B7A8B3F2720369100FDC441 /* Products */;
-					ProjectRef = 5B7A8B3E2720369100FDC441 /* ProtocolBuffers_iOS.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				5B51107D26AF9DB800D5E28E /* DSComic */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		5B7A8B462720369200FDC441 /* libProtocolBuffers.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libProtocolBuffers.a;
-			remoteRef = 5B7A8B452720369200FDC441 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5B7A8B482720369200FDC441 /* UnitTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = UnitTests.xctest;
-			remoteRef = 5B7A8B472720369200FDC441 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5B7A8B4A2720369200FDC441 /* libTestSingleSourceBuild.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libTestSingleSourceBuild.a;
-			remoteRef = 5B7A8B492720369200FDC441 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5B51107C26AF9DB800D5E28E /* Resources */ = {
@@ -713,7 +632,6 @@
 				5B51F6A926B2C9130053B434 /* CoverView.m in Sources */,
 				5B8D7EFD26FB123700DE6892 /* MainPageItem.m in Sources */,
 				5BA51CFB2716CE4E00E08294 /* UserCommentViewController.m in Sources */,
-				5B7A8B57272039B200FDC441 /* NovelDetail.pbobjc.m in Sources */,
 				5B0E819D26D794B900F7AAAD /* HttpRequest.m in Sources */,
 				5BB9481B26AFF3FF00ABD6B8 /* UIColor+Expanded.m in Sources */,
 				5BA51CF5271673F100E08294 /* UserInfoViewController.m in Sources */,
@@ -774,14 +692,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		5B7A8B4D2720387600FDC441 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ProtocolBuffers;
-			targetProxy = 5B7A8B4C2720387600FDC441 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		5B51108F26AF9DBC00D5E28E /* LaunchScreen.storyboard */ = {

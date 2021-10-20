@@ -29,24 +29,24 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    UITabBarController *tb=[[UITabBarController alloc]init];
-    ViewController *c1=[[ViewController alloc]init];
-    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c1];
-    tb.viewControllers=@[PersonalNavi];
-    
-    
-//    [self getUserInfo];
 //    UITabBarController *tb=[[UITabBarController alloc]init];
-//    MainPageViewController *c1 = [[MainPageViewController alloc] init];
-//    PersonalViewController *c2 = [[PersonalViewController alloc] init];
-//    UINavigationController *mainNavi = [[UINavigationController alloc] initWithRootViewController:c1];
-//    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c2];
-//
-//    mainNavi.tabBarItem.title = @"主页";
-//    PersonalNavi.tabBarItem.title = @"我的";
-//    mainNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"home"] Size:CGSizeMake(30, 30)];
-//    PersonalNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"account"] Size:CGSizeMake(20, 20)];
-//    tb.viewControllers=@[mainNavi,PersonalNavi];
+//    ViewController *c1=[[ViewController alloc]init];
+//    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c1];
+//    tb.viewControllers=@[PersonalNavi];
+    
+    
+    [self getUserInfo];
+    UITabBarController *tb=[[UITabBarController alloc]init];
+    MainPageViewController *c1 = [[MainPageViewController alloc] init];
+    PersonalViewController *c2 = [[PersonalViewController alloc] init];
+    UINavigationController *mainNavi = [[UINavigationController alloc] initWithRootViewController:c1];
+    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c2];
+
+    mainNavi.tabBarItem.title = @"主页";
+    PersonalNavi.tabBarItem.title = @"我的";
+    mainNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"home"] Size:CGSizeMake(30, 30)];
+    PersonalNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"account"] Size:CGSizeMake(20, 20)];
+    tb.viewControllers=@[mainNavi,PersonalNavi];
     
     self.window.rootViewController=tb;
 
