@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(copy,nonatomic)NSString *photo;
 @property(copy,nonatomic)NSString *dmzj_token;
 @property(copy,nonatomic)NSMutableArray *mySubscribe;
+@property(copy,nonatomic)NSMutableArray *myNovelSubscribe;
 
 +(instancetype)shareUserInfo;
 @end

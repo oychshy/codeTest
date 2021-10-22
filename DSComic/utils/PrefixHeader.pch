@@ -60,6 +60,15 @@
 #import "TopicViewController.h"
 #import "TopicTableViewCell.h"
 #import "ChapterViewController.h"
+#import "NovelPageViewController.h"
+#import "NovelPageTableViewCell.h"
+#import "NovelUpdateViewController.h"
+#import "NovelUpdateTableViewCell.h"
+#import "NovelDetailViewController.h"
+#import "NovelDetailTableViewCell.h"
+#import "NovelVolumesTableViewCell.h"
+#import "NovelVolumeViewController.h"
+#import "NovelReaderViewController.h"
 
 
 
@@ -90,6 +99,10 @@
 #import "MidTextField.h"
 #import "YYLabel.h"
 #import "NSAttributedString+YYText.h"
+
+#import "RSA.h"
+#import "NovelDetail.pbobjc.h"
+#import "NovelChapter.pbobjc.h"
 
 
 #import "MBProgressHUD.h"

@@ -29,6 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSString*)dateWithString:(NSString*)str;
 +(NSString *)URLEncodedString:(NSString*)unencodedString;
 
++(NSData*)V4decrypt:(NSString*)base64String;
+
++(UIImage*)SetImageSize:(UIImage*)sendImage Size:(CGSize)size;
+
++(BOOL)isChinese:(NSString *)str;
+
 //+(NSString *)base64Encode:(NSString *)string;
 //+(NSString *)base64Dencode:(NSString *)base64String;
 

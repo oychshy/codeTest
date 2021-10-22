@@ -179,23 +179,37 @@
     return encodedString;
 }
 
-//+(NSString *)base64Encode:(NSString *)string
-//{
-//    //先将string转换成data
-//    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
-//    NSData *base64Data = [data base64EncodedDataWithOptions:0];
-//    NSString *baseString = [[NSString alloc]initWithData:base64Data encoding:NSUTF8StringEncoding];
-//    return baseString;
-//}
-//
-//+(NSString *)base64Dencode:(NSString *)base64String
-//{
-//    //NSData *base64data = [string dataUsingEncoding:NSUTF8StringEncoding];
-//    
-//    NSData *data = [[NSData alloc]initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
-//    NSString *string = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-//    return string;
-//}
++(BOOL)isChinese:(NSString *)str{
+    for(int i=0; i< [str length];i++)
+    {
+        int a = [str characterAtIndex:i];
+        if( a > 0x4E00 && a < 0x9FFF)
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
 
++(NSData*)V4decrypt:(NSString*)base64String{
+    NSData *data = [[NSData alloc]initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"id_rsa" ofType:@"txt"];
+    // 将文件数据化
+    NSData *privateKeyData = [[NSData alloc] initWithContentsOfFile:path];
+    NSString *privateKeyStr = [[NSString alloc]initWithData:privateKeyData encoding:NSUTF8StringEncoding];
+    NSData *decrypeData = [RSA decryptData:data privateKey:privateKeyStr];
+    return decrypeData;
+}
+
+
++(UIImage*)SetImageSize:(UIImage*)sendImage Size:(CGSize)size{
+//    UIImage *sendImage = [UIImage imageNamed:@"home"];
+//    CGSize size = CGSizeMake(30, 30);
+    UIGraphicsBeginImageContext(size);
+    [sendImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
 
 @end

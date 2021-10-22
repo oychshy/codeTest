@@ -10,6 +10,8 @@
 
 @interface AppDelegate ()
 @property(retain,nonatomic)NSMutableArray *MySubscribes;
+@property(retain,nonatomic)NSMutableArray *MyNovelSubscribes;
+
 @end
 
 @implementation AppDelegate
@@ -22,7 +24,7 @@
     [downloader setValue:@"http://images.dmzj.com/" forHTTPHeaderField:@"Referer"];
     [downloader setValue:@"%E5%8A%A8%E6%BC%AB%E4%B9%8B%E5%AE%B6/3 CFNetwork/1206 Darwin/20.1.0" forHTTPHeaderField:@"User-Agent"];
     [downloader setValue:@"zh-cn" forHTTPHeaderField:@"Accept-Language"];
-    [downloader setValue:@"Accept" forHTTPHeaderField:@"image/*,*/*;q=0.8"];
+//    [downloader setValue:@"Accept" forHTTPHeaderField:@"image/*,*/*;q=0.8"];
 
         
     
@@ -39,14 +41,21 @@
     UITabBarController *tb=[[UITabBarController alloc]init];
     MainPageViewController *c1 = [[MainPageViewController alloc] init];
     PersonalViewController *c2 = [[PersonalViewController alloc] init];
+    NovelPageViewController *c3 = [[NovelPageViewController alloc] init];
+
     UINavigationController *mainNavi = [[UINavigationController alloc] initWithRootViewController:c1];
+    UINavigationController *NovelNavi = [[UINavigationController alloc] initWithRootViewController:c3];
     UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c2];
 
     mainNavi.tabBarItem.title = @"主页";
+    NovelNavi.tabBarItem.title = @"轻小说";
     PersonalNavi.tabBarItem.title = @"我的";
-    mainNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"home"] Size:CGSizeMake(30, 30)];
-    PersonalNavi.tabBarItem.image = [self SetImageSize:[UIImage imageNamed:@"account"] Size:CGSizeMake(20, 20)];
-    tb.viewControllers=@[mainNavi,PersonalNavi];
+
+    mainNavi.tabBarItem.image = [Tools SetImageSize:[UIImage imageNamed:@"home"] Size:CGSizeMake(25, 25)];
+    NovelNavi.tabBarItem.image = [Tools SetImageSize:[UIImage imageNamed:@"novel"] Size:CGSizeMake(20, 20)];
+    PersonalNavi.tabBarItem.image = [Tools SetImageSize:[UIImage imageNamed:@"account"] Size:CGSizeMake(20, 20)];
+
+    tb.viewControllers=@[mainNavi,NovelNavi,PersonalNavi];
     
     self.window.rootViewController=tb;
 
@@ -59,16 +68,19 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *userInfoDic = [defaults valueForKey:@"userInfo"];
     self.MySubscribes = [[NSMutableArray alloc] init];
+    self.MyNovelSubscribes = [[NSMutableArray alloc] init];
 
     if (userInfoDic.allKeys>0) {
-        NSLog(@"OY===userInfoDic:%@",userInfoDic);
         [UserInfo shareUserInfo].isLogin = [[userInfoDic valueForKey:@"isLogin"] boolValue];
         [UserInfo shareUserInfo].uid = [userInfoDic valueForKey:@"uid"];
         [UserInfo shareUserInfo].nickname = [userInfoDic valueForKey:@"nickname"];
         [UserInfo shareUserInfo].photo = [userInfoDic valueForKey:@"photo"];
         [UserInfo shareUserInfo].dmzj_token = [userInfoDic valueForKey:@"dmzj_token"];
-        [self getAllMySubscribe:0];
-        NSLog(@"OY===isLogin:%d,uid:%@,nickname:%@,photo:%@",[UserInfo shareUserInfo].isLogin,[UserInfo shareUserInfo].uid,[UserInfo shareUserInfo].nickname,[UserInfo shareUserInfo].photo);
+        [self.MySubscribes removeAllObjects];
+        [self getAllMySubscribeType:0 Page:0];
+        [self.MyNovelSubscribes removeAllObjects];
+        [self getAllMySubscribeType:1 Page:0];
+//        NSLog(@"OY===isLogin:%d,uid:%@,nickname:%@,photo:%@",[UserInfo shareUserInfo].isLogin,[UserInfo shareUserInfo].uid,[UserInfo shareUserInfo].nickname,[UserInfo shareUserInfo].photo);
     }else{
         NSMutableDictionary *userInfoDic = [[NSMutableDictionary alloc] initWithDictionary:@{@"isLogin":@(NO),@"uid":@"",@"nickname":@"",@"photo":@"",@"dmzj_token":@""}];
         [UserInfo shareUserInfo].isLogin = NO;
@@ -77,14 +89,14 @@
         [UserInfo shareUserInfo].photo = @"";
         [UserInfo shareUserInfo].dmzj_token = @"";
         [UserInfo shareUserInfo].mySubscribe = @[];
-        NSLog(@"OY===isLogin:%d",[UserInfo shareUserInfo].isLogin);
+        [UserInfo shareUserInfo].myNovelSubscribe = @[];
+
+//        NSLog(@"OY===isLogin:%d",[UserInfo shareUserInfo].isLogin);
         [defaults setValue:userInfoDic forKey:@"userInfo"];
     }
-    
-    NSLog(@"OY===userInfoDic:%@",userInfoDic);
 }
 
--(void)getAllMySubscribe:(NSInteger)PageCount{
+-(void)getAllMySubscribeType:(NSInteger)type Page:(NSInteger)PageCount{
     NSString *IDFA = [Tools getIDFA];
     if (!IDFA) {
         IDFA = @"00000000-0000-0000-0000-000000000000";
@@ -96,13 +108,12 @@
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":IDFA,
-        @"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":[UserInfo shareUserInfo].uid,
         @"version":@"4.5.2",
         @"dmzj_token":[UserInfo shareUserInfo].dmzj_token,
-        @"type":@(0),
+        @"type":@(type),
         @"letter":@"all",
         @"sub_type":@(1),
         @"page":@(PageCount),
@@ -113,25 +124,25 @@
         NSArray *getData = data;
         if (getData.count>0) {
             for (NSDictionary *comicInfo in getData) {
-                [self.MySubscribes addObject:[NSString stringWithFormat:@"%@",comicInfo[@"id"]]];
+                if (type == 0) {
+                    [self.MySubscribes addObject:[NSString stringWithFormat:@"%@",comicInfo[@"id"]]];
+                }else{
+                    [self.MyNovelSubscribes addObject:[NSString stringWithFormat:@"%@",comicInfo[@"id"]]];
+                }
             }
-            [self getAllMySubscribe:PageCount+1];
+            [self getAllMySubscribeType:type Page:PageCount+1];
         }else{
-            [UserInfo shareUserInfo].mySubscribe = self.MySubscribes;
+            if (type == 0) {
+                [UserInfo shareUserInfo].mySubscribe = self.MySubscribes;
+            }else{
+                [UserInfo shareUserInfo].myNovelSubscribe = self.MyNovelSubscribes;
+            }
         }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
     }];
 }
 
--(UIImage*)SetImageSize:(UIImage*)sendImage Size:(CGSize)size{
-//    UIImage *sendImage = [UIImage imageNamed:@"home"];
-//    CGSize size = CGSizeMake(30, 30);
-    UIGraphicsBeginImageContext(size);
-    [sendImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
+
 
 @end
