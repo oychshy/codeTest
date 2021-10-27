@@ -79,12 +79,11 @@
 
 #pragma mark -- GetData
 -(void)getMySubscribe:(NSInteger)PageCount{
-    NSString *urlPath = [NSString stringWithFormat:@"http://nnv3api.muwai.com/v3/subscribe/0/%ld/%ld.json",self.UserID,PageCount];
+    NSString *urlPath = [NSString stringWithFormat:@"http://nnv3api.muwai.com/v3/subscribe/%ld/%ld/%ld.json",self.SubscribeType,self.UserID,PageCount];
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":@(self.UserID),
@@ -104,6 +103,7 @@
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [self.MainCollectionView.mj_footer endRefreshing];
     }];
 }
 
@@ -113,7 +113,6 @@
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":@(self.UserID),
@@ -237,10 +236,21 @@
         titleStr = [NSString stringWithFormat:@"%@",itemDic[@"name"]];
         getId = [itemDic[@"obj_id"] integerValue];
     }
-    ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
-    vc.comicId = getId;
-    vc.title = titleStr;
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    if (self.SubscribeType == 0) {
+        ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
+        vc.comicId = getId;
+        vc.titleStr = titleStr;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        NovelDetailViewController *vc = [[NovelDetailViewController alloc] init];
+        vc.novelId = getId;
+        vc.titleStr = titleStr;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    
 }
 
 

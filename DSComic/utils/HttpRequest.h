@@ -19,6 +19,7 @@ typedef void(^FailureBlock)(NSString *error);
 + (void)getNetWorkWithUrl:(NSString *)url parameters:(NSDictionary *)dict success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock;
 + (void)postNetWorkDataWithUrl:(NSString *)url parameters:(NSDictionary *)params success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock;
 + (void)getNetWorkDataWithUrl:(NSString *)url parameters:(NSDictionary *)dict success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock;
++ (void)getNetWorkDataWithUrl:(NSString *)url parameters:(NSDictionary *)dict header:(NSDictionary *)header success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UserCommentViewController : UIViewController
+@property(assign,nonatomic)NSInteger Type;
 @property(assign,nonatomic)NSInteger UserID;
 @end
 

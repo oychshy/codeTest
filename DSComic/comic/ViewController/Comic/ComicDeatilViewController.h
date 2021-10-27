@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ComicDeatilViewController : UIViewController
 @property(assign,nonatomic)NSInteger comicId;
-@property(copy,nonatomic)NSString *title;
+@property(copy,nonatomic)NSString *titleStr;
 @end
 
 NS_ASSUME_NONNULL_END

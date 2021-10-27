@@ -12,7 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NovelVolumeViewController : UIViewController
 @property(assign,nonatomic)NSInteger novelId;
+@property(assign,nonatomic)NSInteger VolumeId;
 @property(copy,nonatomic)NSString *titleStr;
+@property(assign,nonatomic)NSInteger SelectedVolumeCount;
+@property(copy,nonatomic)NSArray *VolumeArray;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -11,10 +11,13 @@
 @interface UserInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(retain,nonatomic)UITableView *MainPageTableView;
 @property(retain,nonatomic)NSMutableArray *titleListInfos;
-@property(retain,nonatomic)NSMutableArray *UserSubscribesArray;
+@property(retain,nonatomic)NSMutableArray *UserComicSubscribesArray;
+@property(retain,nonatomic)NSMutableArray *UserNovelSubscribesArray;
+
 @property(retain,nonatomic)NSMutableArray *HiddenSubscribesArray;
 
 @property(retain,nonatomic)NSMutableDictionary *tempDatasDic;
+@property(assign,nonatomic)BOOL isTapComic;
 
 
 @property(assign,nonatomic)BOOL isLogin;
@@ -52,7 +55,8 @@
         self.IDFA = @"00000000-0000-0000-0000-000000000000";
     }
     
-    self.UserSubscribesArray = [[NSMutableArray alloc] init];
+    self.UserComicSubscribesArray = [[NSMutableArray alloc] init];
+    self.UserNovelSubscribesArray = [[NSMutableArray alloc] init];
     self.HiddenSubscribesArray = [[NSMutableArray alloc] init];
     self.titleListInfos = [[NSMutableArray alloc] init];
     self.tempDatasDic = [[NSMutableDictionary alloc] init];
@@ -60,10 +64,16 @@
 //    NSArray *data1 = @[@"他的订阅",@"包含被隐藏的被迫消失的订阅(古老)"];
     
     NSArray *data1 = @[];
-    NSArray *data2 = @[@"他的评论"];
+    NSArray *data2 = @[@"他的漫画评论"];
+    
+    NSArray *data3 = @[];
+    NSArray *data4 = @[@"他的小说评论"];
     
     [self.titleListInfos addObject:data1];
     [self.titleListInfos addObject:data2];
+    [self.titleListInfos addObject:data3];
+    [self.titleListInfos addObject:data4];
+
     [self ConfigUserData];
 }
 
@@ -88,17 +98,17 @@
         
         NSMutableArray *titleArray = [NSMutableArray arrayWithArray:self.titleListInfos[0]];
         if (getData.count>0) {
-            [titleArray addObject:@"他的作品"];
+            [titleArray addObject:@"他的漫画作品"];
             [self.titleListInfos replaceObjectAtIndex:0 withObject:titleArray];
             self.UserPortfolioArray = getData;
         }
-        [self ConfigUserSubscribeData];
+        [self ConfigUserCmoicSubscribeData];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
     }];
 }
 
--(void)ConfigUserSubscribeData{
+-(void)ConfigUserCmoicSubscribeData{
     NSString *urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/v3/subscribe/0/%ld/0.json",self.UserID];
     NSDictionary *params = @{
         @"app_channel":@(101),
@@ -116,8 +126,8 @@
 
         NSMutableArray *titleArray = [NSMutableArray arrayWithArray:self.titleListInfos[0]];
         if (getData.count>0) {
-            [self.UserSubscribesArray addObjectsFromArray:getData];
-            [titleArray addObject:@"他的订阅"];
+            [self.UserComicSubscribesArray addObjectsFromArray:getData];
+            [titleArray addObject:@"他的漫画订阅"];
             [self.titleListInfos replaceObjectAtIndex:0 withObject:titleArray];
         }
         [self HiddenSubscribes];
@@ -133,7 +143,6 @@
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":@(self.UserID),
@@ -145,13 +154,40 @@
         NSMutableArray *titleArray = [NSMutableArray arrayWithArray:self.titleListInfos[0]];
         if (getData.count>0) {
             [self.HiddenSubscribesArray addObjectsFromArray:getData];
-            [titleArray addObject:@"包含被隐藏的被迫消失的订阅(古老)"];
+            [titleArray addObject:@"包含被隐藏的被迫消失的漫画订阅(古老)"];
             [self.titleListInfos replaceObjectAtIndex:0 withObject:titleArray];
+        }
+        [self ConfigUserNovelSubscribeData];
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+    }];
+}
+
+-(void)ConfigUserNovelSubscribeData{
+    NSString *urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/v3/subscribe/1/%ld/0.json",self.UserID];
+    NSDictionary *params = @{
+        @"app_channel":@(101),
+        @"channel":@"ios",
+        @"imei":self.IDFA,
+        @"terminal_model":[Tools getDevice],
+        @"timestamp":[Tools currentTimeStr],
+        @"uid":@(self.UserID),
+        @"version":@"4.5.2",
+    };
+    
+    [HttpRequest getNetWorkWithUrl:urlStr parameters:params success:^(id  _Nonnull data) {
+        NSArray *getData = data;
+        NSMutableArray *titleArray = [NSMutableArray arrayWithArray:self.titleListInfos[2]];
+        if (getData.count>0) {
+            [self.UserNovelSubscribesArray addObjectsFromArray:getData];
+            [titleArray addObject:@"他的小说订阅"];
+            [self.titleListInfos replaceObjectAtIndex:2 withObject:titleArray];
         }
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
     }];
+    
 }
 
 -(void)configUI{
@@ -174,13 +210,17 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *dataArray = self.titleListInfos[indexPath.section];
     NSString *titleStr = dataArray[indexPath.row];
+    
+    
     NSInteger type = 0;
-    if ([titleStr isEqualToString:@"他的作品"]) {
+    if ([titleStr isEqualToString:@"他的漫画作品"]) {
         type = 1;
-    }else if ([titleStr isEqualToString:@"他的订阅"]) {
+    }else if ([titleStr isEqualToString:@"他的漫画订阅"]) {
         type = 2;
-    }else if ([titleStr isEqualToString:@"包含被隐藏的被迫消失的订阅(古老)"]) {
+    }else if ([titleStr isEqualToString:@"包含被隐藏的被迫消失的漫画订阅(古老)"]) {
         type = 3;
+    }else if ([titleStr isEqualToString:@"他的小说订阅"]) {
+        type = 4;
     }
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -190,7 +230,7 @@
     cell.separatorInset = UIEdgeInsetsZero;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0 || indexPath.section == 2) {
         NSArray *dataArray = [[NSArray alloc] init];
         if (type == 1) {
             if (self.UserPortfolioArray.count>5) {
@@ -199,16 +239,22 @@
                 dataArray = self.UserPortfolioArray;
             }
         }else if (type == 2) {
-            if (self.UserSubscribesArray.count>5) {
-                dataArray = [self.UserSubscribesArray subarrayWithRange:NSMakeRange(0, 5)];
+            if (self.UserComicSubscribesArray.count>5) {
+                dataArray = [self.UserComicSubscribesArray subarrayWithRange:NSMakeRange(0, 5)];
             }else{
-                dataArray = self.UserSubscribesArray;
+                dataArray = self.UserComicSubscribesArray;
             }
         }else if (type == 3) {
             if (self.HiddenSubscribesArray.count>5) {
                 dataArray = [self.HiddenSubscribesArray subarrayWithRange:NSMakeRange(0, 5)];
             }else{
                 dataArray = self.HiddenSubscribesArray;
+            }
+        }else if (type == 4) {
+            if (self.UserNovelSubscribesArray.count>5) {
+                dataArray = [self.UserNovelSubscribesArray subarrayWithRange:NSMakeRange(0, 5)];
+            }else{
+                dataArray = self.UserNovelSubscribesArray;
             }
         }
         
@@ -221,17 +267,18 @@
         [lineView setBackgroundColor:NavLineColor];
         [cell addSubview:lineView];
         
-        UIButton *RightButton = [[UIButton alloc] initWithFrame:CGRectMake(FUll_VIEW_WIDTH-YWIDTH_SCALE(60), YHEIGHT_SCALE(30), YWIDTH_SCALE(40), YWIDTH_SCALE(40))];
-        [RightButton setImage:[UIImage imageNamed:@"right_arrow"] forState:UIControlStateNormal];
-        RightButton.tag = indexPath.row;
-        [RightButton addTarget:self action:@selector(RightButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell addSubview:RightButton];
+        CustomRightButton *rightButton = [[CustomRightButton alloc] initWithFrame:CGRectMake(FUll_VIEW_WIDTH-YWIDTH_SCALE(60), YHEIGHT_SCALE(30), YWIDTH_SCALE(40), YWIDTH_SCALE(40))];
+        [rightButton setImage:[UIImage imageNamed:@"right_arrow"] forState:UIControlStateNormal];
+        rightButton.section = indexPath.section;
+        rightButton.row = indexPath.row;
+        [rightButton addTarget:self action:@selector(CustomRightButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell addSubview:rightButton];
         
         CGFloat Width = (FUll_VIEW_WIDTH-YWIDTH_SCALE(120))/5;
         CGFloat Height = Width/3*4;
+        
         for (int i=0; i<dataArray.count; i++) {
             NSDictionary *getDic = dataArray[i];
-            
             NSString *ImageUrl = getDic[@"cover"];
             NSString *ComicName;
             NSInteger ComicID = 0;
@@ -239,7 +286,7 @@
             if (type==1) {
                 ComicID = [getDic[@"id"] integerValue];
                 ComicName = getDic[@"name"];
-            }else if (type==2) {
+            }else if (type==2||type == 4) {
                 ComicID = [getDic[@"obj_id"] integerValue];
                 ComicName = getDic[@"name"];
             }else if (type == 3){
@@ -249,9 +296,14 @@
             
             [self.tempDatasDic setValue:ComicName forKey:[NSString stringWithFormat:@"%ld",ComicID]];
             
-            UIImageView *showImageView = [[UIImageView alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(20)+(Width+YWIDTH_SCALE(20))*i, lineView.y+lineView.height+YHEIGHT_SCALE(30), Width, Height)];
+            ShowImageView *showImageView = [[ShowImageView alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(20)+(Width+YWIDTH_SCALE(20))*i, lineView.y+lineView.height+YHEIGHT_SCALE(30), Width, Height)];
             [showImageView sd_setImageWithURL:[NSURL URLWithString:ImageUrl]];
-            showImageView.tag = ComicID;
+            showImageView.itemID = ComicID;
+            if (type == 4) {
+                showImageView.isComic = NO;
+            }else{
+                showImageView.isComic = YES;
+            }
             showImageView.cornerRadius = 5;
             showImageView.clipsToBounds = YES;
             showImageView.userInteractionEnabled = YES;
@@ -264,7 +316,6 @@
     }else{
         cell.textLabel.text = titleStr;
     }
-    
     return cell;
 }
 
@@ -326,7 +377,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0 || indexPath.section == 2) {
         CGFloat Width = (FUll_VIEW_WIDTH-YWIDTH_SCALE(120))/5;
         CGFloat Height = Width/3*4;
         return Height+YHEIGHT_SCALE(170);
@@ -357,11 +408,15 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UserCommentViewController *vc = [[UserCommentViewController alloc] init];
+    vc.UserID = self.UserID;
     if (indexPath.section == 1) {
-        UserCommentViewController *vc = [[UserCommentViewController alloc] init];
-        vc.UserID = self.UserID;
-        [self.navigationController pushViewController:vc animated:YES];
+        vc.Type = 0;
+    }else if (indexPath.section == 3){
+        vc.Type = 1;
     }
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 
@@ -369,18 +424,20 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)RightButtonAction:(UIButton*)sender{
-    NSInteger tag  = sender.tag;
-    
-    NSArray *dataArray = self.titleListInfos[0];
-    NSString *titleStr = dataArray[tag];
+-(void)CustomRightButtonAction:(CustomRightButton*)sender{
+    NSInteger section  = sender.section;
+    NSInteger row  = sender.row;
+    NSArray *dataArray = self.titleListInfos[section];
+    NSString *titleStr = dataArray[row];
     NSInteger type = 0;
-    if ([titleStr isEqualToString:@"他的作品"]) {
+    if ([titleStr isEqualToString:@"他的漫画作品"]) {
         type = 1;
-    }else if ([titleStr isEqualToString:@"他的订阅"]) {
+    }else if ([titleStr isEqualToString:@"他的漫画订阅"]) {
         type = 2;
-    }else if ([titleStr isEqualToString:@"包含被隐藏的被迫消失的订阅(古老)"]) {
+    }else if ([titleStr isEqualToString:@"包含被隐藏的被迫消失的漫画订阅(古老)"]) {
         type = 3;
+    }else if ([titleStr isEqualToString:@"他的小说订阅"]) {
+        type = 4;
     }
     
     if (type == 1) {
@@ -391,29 +448,43 @@
         [self.navigationController pushViewController:vc animated:YES];
     }else if (type == 2) {
         UserSubscribeViewController *vc = [[UserSubscribeViewController alloc] init];
+        vc.SubscribeType = 0;
         vc.isHidenSubscribe = NO;
         vc.UserID = self.UserID;
         [self.navigationController pushViewController:vc animated:YES];
     }else if (type == 3) {
         UserSubscribeViewController *vc = [[UserSubscribeViewController alloc] init];
+        vc.SubscribeType = 0;
         vc.isHidenSubscribe = YES;
+        vc.UserID = self.UserID;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (type == 4) {
+        UserSubscribeViewController *vc = [[UserSubscribeViewController alloc] init];
+        vc.SubscribeType = 1;
+        vc.isHidenSubscribe = NO;
         vc.UserID = self.UserID;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
 -(void)showImageViewTap:(UITapGestureRecognizer*)tap{
-    UIView *sender = tap.view;
-    NSInteger ComicID = sender.tag;
-    NSString *titleStr = [self.tempDatasDic valueForKey:[NSString stringWithFormat:@"%ld",ComicID]];
-    
-    ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
-    vc.comicId = ComicID;
-    vc.title = titleStr;
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-
-
+    ShowImageView *sender = (ShowImageView*)tap.view;
+    NSInteger ItemID = sender.itemID;
+    BOOL isComic = sender.isComic;
+    NSString *titleStr = [self.tempDatasDic valueForKey:[NSString stringWithFormat:@"%ld",ItemID]];
+    if (isComic) {
+        ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
+        vc.comicId = ItemID;
+        vc.titleStr = titleStr;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        NovelDetailViewController *vc = [[NovelDetailViewController alloc] init];
+        vc.novelId = ItemID;
+        vc.titleStr = titleStr;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 

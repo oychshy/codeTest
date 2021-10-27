@@ -225,7 +225,7 @@
 
     ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
     vc.comicId = comicID;
-    vc.title = titleStr;
+    vc.titleStr = titleStr;
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 

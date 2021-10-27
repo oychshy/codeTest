@@ -75,7 +75,11 @@
 }
 
 - (void)addReTryButton{
-    [showImageView sd_setImageWithURL:[NSURL URLWithString:getModel.link] placeholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+    NSString *linkUrl = getModel.link;
+    if ([Tools isChinese:linkUrl]) {
+        linkUrl = [getModel.link stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
+    [showImageView sd_setImageWithURL:[NSURL URLWithString:linkUrl] placeholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
         CGFloat progress = ((CGFloat)receivedSize / (CGFloat)expectedSize);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self updateProgress:progress];

@@ -73,12 +73,16 @@
 
 
 -(void)ConfigUserDataPage:(NSInteger)pageIndex{
-    NSString *urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/v3/old/comment/owner/0/%ld/%ld.json",self.UserID,pageIndex];
+    NSString *urlStr = @"";
+    if (self.Type == 0) {
+        urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/v3/old/comment/owner/0/%ld/%ld.json",self.UserID,pageIndex];
+    }else{
+        urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/comment/owner/1/%ld/%ld.json",self.UserID,pageIndex];
+    }
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":@(self.UserID),
@@ -96,7 +100,7 @@
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
-        [self.MainPageTableView.mj_footer endRefreshingWithNoMoreData];
+        [self.MainPageTableView.mj_footer endRefreshing];
     }];
 }
 
@@ -146,10 +150,19 @@
 }
 
 -(void)PostComicID:(NSInteger)ComicID Title:(NSString *)ComicName{
-    ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
-    vc.comicId = ComicID;
-    vc.title = ComicName;
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    if (self.Type == 0) {
+        ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
+        vc.comicId = ComicID;
+        vc.titleStr = ComicName;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        NovelDetailViewController *vc = [[NovelDetailViewController alloc] init];
+        vc.novelId = ComicID;
+        vc.titleStr = ComicName;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 

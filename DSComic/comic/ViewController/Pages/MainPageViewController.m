@@ -592,7 +592,7 @@
         ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
         NSInteger getId = [getData[@"id"] integerValue];
         vc.comicId = getId;
-        vc.title = getData[@"name"];
+        vc.titleStr = getData[@"name"];
         self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }else if (tableView == self.RankTableView) {
@@ -600,7 +600,7 @@
         ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
         NSInteger getId = [getData[@"id"] integerValue];
         vc.comicId = getId;
-        vc.title = getData[@"name"];
+        vc.titleStr = getData[@"name"];
         self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -733,7 +733,7 @@
             getId = [getData[@"id"] integerValue];
         }
         vc.comicId = getId;
-        vc.title = getData[@"title"];
+        vc.titleStr = getData[@"title"];
         self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }

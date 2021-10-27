@@ -127,7 +127,8 @@
     postDic = @{
         @"novelID":@(model.lnovelId),
         @"volumeId":@(model.volumeId),
-        @"volumeName":model.volumeName
+        @"volumeName":model.volumeName,
+        @"volumeOrder":@(model.volumeOrder)
     };
         
     if (self.delegate&&[self.delegate respondsToSelector:@selector(SelectedVolumes:)]) {

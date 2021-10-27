@@ -109,6 +109,24 @@
     }];
 }
 
++ (void)getNetWorkDataWithUrl:(NSString *)url parameters:(NSDictionary *)dict header:(NSDictionary *)header success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock{
+    AFHTTPSessionManager *manger = [AFHTTPSessionManager manager];
+    AFHTTPRequestSerializer *requestSerializer =  [AFJSONRequestSerializer serializer];
+    AFJSONResponseSerializer *response = [AFJSONResponseSerializer serializer];
+    response.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];
+    manger.requestSerializer = requestSerializer;
+    manger.responseSerializer = [AFHTTPResponseSerializer serializer];
+    NSString * encodingString = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [manger GET:encodingString parameters:dict headers:header progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        successBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSString *Des = [NSString stringWithFormat:@"%@",error.description];
+        failureBlock(Des);
+    }];
+}
+
+
 
 
 @end

@@ -146,6 +146,7 @@
         [self ConfigUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [self.SortCollectionView.mj_footer endRefreshing];
     }];
 }
 
@@ -231,7 +232,7 @@
     ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
     NSInteger getId = [itemDic[@"id"] integerValue];
     vc.comicId = getId;
-    vc.title = itemDic[@"title"];
+    vc.titleStr = itemDic[@"title"];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

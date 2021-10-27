@@ -19,10 +19,13 @@
 @property(copy,nonatomic)NSString *IDFA;
 
 @property(retain,nonatomic)UIView *NaviView;
+@property(retain,nonatomic)UIView *BottomView;
+
 @property(retain,nonatomic)UIView *ErrorView;
 @property(retain,nonatomic)UITableView *MainTabelView;
 
 @property(retain,nonatomic)NSMutableDictionary *ComicDetailDic;
+@property(copy,nonatomic)NSString *FirstLetterStr;
 @property(retain,nonatomic)NSMutableArray *ChapterArray;
 @property(retain,nonatomic)NSMutableArray *TagInfoArray;
 @property(retain,nonatomic)NSDictionary *ComicLogDic;
@@ -60,7 +63,7 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake((FUll_VIEW_WIDTH-YWIDTH_SCALE(500))/2, backButton.y, YWIDTH_SCALE(500), backButton.height)];
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    [titleLabel setText:self.title];
+    [titleLabel setText:self.titleStr];
     [_NaviView addSubview:titleLabel];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _NaviView.height-YHEIGHT_SCALE(2), _NaviView.width, YHEIGHT_SCALE(2))];
@@ -78,6 +81,12 @@
     [self getComicDeatil];
 }
 
+-(void)ReFreshData{
+    self.commetPage = 1;
+    [self.CommentIdsArray removeAllObjects];
+    [self.CommentsDic removeAllObjects];
+    [self getComicCommentsWith:self.commetPage];
+}
 
 
 - (void)viewDidLoad {
@@ -108,18 +117,16 @@
             self.isSubscribe = YES;
         }
     }
-    
     [self getComicLogChapter];
 }
 
-
+#pragma mark --Comic Requests
 -(void)getComicLogChapter{
     NSString *urlPath = [NSString stringWithFormat:@"https://nninterface.muwai.com/api/getReInfo/comic/%@/%ld/",[UserInfo shareUserInfo].uid,self.comicId];
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":[UserInfo shareUserInfo].uid,
@@ -137,7 +144,6 @@
 }
 
 -(void)getComicDeatil{
-//    self.comicId = 38890;
     NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/info/%ld.html",self.comicId];
     NSDictionary *params = @{
         @"version":@"1.0.2",
@@ -161,6 +167,7 @@
         }else{
             NSDictionary *detailDic = data;
             self.ComicDetailDic = detailDic[@"comic"];
+            self.FirstLetterStr = self.ComicDetailDic[@"first_letter"];
             NSString *jsonDatasStr = detailDic[@"chapter_json"];
             NSArray *jsonDatas = [NSJSONSerialization JSONObjectWithData:[jsonDatasStr dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
             NSDictionary *ChaptersDic = jsonDatas[0];
@@ -180,16 +187,13 @@
     [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
         [self.ErrorView setHidden:YES];
         NSDictionary *getData = data;
-//        NSLog(@"OY===getComicDeatilV1 getData:%@",getData);
         NSInteger errorcode = [getData[@"result"] integerValue];
         if (errorcode == 1) {
             NSDictionary *detailDic = getData[@"data"];
             self.ComicDetailDic = detailDic[@"info"];
-//            NSString *jsonDatasStr = detailDic[@"list"];
-//            NSArray *jsonDatas = detailDic[@"list"];
-//            NSDictionary *ChaptersDic = jsonDatas[0];
+            self.FirstLetterStr = self.ComicDetailDic[@"first_letter"];
             self.ChapterArray = detailDic[@"list"];
-//            self.TagInfoArray = [NSMutableArray arrayWithArray:detailDic[@"tag_info"]];
+            self.FirstLetterStr = detailDic[@"first_letter"];
         }else{
             self.ComicDetailDic = [NSMutableDictionary dictionaryWithDictionary:@{@"hexie":@(YES)}];
         }
@@ -212,7 +216,6 @@
             @"app_channel":@(101),
             @"channel":@"ios",
             @"imei":self.IDFA,
-            //@"iosId":@"89728b06283841e4a411c7cb600e4052",
             @"terminal_model":[Tools getDevice],
             @"timestamp":[Tools currentTimeStr],
             @"uid":[UserInfo shareUserInfo].uid,
@@ -225,7 +228,6 @@
             @"app_channel":@(101),
             @"channel":@"ios",
             @"imei":self.IDFA,
-            //@"iosId":@"89728b06283841e4a411c7cb600e4052",
             @"terminal_model":[Tools getDevice],
             @"timestamp":[Tools currentTimeStr],
             @"version":@"4.5.2"
@@ -233,7 +235,6 @@
     }
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
         NSDictionary *CommentInfoDic = data;
-//        NSLog(@"OY===CommentInfoDic:%@",CommentInfoDic);
         NSInteger total = [CommentInfoDic[@"total"] integerValue];
         if (total == 0) {
             self.CommentIdsArray = [[NSMutableArray alloc] init];
@@ -254,14 +255,41 @@
                 [self.MainTabelView.mj_footer endRefreshingWithNoMoreData];
             }
         }
+        [self.MainTabelView.mj_header endRefreshing];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
-        [self.MainTabelView.mj_footer endRefreshingWithNoMoreData];
+        [self.MainTabelView.mj_header endRefreshing];
+        [self.MainTabelView.mj_footer endRefreshing];
     }];
     
 }
 
+-(UIView*)BottomView{
+    if (!_BottomView) {
+        _BottomView = [[UIView alloc] initWithFrame:CGRectMake(0, FUll_VIEW_HEIGHT-YHEIGHT_SCALE(88), FUll_VIEW_WIDTH, YHEIGHT_SCALE(88))];
+        [_BottomView setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:_BottomView];
+        
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _BottomView.width, YHEIGHT_SCALE(2))];
+        [lineView setBackgroundColor:NavLineColor];
+        [_BottomView addSubview:lineView];
+        
+        UIButton *CommitButton = [[UIButton alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(30), YHEIGHT_SCALE(14), FUll_VIEW_WIDTH/4*3, YHEIGHT_SCALE(62))];
+        [CommitButton setTitle:@"发表你的观点..." forState:UIControlStateNormal];
+        [CommitButton.titleLabel setFont:[UIFont systemFontOfSize:YFONTSIZEFROM_PX(32)]];
+        CommitButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        CommitButton.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
+        CommitButton.contentEdgeInsets =UIEdgeInsetsMake(0, 13, 0, 0);
+        CommitButton.cornerRadius = CommitButton.height/2;
+        CommitButton.layer.borderWidth = YWIDTH_SCALE(2);
+        CommitButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        [CommitButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [CommitButton addTarget:self action:@selector(CommitButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_BottomView addSubview:CommitButton];
+    }
+    return _BottomView;
+}
 
 -(void)configUI{
     
@@ -272,6 +300,29 @@
 
     [self MainTabelView];
     [self.MainTabelView reloadData];
+    [self BottomView];
+    
+    
+}
+
+-(void)CommitButtonAction{
+    if (!self.isLogin) {
+        UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"未登录" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
+        [actionVC addAction:okAction];
+        [self presentViewController:actionVC animated:YES completion:nil];
+    }else{
+        SubmitCommentViewController *vc = [[SubmitCommentViewController alloc] init];
+        vc.comicID = self.comicId;
+        vc.returnValueBlock = ^(BOOL isReFresh) {
+            if (isReFresh) {
+                [self.MainTabelView setContentOffset:CGPointMake(0,0) animated:NO];
+                [self.MainTabelView.mj_header beginRefreshing];
+            }
+        };
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 -(UIView*)ErrorView{
@@ -292,10 +343,16 @@
 
 -(UITableView*)MainTabelView{
     if (!_MainTabelView) {
-        _MainTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-64) style:UITableViewStyleGrouped];
+        _MainTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-64-YHEIGHT_SCALE(88)) style:UITableViewStyleGrouped];
         _MainTabelView.delegate = self;
         _MainTabelView.dataSource = self;
         _MainTabelView.tableFooterView = [UIView new];
+//        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(ReFreshData)];
+        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(ReFreshData)];
+        header.automaticallyChangeAlpha = YES;
+        header.lastUpdatedTimeLabel.hidden = YES;
+        _MainTabelView.mj_header = header;
+
         _MainTabelView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             self.commetPage += 1;
             [self getComicCommentsWith:self.commetPage];
@@ -491,7 +548,7 @@
 }
 
 
-#pragma mark -- Requests
+#pragma mark --Chapter Requests
 -(void)getChapterDeatil:(NSInteger)comicId chapterId:(NSInteger)chapterId{
 //    self.comicId = 38890;
     NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/comic/chapter/%ld/%ld.html",comicId,chapterId];

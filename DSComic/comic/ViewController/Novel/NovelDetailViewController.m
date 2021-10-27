@@ -167,7 +167,7 @@
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
-        [self.MainPageTableView.mj_footer endRefreshingWithNoMoreData];
+        [self.MainPageTableView.mj_footer endRefreshing];
     }];
 }
 
@@ -347,10 +347,22 @@
 }
 
 -(void)SelectedVolumes:(NSDictionary *)dic{
-    NSLog(@"OY===Select dic:%@",dic);
+    NSInteger selectedCount = 0;
+    NSInteger volumeOrder = [dic[@"volumeOrder"] integerValue];
+    for (int i=0; i<self.NovelDetailInfoObj.volumeArray.count; i++) {
+        NovelDetailInfoVolumeResponse *VolumeInfo = self.NovelDetailInfoObj.volumeArray[i];
+        if (VolumeInfo.volumeOrder == volumeOrder) {
+            selectedCount = i;
+            break;
+        }
+    }
+
     NovelVolumeViewController *vc = [[NovelVolumeViewController alloc] init];
     vc.novelId = [dic[@"novelID"] integerValue];
+    vc.VolumeId = [dic[@"volumeId"] integerValue];
     vc.titleStr = dic[@"volumeName"];
+    vc.VolumeArray = self.NovelDetailInfoObj.volumeArray;
+    vc.SelectedVolumeCount = selectedCount;
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }

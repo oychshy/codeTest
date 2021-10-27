@@ -42,8 +42,8 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.titleListInfos = [[NSMutableArray alloc] init];
     
-    NSArray *data1 = @[@"订阅",@"包含被隐藏的被迫消失的订阅(古老)"];
-//    NSArray *data2 = @[@"test1",@"test2"];
+    NSArray *data1 = @[@"漫画订阅",@"包含被隐藏的被迫消失的漫画订阅(古老)",@"漫画评论"];
+    NSArray *data2 = @[@"小说订阅",@"小说评论"];
     NSArray *data3 = @[@"退出"];
 
 
@@ -162,7 +162,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         if (self.isLogin) {
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             NSMutableDictionary *userInfoDic = [[NSMutableDictionary alloc] initWithDictionary:@{@"isLogin":@(NO),@"uid":@"",@"nickname":@"",@"photo":@"",@"dmzj_token":@""}];
@@ -194,7 +194,20 @@
                 MySubscribeViewController *vc = [[MySubscribeViewController alloc] init];
                 vc.isHidenSubscribe = YES;
                 [self.navigationController pushViewController:vc animated:YES];
+            }else if(indexPath.row == 2){
+                UserCommentViewController *vc = [[UserCommentViewController alloc] init];
+                vc.UserID = [[UserInfo shareUserInfo].uid integerValue];
+                [self.navigationController pushViewController:vc animated:YES];
             }
+        }else{
+            UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"未登录" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
+            [actionVC addAction:okAction];
+            [self presentViewController:actionVC animated:YES completion:nil];
+        }
+    }else if(indexPath.section == 1){
+        if (self.isLogin) {
+            
         }else{
             UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"未登录" message:nil preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];

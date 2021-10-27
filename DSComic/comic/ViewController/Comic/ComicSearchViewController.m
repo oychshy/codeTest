@@ -388,7 +388,7 @@
     ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
     NSInteger getId = [ComicInfo[@"id"] integerValue];
     vc.comicId = getId;
-    vc.title = ComicInfo[@"title"];
+    vc.titleStr = ComicInfo[@"title"];
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -402,7 +402,7 @@
     ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
     NSInteger getId = [ComicInfo[@"id"] integerValue];
     vc.comicId = getId;
-    vc.title = ComicInfo[@"name"];
+    vc.titleStr = ComicInfo[@"name"];
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }

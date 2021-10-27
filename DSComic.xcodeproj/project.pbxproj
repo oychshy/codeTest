@@ -74,6 +74,10 @@
 		5BB3E1D12722670900A94CA2 /* NovelReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1D02722670900A94CA2 /* NovelReaderViewController.m */; };
 		5BB3E1D4272268BE00A94CA2 /* NovelVolumeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1D3272268BE00A94CA2 /* NovelVolumeViewController.m */; };
 		5BB3E1DA2722980E00A94CA2 /* NovelChapter.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1D82722980E00A94CA2 /* NovelChapter.pbobjc.m */; };
+		5BB3E1DD2727F75D00A94CA2 /* NovelTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1DC2727F75D00A94CA2 /* NovelTextView.m */; };
+		5BB3E1E02728DF9400A94CA2 /* SubmitCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1DF2728DF9400A94CA2 /* SubmitCommentViewController.m */; };
+		5BB3E1E42729365400A94CA2 /* ShowImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1E32729365400A94CA2 /* ShowImageView.m */; };
+		5BB3E1EA27293E5200A94CA2 /* CustomRightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1E927293E5200A94CA2 /* CustomRightButton.m */; };
 		5BB9481726AFF3FF00ABD6B8 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9480E26AFF3FF00ABD6B8 /* Tools.m */; };
 		5BB9481826AFF3FF00ABD6B8 /* UIView+LBExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9480F26AFF3FF00ABD6B8 /* UIView+LBExtension.m */; };
 		5BB9481926AFF3FF00ABD6B8 /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9481026AFF3FF00ABD6B8 /* UIImage+Image.m */; };
@@ -217,6 +221,14 @@
 		5BB3E1D3272268BE00A94CA2 /* NovelVolumeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NovelVolumeViewController.m; sourceTree = "<group>"; };
 		5BB3E1D82722980E00A94CA2 /* NovelChapter.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NovelChapter.pbobjc.m; sourceTree = "<group>"; };
 		5BB3E1D92722980E00A94CA2 /* NovelChapter.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NovelChapter.pbobjc.h; sourceTree = "<group>"; };
+		5BB3E1DB2727F75D00A94CA2 /* NovelTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NovelTextView.h; sourceTree = "<group>"; };
+		5BB3E1DC2727F75D00A94CA2 /* NovelTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NovelTextView.m; sourceTree = "<group>"; };
+		5BB3E1DE2728DF9400A94CA2 /* SubmitCommentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubmitCommentViewController.h; sourceTree = "<group>"; };
+		5BB3E1DF2728DF9400A94CA2 /* SubmitCommentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubmitCommentViewController.m; sourceTree = "<group>"; };
+		5BB3E1E22729365400A94CA2 /* ShowImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowImageView.h; sourceTree = "<group>"; };
+		5BB3E1E32729365400A94CA2 /* ShowImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowImageView.m; sourceTree = "<group>"; };
+		5BB3E1E827293E5200A94CA2 /* CustomRightButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRightButton.h; sourceTree = "<group>"; };
+		5BB3E1E927293E5200A94CA2 /* CustomRightButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRightButton.m; sourceTree = "<group>"; };
 		5BB9480D26AFF3FF00ABD6B8 /* NSObject+Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Model.h"; sourceTree = "<group>"; };
 		5BB9480E26AFF3FF00ABD6B8 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		5BB9480F26AFF3FF00ABD6B8 /* UIView+LBExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LBExtension.m"; sourceTree = "<group>"; };
@@ -385,6 +397,7 @@
 		5B51F6A526B2C81D0053B434 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				5BB3E1E12729363400A94CA2 /* utils */,
 				5BB3E1C12721436B00A94CA2 /* search */,
 				5BB3E1C02721432D00A94CA2 /* comic */,
 				5BB3E1B427210E5B00A94CA2 /* NovelPage */,
@@ -491,6 +504,8 @@
 				5BB3E1CA27215BC700A94CA2 /* NovelDetailTableViewCell.m */,
 				5BB3E1CC2722421200A94CA2 /* NovelVolumesTableViewCell.h */,
 				5BB3E1CD2722421200A94CA2 /* NovelVolumesTableViewCell.m */,
+				5BB3E1DB2727F75D00A94CA2 /* NovelTextView.h */,
+				5BB3E1DC2727F75D00A94CA2 /* NovelTextView.m */,
 			);
 			path = NovelPage;
 			sourceTree = "<group>";
@@ -513,12 +528,10 @@
 				5B8D7EF926FAC2EA00DE6892 /* MainPageViewController.m */,
 				5BB186A827182F0100735E20 /* TopicViewController.h */,
 				5BB186A927182F0100735E20 /* TopicViewController.m */,
-				5BA51CE02713DB6300E08294 /* ComicSearchViewController.h */,
-				5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */,
-				5B86112227118E260029339E /* SortViewController.h */,
-				5B86112327118E260029339E /* SortViewController.m */,
 				5B8D7F0C26FC0AB500DE6892 /* PersonalViewController.h */,
 				5B8D7F0D26FC0AB500DE6892 /* PersonalViewController.m */,
+				5BB3E1DE2728DF9400A94CA2 /* SubmitCommentViewController.h */,
+				5BB3E1DF2728DF9400A94CA2 /* SubmitCommentViewController.m */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -547,6 +560,10 @@
 				5B8D7F1A26FC9BED00DE6892 /* ComicDeatilViewController.m */,
 				5BB186AE2719818700735E20 /* ChapterViewController.h */,
 				5BB186AF2719818700735E20 /* ChapterViewController.m */,
+				5BA51CE02713DB6300E08294 /* ComicSearchViewController.h */,
+				5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */,
+				5B86112227118E260029339E /* SortViewController.h */,
+				5B86112327118E260029339E /* SortViewController.m */,
 				5BAB7C462701C2050093E9F3 /* ComicReaderViewController.h */,
 				5BAB7C472701C2050093E9F3 /* ComicReaderViewController.m */,
 				5BB186A22717C78300735E20 /* ComicAuthorViewController.h */,
@@ -592,6 +609,17 @@
 				5BA51CF12715558300E08294 /* ComicSearchTableViewCell.m */,
 			);
 			path = search;
+			sourceTree = "<group>";
+		};
+		5BB3E1E12729363400A94CA2 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				5BB3E1E22729365400A94CA2 /* ShowImageView.h */,
+				5BB3E1E32729365400A94CA2 /* ShowImageView.m */,
+				5BB3E1E827293E5200A94CA2 /* CustomRightButton.h */,
+				5BB3E1E927293E5200A94CA2 /* CustomRightButton.m */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 		5BB9480C26AFF3FF00ABD6B8 /* Category */ = {
@@ -755,12 +783,14 @@
 				5BA51CFB2716CE4E00E08294 /* UserCommentViewController.m in Sources */,
 				5B0E819D26D794B900F7AAAD /* HttpRequest.m in Sources */,
 				5BB9481B26AFF3FF00ABD6B8 /* UIColor+Expanded.m in Sources */,
+				5BB3E1E02728DF9400A94CA2 /* SubmitCommentViewController.m in Sources */,
 				5BA51CF5271673F100E08294 /* UserInfoViewController.m in Sources */,
 				5BD9C29327044395003DFF76 /* MySubscribeViewController.m in Sources */,
 				5B86112427118E260029339E /* SortViewController.m in Sources */,
 				5BB9481826AFF3FF00ABD6B8 /* UIView+LBExtension.m in Sources */,
 				5B8D7F0B26FB4E2C00DE6892 /* RSA.m in Sources */,
 				5BA51CF22715558300E08294 /* ComicSearchTableViewCell.m in Sources */,
+				5BB3E1DD2727F75D00A94CA2 /* NovelTextView.m in Sources */,
 				5BB186AD2719095D00735E20 /* TopicTableViewCell.m in Sources */,
 				5B51108926AF9DB800D5E28E /* ViewController.m in Sources */,
 				5BB9482626B0023A00ABD6B8 /* itemModel.m in Sources */,
@@ -788,6 +818,7 @@
 				5B8D7F2226FD7F9A00DE6892 /* ComicChapterTableViewCell.m in Sources */,
 				5BB3E1B32720FF1100A94CA2 /* NovelPageViewController.m in Sources */,
 				5BA51CE22713DB6300E08294 /* ComicSearchViewController.m in Sources */,
+				5BB3E1EA27293E5200A94CA2 /* CustomRightButton.m in Sources */,
 				5B8D7F0826FB49FD00DE6892 /* RSAEncryptor.m in Sources */,
 				5B8D7F1126FC22E200DE6892 /* LoginViewController.m in Sources */,
 				5BAB7C4B27029F830093E9F3 /* ComicReaderTableViewCell.m in Sources */,
@@ -796,6 +827,7 @@
 				5B8D7F0326FB204F00DE6892 /* MainPageTableViewCell.m in Sources */,
 				5BA51CFE2716D52E00E08294 /* UserCommentTableViewCell.m in Sources */,
 				5BB9481926AFF3FF00ABD6B8 /* UIImage+Image.m in Sources */,
+				5BB3E1E42729365400A94CA2 /* ShowImageView.m in Sources */,
 				5B53556326F17B3700BBEBB9 /* PDBannerViewWithURL.m in Sources */,
 				5BB3E1CB27215BC700A94CA2 /* NovelDetailTableViewCell.m in Sources */,
 				5BB3E1BF2721377F00A94CA2 /* NovelUpdateViewController.m in Sources */,
@@ -951,7 +983,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6G5K5485TB;
+				DEVELOPMENT_TEAM = N648UCJ69N;
 				GCC_PREFIX_HEADER = /Users/js/Downloads/DSComic/DSComic/utils/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -968,7 +1000,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REZ_SEARCH_PATHS = "$(PROJECT)/ProtocolBuffer";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -981,7 +1013,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6G5K5485TB;
+				DEVELOPMENT_TEAM = N648UCJ69N;
 				GCC_PREFIX_HEADER = /Users/js/Downloads/DSComic/DSComic/utils/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -998,7 +1030,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REZ_SEARCH_PATHS = "$(PROJECT)/ProtocolBuffer";
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -52,6 +52,8 @@
 #import "HotSearchTableViewCell.h"
 #import "ComicSearchTableViewCell.h"
 #import "UserInfoViewController.h"
+#import "ShowImageView.h"
+#import "CustomRightButton.h"
 #import "UserSubscribeViewController.h"
 #import "UserCommentViewController.h"
 #import "UserCommentTableViewCell.h"
@@ -60,6 +62,7 @@
 #import "TopicViewController.h"
 #import "TopicTableViewCell.h"
 #import "ChapterViewController.h"
+#import "SubmitCommentViewController.h"
 #import "NovelPageViewController.h"
 #import "NovelPageTableViewCell.h"
 #import "NovelUpdateViewController.h"
@@ -69,6 +72,7 @@
 #import "NovelVolumesTableViewCell.h"
 #import "NovelVolumeViewController.h"
 #import "NovelReaderViewController.h"
+#import "NovelTextView.h"
 
 
 

@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSString *)URLEncodedString:(NSString*)unencodedString;
 
 +(NSData*)V4decrypt:(NSString*)base64String;
++ (NSString *)md5EncryptWithString:(NSString *)str;
 
 +(UIImage*)SetImageSize:(UIImage*)sendImage Size:(CGSize)size;
 

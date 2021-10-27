@@ -96,6 +96,7 @@
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [self.MainPageTableView.mj_footer endRefreshing];
     }];
 }
 
