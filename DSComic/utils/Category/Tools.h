@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(UIImage*)SetImageSize:(UIImage*)sendImage Size:(CGSize)size;
 
 +(BOOL)isChinese:(NSString *)str;
++(NSArray *)getOnlyNum:(NSString *)str;
 
 //+(NSString *)base64Encode:(NSString *)string;
 //+(NSString *)base64Dencode:(NSString *)base64String;

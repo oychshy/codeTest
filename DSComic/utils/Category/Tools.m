@@ -192,6 +192,13 @@
     return NO;
 }
 
++(NSArray *)getOnlyNum:(NSString *)str{
+    NSString *onlyNumStr = [str stringByReplacingOccurrencesOfString:@"[^0-9,]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [str length])];
+    NSArray *numArr = [onlyNumStr componentsSeparatedByString:@","];
+    return numArr;
+}
+
+
 +(NSData*)V4decrypt:(NSString*)base64String{
     NSData *data = [[NSData alloc]initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
     NSString *path = [[NSBundle mainBundle] pathForResource:@"id_rsa" ofType:@"txt"];

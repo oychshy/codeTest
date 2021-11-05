@@ -139,14 +139,14 @@
         }
     }else if (index == 1) {
         if (self.UpDateDataInfos.count == 0) {
-            [self getLastUpdateData:self.updateIndex];
+            [self getLastUpdateData:self.updateIndex isLoad:YES];
         }
     }else if (index == 2){
         if (self.SortDataInfos.count == 0) {
             [self getSortData];
         }
     }else if (index == 3){
-        [self getRankData:self.rankIndex];
+        [self getRankData:self.rankIndex isLoad:YES];
     }
     _mainScrollView.contentOffset = CGPointMake(index*_mainScrollView.width, 0);
     self.selectIndex = index;
@@ -180,7 +180,7 @@
     [self.HotTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 
     self.rankTypeIndex = 2;
-    [self getRankData:0];
+    [self getRankData:0  isLoad:YES];
 }
 
 -(void)CommetTypeBtnAction{
@@ -189,7 +189,7 @@
     [self.HotTypeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 
     self.rankTypeIndex = 1;
-    [self getRankData:0];
+    [self getRankData:0 isLoad:YES];
 }
 
 -(void)HotTypeBtnAction{
@@ -198,7 +198,7 @@
     [self.HotTypeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
 
     self.rankTypeIndex = 0;
-    [self getRankData:0];
+    [self getRankData:0 isLoad:YES];
 }
 
 -(void)TodayButtonAtion{
@@ -206,7 +206,7 @@
     [_TimeCoverView setHidden:YES];
     [self.TimeButton setTitle:@"今日" forState:UIControlStateNormal];
     self.timeTypeIndex = 0;
-    [self getRankData:0];
+    [self getRankData:0 isLoad:YES];
 }
 -(void)WeeklyButtonAction{
     self.isShowCover = NO;
@@ -214,7 +214,7 @@
     [self.TimeButton setTitle:@"每周" forState:UIControlStateNormal];
 
     self.timeTypeIndex = 1;
-    [self getRankData:0];
+    [self getRankData:0 isLoad:YES];
 }
 -(void)MonthlyButtonAction{
     self.isShowCover = NO;
@@ -222,7 +222,7 @@
     [self.TimeButton setTitle:@"每月" forState:UIControlStateNormal];
 
     self.timeTypeIndex = 2;
-    [self getRankData:0];
+    [self getRankData:0 isLoad:YES];
 }
 -(void)AllButtonAction{
     self.isShowCover = NO;
@@ -230,7 +230,7 @@
     [self.TimeButton setTitle:@"总排行" forState:UIControlStateNormal];
 
     self.timeTypeIndex = 3;
-    [self getRankData:0];
+    [self getRankData:0 isLoad:YES];
 }
 
 
@@ -347,14 +347,14 @@
             }
         }else if (pageIndex == 1) {
             if (self.UpDateDataInfos.count == 0) {
-                [self getLastUpdateData:self.updateIndex];
+                [self getLastUpdateData:self.updateIndex isLoad:YES];
             }
         }else if (pageIndex == 2){
             if (self.SortDataInfos.count == 0) {
                 [self getSortData];
             }
         }else if (pageIndex == 3){
-            [self getRankData:self.rankIndex];
+            [self getRankData:self.rankIndex isLoad:YES];
         }
 
         UIImageView *beforArrow = (UIImageView *)[self.view viewWithTag:self.selectIndex+arrowBaseTag];
@@ -464,7 +464,7 @@
         _LastUpdateTableView.tableFooterView = [UIView new];
         _LastUpdateTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             self.updateIndex += 1;
-            [self getLastUpdateData:self.updateIndex];
+            [self getLastUpdateData:self.updateIndex isLoad:NO];
         }];
         [self.mainScrollView addSubview:_LastUpdateTableView];
     }
@@ -479,7 +479,7 @@
         _RankTableView.tableFooterView = [UIView new];
         _RankTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             self.rankIndex += 1;
-            [self getRankData:self.rankIndex];
+            [self getRankData:self.rankIndex isLoad:NO];
         }];
         [self.mainScrollView addSubview:_RankTableView];
     }
@@ -770,6 +770,7 @@
             @"version":@"4.5.2"
         };
     }
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
         for (NSDictionary *dataDic in data) {
             [self.MainErrorView setHidden:YES];
@@ -779,6 +780,7 @@
         
         [self getFavorData];
     } failure:^(NSString * _Nonnull error) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSLog(@"OY===error:%@",error);
         [self.MainErrorView setHidden:NO];
         [self MainErrorView];
@@ -812,10 +814,12 @@
         if (self.isLogin) {
             [self getSubscribeData];
         }else{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             [self.MainPageTableView reloadData];
         }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self.MainPageTableView reloadData];
     }];
 }
@@ -842,9 +846,11 @@
             MainPageItem *model = [MainPageItem shopWithDict:dataDic];
             [self.MainDataInfos insertObject:model atIndex:1];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self.MainPageTableView reloadData];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self.MainPageTableView reloadData];
     }];
 }
@@ -884,14 +890,17 @@
 
 
 #pragma mark -- configUpdateData
--(void)getLastUpdateData:(NSInteger)pageIndex{
+-(void)getLastUpdateData:(NSInteger)pageIndex isLoad:(BOOL)isLoad{
+    if (isLoad) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+    
     NSString *url = [NSString stringWithFormat:@"https://api.m.dmzj.com/recommend/latest/%ld.json",pageIndex];
     NSDictionary *params = @{
         @"version":@"1.0.2",
         @"channel":@"alipay_applets",
         @"timestamp":[Tools currentTimeStr]
     };
-    
     [HttpRequest getNetWorkWithUrl:url parameters:params success:^(id  _Nonnull data) {
         NSArray *getData = data;
         if (getData.count == 0) {
@@ -902,8 +911,10 @@
         }
         [self LastUpdateTableView];
         [self.LastUpdateTableView reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self.LastUpdateTableView.mj_footer endRefreshing];
     }];
 }
@@ -934,17 +945,20 @@
             @"version":@"4.5.2"
         };
     }
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [HttpRequest getNetWorkWithUrl:url parameters:params success:^(id  _Nonnull data) {
         NSDictionary *itemsDic = data;
         self.SortDataInfos = itemsDic[@"data"];
         [self SortCollectionView];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
 #pragma mark -- configRankData
--(void)getRankData:(NSInteger)PageCount{
+-(void)getRankData:(NSInteger)PageCount isLoad:(BOOL)isLoad{
     NSInteger RankType = self.rankTypeIndex;//人气,吐槽,订阅
 //    NSInteger ComicType = 0;//全部
     NSInteger TimeType = self.timeTypeIndex;//日,周,月,总
@@ -952,12 +966,12 @@
     if (PageCount == 0) {
         [self.RankInfos removeAllObjects];
     }
-
+    if (isLoad) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
     NSString *url = [NSString stringWithFormat:@"https://api.m.dmzj.com/rank/%ld-0-%ld-%ld.json",RankType,TimeType,PageCount];
     [HttpRequest getNetWorkWithUrl:url parameters:nil success:^(id  _Nonnull data) {
         NSArray *itemsArray = data;
-//        NSLog(@"OY===itemsArray:%@",itemsArray);
-
         if (itemsArray.count == 0) {
             [self.RankTableView.mj_footer endRefreshingWithNoMoreData];
         }else{
@@ -966,9 +980,10 @@
         }
         [self RankTableView];
         [self.RankTableView reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
-//        [self.RankTableView reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self.RankTableView.mj_footer endRefreshing];
     }];
     

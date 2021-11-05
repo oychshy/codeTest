@@ -147,11 +147,20 @@
             @"isPost":@(NO)
         };
     }else{
-        ChapterModel *model = self.ShowChapterArray[index];
+        NSMutableArray *tempDataArray = [[NSMutableArray alloc] init];
+        if (self.getIsAcs) {
+            [self.ChapterInfosArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                [tempDataArray addObject:obj];
+            }];
+        }else{
+            tempDataArray = self.ShowChapterArray;
+        }
+        ChapterModel *model = tempDataArray[index];
         postDic = @{
             @"isPost":@(YES),
             @"comicId":@(model.comic_id),
-            @"chapterId":@(model.id)
+            @"chapterId":@(model.id),
+            @"chapterTitle":model.chapter_name
         };
     }
     

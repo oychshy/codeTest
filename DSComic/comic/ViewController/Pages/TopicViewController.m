@@ -80,12 +80,13 @@
     if (self.isLogin) {
         self.GetMySubscribe = [UserInfo shareUserInfo].mySubscribe;
     }
-//    NSLog(@"OY===self.GetMySubscribe:%@",self.GetMySubscribe);
 
     [self getTopicData];
 }
 
 -(void)getTopicData{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     NSString *url = [NSString stringWithFormat:@"http://nnv3api.muwai.com/subject_with_level/%ld.json",self.TopicID];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"app_channel":@(101),
@@ -104,9 +105,6 @@
         NSDictionary *getDic = data;
         NSDictionary *dataDic = getDic[@"data"];
         
-//        [self.TopicInfoDic setValue:dataDic[@"mobile_header_pic"] forKey:@"headerPic"];
-//        [self.TopicInfoDic setValue:dataDic[@"title"] forKey:@"title"];
-//        [self.TopicInfoDic setValue:dataDic[@"description"] forKey:@"description"];
         self.HeaderPicUrl = [NSString stringWithFormat:@"%@",dataDic[@"mobile_header_pic"]];
         self.TopicTitleStr = [NSString stringWithFormat:@"%@",dataDic[@"title"]];
         self.DescriptionStr = [NSString stringWithFormat:@"%@",dataDic[@"description"]];
@@ -122,10 +120,11 @@
             [tempDic setValue:@(isSubscribe) forKey:@"isSubscribe"];
             [self.TopicComicInfos addObject:tempDic];
         }
-        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 

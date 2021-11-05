@@ -37,7 +37,6 @@
     if (!_NaviView) {
         [self.view addSubview:[self NavigationView]];
     }
-    
     self.isLogin = [UserInfo shareUserInfo].isLogin;
 }
 
@@ -88,12 +87,13 @@
 }
 
 -(void)ConfigSortTypes{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     NSString *urlStr = @"http://nnv3api.muwai.com/classify/filter.json";
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":[UserInfo shareUserInfo].uid,
@@ -128,7 +128,6 @@
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":[UserInfo shareUserInfo].uid,
@@ -143,10 +142,12 @@
         }else{
             [self.SortCollectionView.mj_footer endRefreshingWithNoMoreData];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self ConfigUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
         [self.SortCollectionView.mj_footer endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -228,7 +229,6 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *itemDic = self.SortDataInfos[indexPath.row];
-
     ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
     NSInteger getId = [itemDic[@"id"] integerValue];
     vc.comicId = getId;

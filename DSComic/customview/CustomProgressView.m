@@ -41,7 +41,7 @@
     
     // 设置label的文字
     self.progressLabel.text = [NSString stringWithFormat:@"%.2f%%", progressValue * 100];
-    NSLog(@"self.progressLabel - %f",progressValue);
+//    NSLog(@"self.progressLabel - %f",progressValue);
     
     // 重绘
     [self setNeedsDisplay];
@@ -51,7 +51,7 @@
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:self.center radius:self.frame.size.width < self.frame.size.height ? self.frame.size.width * 0.3 : self.frame.size.height * 0.3 startAngle:-M_PI_2 endAngle:2 * M_PI * self.progressValue - M_PI_2 clockwise:1];
     
     [path setLineWidth:5];
-    [[UIColor whiteColor] setStroke];
+    [[UIColor redColor] setStroke];
     // 填充
     [path stroke];
 }

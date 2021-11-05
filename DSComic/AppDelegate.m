@@ -8,6 +8,10 @@
 
 #import "AppDelegate.h"
 
+#import "PicReaderViewController.h"
+#import "DownLoadViewController.h"
+#import "TestDownloadViewController.h"
+
 @interface AppDelegate ()
 @property(retain,nonatomic)NSMutableArray *MySubscribes;
 @property(retain,nonatomic)NSMutableArray *MyNovelSubscribes;
@@ -31,32 +35,35 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-//    UITabBarController *tb=[[UITabBarController alloc]init];
-//    ViewController *c1=[[ViewController alloc]init];
-//    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c1];
-//    tb.viewControllers=@[PersonalNavi];
-    
+////    UITabBarController *tb=[[UITabBarController alloc]init];
+//    DownLoadViewController *c1=[[DownLoadViewController alloc]init];
+////    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c1];
+////    tb.viewControllers=@[PersonalNavi];
+//    self.window.rootViewController=c1;
     
     [self getUserInfo];
     UITabBarController *tb=[[UITabBarController alloc]init];
     MainPageViewController *c1 = [[MainPageViewController alloc] init];
-    PersonalViewController *c2 = [[PersonalViewController alloc] init];
-    NovelPageViewController *c3 = [[NovelPageViewController alloc] init];
+    NovelPageViewController *c2 = [[NovelPageViewController alloc] init];
+    LocalFileViewController *c3 = [[LocalFileViewController alloc] init];
+    PersonalViewController *c4 = [[PersonalViewController alloc] init];
 
     UINavigationController *mainNavi = [[UINavigationController alloc] initWithRootViewController:c1];
-    UINavigationController *NovelNavi = [[UINavigationController alloc] initWithRootViewController:c3];
-    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c2];
+    UINavigationController *NovelNavi = [[UINavigationController alloc] initWithRootViewController:c2];
+    UINavigationController *LocalFileNavi = [[UINavigationController alloc] initWithRootViewController:c3];
+    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c4];
 
     mainNavi.tabBarItem.title = @"主页";
     NovelNavi.tabBarItem.title = @"轻小说";
+    LocalFileNavi.tabBarItem.title = @"隐藏";
     PersonalNavi.tabBarItem.title = @"我的";
 
     mainNavi.tabBarItem.image = [Tools SetImageSize:[UIImage imageNamed:@"home"] Size:CGSizeMake(25, 25)];
     NovelNavi.tabBarItem.image = [Tools SetImageSize:[UIImage imageNamed:@"novel"] Size:CGSizeMake(20, 20)];
+    LocalFileNavi.tabBarItem.image = [Tools SetImageSize:[UIImage imageNamed:@"mask"] Size:CGSizeMake(20, 20)];
     PersonalNavi.tabBarItem.image = [Tools SetImageSize:[UIImage imageNamed:@"account"] Size:CGSizeMake(20, 20)];
 
-    tb.viewControllers=@[mainNavi,NovelNavi,PersonalNavi];
-    
+    tb.viewControllers=@[mainNavi,NovelNavi,LocalFileNavi,PersonalNavi];
     self.window.rootViewController=tb;
 
     [self.window makeKeyAndVisible];

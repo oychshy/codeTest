@@ -126,6 +126,8 @@
 }
 
 -(void)getContentWithVolumeId:(NSInteger)VolumeId ChapterId:(NSInteger)ChapterId{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     NSString *path = [NSString stringWithFormat:@"/lnovel/%ld_%ld.txt",VolumeId,ChapterId];
     NSString *ts = [Tools currentTimeStr];
     
@@ -145,9 +147,11 @@
     [HttpRequest getNetWorkDataWithUrl:urlPath parameters:nil header:headerDic success:^(id  _Nonnull data) {
         NSString *getStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
         self.htmlString = getStr;
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 
 }
@@ -197,15 +201,11 @@
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (scrollView == _MainTextView) {
-//        NSInteger page = (NSInteger)(_MainTextView.contentOffset.y / _MainTextView.height) + 1;
-//        NSLog(@"OY===page:%ld",page);
-        
-        NSUInteger allPage = _MainTextView.contentSize.height / _MainTextView.height;
-        NSLog(@"OY===allPage:%ld",allPage);
-    }
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+//    if (scrollView == _MainTextView) {
+//        NSUInteger allPage = _MainTextView.contentSize.height / _MainTextView.height;
+//    }
+//}
 
 -(void)IncreaseSpaceAction{
     if (self.defultSpace<8) {

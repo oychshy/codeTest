@@ -79,12 +79,12 @@
 
 
 -(void)ConfigUserData{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSString *urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/UCenter/comics/%ld.json",self.UserID];
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":@(self.UserID),
@@ -105,6 +105,7 @@
         [self ConfigUserCmoicSubscribeData];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -114,7 +115,6 @@
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":@(self.UserID),
@@ -123,7 +123,6 @@
     
     [HttpRequest getNetWorkWithUrl:urlStr parameters:params success:^(id  _Nonnull data) {
         NSArray *getData = data;
-
         NSMutableArray *titleArray = [NSMutableArray arrayWithArray:self.titleListInfos[0]];
         if (getData.count>0) {
             [self.UserComicSubscribesArray addObjectsFromArray:getData];
@@ -133,6 +132,7 @@
         [self HiddenSubscribes];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
     
 }
@@ -160,6 +160,7 @@
         [self ConfigUserNovelSubscribeData];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -183,9 +184,11 @@
             [titleArray addObject:@"他的小说订阅"];
             [self.titleListInfos replaceObjectAtIndex:2 withObject:titleArray];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
     
 }

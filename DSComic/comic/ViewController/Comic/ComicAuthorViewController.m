@@ -61,13 +61,13 @@
 
 
 -(void)ConfigAuthorData{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSDictionary *params = [[NSDictionary alloc] init];
     NSString *urlPath = [NSString stringWithFormat:@"http://nnv3api.muwai.com/UCenter/author/%ld.json",self.AuthorID];
     params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":[UserInfo shareUserInfo].uid,
@@ -92,18 +92,20 @@
             }
         }
         [self configUI];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
 -(void)ConfigUserData{
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     NSString *urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/UCenter/comics/%ld.json",self.AuthorID];
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":@(self.AuthorID),
@@ -127,8 +129,10 @@
             }
         }
         [self configUI];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 

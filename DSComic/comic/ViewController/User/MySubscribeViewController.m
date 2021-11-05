@@ -69,7 +69,7 @@
     
     self.pageCount = 0;
     if (!self.isHidenSubscribe) {
-        [self getMySubscribe:self.pageCount];
+        [self getMySubscribe:self.pageCount isLoad:YES];
     }else{
         [self getHexieSubscribe];
     }
@@ -77,14 +77,16 @@
 
 
 #pragma mark -- GetData
--(void)getMySubscribe:(NSInteger)PageCount{
+-(void)getMySubscribe:(NSInteger)PageCount isLoad:(BOOL)isLoad{
+    if (isLoad) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
     NSDictionary *params = [[NSDictionary alloc] init];
     NSString *urlPath = @"http://nnv3api.muwai.com/UCenter/subscribeWithLevel";
     params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":[UserInfo shareUserInfo].uid,
@@ -107,21 +109,23 @@
         }else{
             [self.MainCollectionView.mj_footer endRefreshingWithNoMoreData];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
         [self.MainCollectionView.mj_footer endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
 -(void)getHexieSubscribe{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSDictionary *params = [[NSDictionary alloc] init];
     NSString *urlPath = [NSString stringWithFormat:@"https://nninterface.muwai.com/api/getReInfoWithLevel/comic/%@/0",[UserInfo shareUserInfo].uid];
     params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"uid":[UserInfo shareUserInfo].uid,
@@ -135,10 +139,11 @@
                 [self.MySubscribesArray addObject:comicInfo];
             }
         }
-
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -162,7 +167,7 @@
         if (!self.isHidenSubscribe) {
             _MainCollectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
                 self.pageCount += 1;
-                [self getMySubscribe:self.pageCount];
+                [self getMySubscribe:self.pageCount isLoad:NO];
             }];
         }
         [self.view addSubview:_MainCollectionView];

@@ -67,12 +67,15 @@
     if (!self.IDFA) {
         self.IDFA = @"00000000-0000-0000-0000-000000000000";
     }
-    
-    [self ConfigUserDataPage:self.pageCount];
+    [self ConfigUserDataPage:self.pageCount isLoad:YES];
 }
 
 
--(void)ConfigUserDataPage:(NSInteger)pageIndex{
+-(void)ConfigUserDataPage:(NSInteger)pageIndex isLoad:(BOOL)isLoad{
+    if (isLoad) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+    
     NSString *urlStr = @"";
     if (self.Type == 0) {
         urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/v3/old/comment/owner/0/%ld/%ld.json",self.UserID,pageIndex];
@@ -93,14 +96,15 @@
         if (getDatas.count>0) {
             [self.CommentsArray addObjectsFromArray:getDatas];
             [self.MainPageTableView.mj_footer endRefreshing];
-
         }else{
             [self.MainPageTableView.mj_footer endRefreshingWithNoMoreData];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
         [self.MainPageTableView.mj_footer endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -117,7 +121,7 @@
         _MainPageTableView.tableFooterView = [UIView new];
         _MainPageTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             self.pageCount += 1;
-            [self ConfigUserDataPage:self.pageCount];
+            [self ConfigUserDataPage:self.pageCount isLoad:NO];
         }];
         [self.view addSubview:_MainPageTableView];
     }
@@ -150,7 +154,6 @@
 }
 
 -(void)PostComicID:(NSInteger)ComicID Title:(NSString *)ComicName{
-    
     if (self.Type == 0) {
         ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
         vc.comicId = ComicID;

@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		305EE32058EA99129AAD7F90 /* libPods-DSComic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35AC9B60691FEBFBA58ABED7 /* libPods-DSComic.a */; };
+		5B00610B272F864C00AA76D8 /* PicReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B00610A272F864C00AA76D8 /* PicReaderViewController.m */; };
+		5B00610E272F86FA00AA76D8 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B00610D272F86FA00AA76D8 /* TableViewCell.m */; };
 		5B0E819D26D794B900F7AAAD /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E819C26D794B900F7AAAD /* HttpRequest.m */; };
 		5B13880226B3D8E400E4D9F3 /* comicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B13880126B3D8E400E4D9F3 /* comicViewController.m */; };
+		5B240AEF2733CB6F00B46676 /* ComicFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B240AEE2733CB6F00B46676 /* ComicFileModel.m */; };
 		5B4634362700223C00EA6623 /* ChapterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4634352700223C00EA6623 /* ChapterModel.m */; };
 		5B4D779E26B12B9500A82A6A /* CustomProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4D779D26B12B9500A82A6A /* CustomProgressView.m */; };
 		5B4E7BE926D891F100FA3E35 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E7BE826D891F100FA3E35 /* SearchTableViewCell.m */; };
@@ -63,6 +66,10 @@
 		5BB186AA27182F0100735E20 /* TopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB186A927182F0100735E20 /* TopicViewController.m */; };
 		5BB186AD2719095D00735E20 /* TopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB186AC2719095D00735E20 /* TopicTableViewCell.m */; };
 		5BB186B02719818700735E20 /* ChapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB186AF2719818700735E20 /* ChapterViewController.m */; };
+		5BB39B7C27297A17007C8A12 /* HiddenComic.json in Resources */ = {isa = PBXBuildFile; fileRef = 5BB39B7B27297A17007C8A12 /* HiddenComic.json */; };
+		5BB39B7F27297AA0007C8A12 /* LocalFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB39B7E27297AA0007C8A12 /* LocalFileViewController.m */; };
+		5BB39B82272A35AF007C8A12 /* LocalComicSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB39B81272A35AF007C8A12 /* LocalComicSearchViewController.m */; };
+		5BB39B8E272A9623007C8A12 /* NovelSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB39B8D272A9623007C8A12 /* NovelSearchViewController.m */; };
 		5BB3E1AD2720F8F100A94CA2 /* NovelDetail.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1AC2720F8F100A94CA2 /* NovelDetail.pbobjc.m */; };
 		5BB3E1B32720FF1100A94CA2 /* NovelPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1B22720FF1100A94CA2 /* NovelPageViewController.m */; };
 		5BB3E1B727210E8500A94CA2 /* NovelPageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3E1B627210E8500A94CA2 /* NovelPageTableViewCell.m */; };
@@ -89,15 +96,29 @@
 		5BD9C2902703379B003DFF76 /* SortCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C28F2703379B003DFF76 /* SortCollectionViewCell.m */; };
 		5BD9C29327044395003DFF76 /* MySubscribeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C29227044395003DFF76 /* MySubscribeViewController.m */; };
 		5BD9C29627049571003DFF76 /* RankTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C29527049571003DFF76 /* RankTableViewCell.m */; };
+		5BF79E00272FDF1B00BDCDE0 /* DownLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF79DFF272FDF1B00BDCDE0 /* DownLoadViewController.m */; };
+		5BF79E192730DF5A00BDCDE0 /* MYDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF79E112730DF5000BDCDE0 /* MYDownload.m */; };
+		5BF79E1A2730DF5A00BDCDE0 /* NSURLSessionTask+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF79E122730DF5200BDCDE0 /* NSURLSessionTask+Extension.m */; };
+		5BF79E1B2730DF5A00BDCDE0 /* MYDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF79E162730DF5700BDCDE0 /* MYDownloadManager.m */; };
+		5BF79E1C2730DF5A00BDCDE0 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF79E182730DF5A00BDCDE0 /* NSString+MD5.m */; };
+		5BF79E222730DFD200BDCDE0 /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF79E202730DFD200BDCDE0 /* TaskCell.m */; };
+		5BF79E2527321FB800BDCDE0 /* ComicDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF79E2427321FB800BDCDE0 /* ComicDownloadManager.m */; };
+		5BF79E28273228AD00BDCDE0 /* TestDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF79E27273228AD00BDCDE0 /* TestDownloadViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		35AC9B60691FEBFBA58ABED7 /* libPods-DSComic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DSComic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C636ADE1002CD41C245B499 /* Pods-DSComic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DSComic.release.xcconfig"; path = "Target Support Files/Pods-DSComic/Pods-DSComic.release.xcconfig"; sourceTree = "<group>"; };
+		5B006109272F864C00AA76D8 /* PicReaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicReaderViewController.h; sourceTree = "<group>"; };
+		5B00610A272F864C00AA76D8 /* PicReaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicReaderViewController.m; sourceTree = "<group>"; };
+		5B00610C272F86FA00AA76D8 /* TableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
+		5B00610D272F86FA00AA76D8 /* TableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		5B0E819B26D794B900F7AAAD /* HttpRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
 		5B0E819C26D794B900F7AAAD /* HttpRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
 		5B13880026B3D8E400E4D9F3 /* comicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = comicViewController.h; sourceTree = "<group>"; };
 		5B13880126B3D8E400E4D9F3 /* comicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = comicViewController.m; sourceTree = "<group>"; };
+		5B240AED2733CB6F00B46676 /* ComicFileModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicFileModel.h; sourceTree = "<group>"; };
+		5B240AEE2733CB6F00B46676 /* ComicFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicFileModel.m; sourceTree = "<group>"; };
 		5B4634342700223C00EA6623 /* ChapterModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChapterModel.h; sourceTree = "<group>"; };
 		5B4634352700223C00EA6623 /* ChapterModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChapterModel.m; sourceTree = "<group>"; };
 		5B4D779C26B12B9500A82A6A /* CustomProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomProgressView.h; sourceTree = "<group>"; };
@@ -199,6 +220,13 @@
 		5BB186AC2719095D00735E20 /* TopicTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicTableViewCell.m; sourceTree = "<group>"; };
 		5BB186AE2719818700735E20 /* ChapterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChapterViewController.h; sourceTree = "<group>"; };
 		5BB186AF2719818700735E20 /* ChapterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChapterViewController.m; sourceTree = "<group>"; };
+		5BB39B7B27297A17007C8A12 /* HiddenComic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HiddenComic.json; sourceTree = "<group>"; };
+		5BB39B7D27297AA0007C8A12 /* LocalFileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalFileViewController.h; sourceTree = "<group>"; };
+		5BB39B7E27297AA0007C8A12 /* LocalFileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalFileViewController.m; sourceTree = "<group>"; };
+		5BB39B80272A35AF007C8A12 /* LocalComicSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalComicSearchViewController.h; sourceTree = "<group>"; };
+		5BB39B81272A35AF007C8A12 /* LocalComicSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalComicSearchViewController.m; sourceTree = "<group>"; };
+		5BB39B8C272A9623007C8A12 /* NovelSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NovelSearchViewController.h; sourceTree = "<group>"; };
+		5BB39B8D272A9623007C8A12 /* NovelSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NovelSearchViewController.m; sourceTree = "<group>"; };
 		5BB3E1AB2720F8F100A94CA2 /* NovelDetail.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NovelDetail.pbobjc.h; sourceTree = "<group>"; };
 		5BB3E1AC2720F8F100A94CA2 /* NovelDetail.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NovelDetail.pbobjc.m; sourceTree = "<group>"; };
 		5BB3E1B12720FF1100A94CA2 /* NovelPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NovelPageViewController.h; sourceTree = "<group>"; };
@@ -252,6 +280,22 @@
 		5BD9C29227044395003DFF76 /* MySubscribeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MySubscribeViewController.m; sourceTree = "<group>"; };
 		5BD9C29427049571003DFF76 /* RankTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RankTableViewCell.h; sourceTree = "<group>"; };
 		5BD9C29527049571003DFF76 /* RankTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RankTableViewCell.m; sourceTree = "<group>"; };
+		5BF79DFE272FDF1B00BDCDE0 /* DownLoadViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownLoadViewController.h; sourceTree = "<group>"; };
+		5BF79DFF272FDF1B00BDCDE0 /* DownLoadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownLoadViewController.m; sourceTree = "<group>"; };
+		5BF79E112730DF5000BDCDE0 /* MYDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYDownload.m; sourceTree = "<group>"; };
+		5BF79E122730DF5200BDCDE0 /* NSURLSessionTask+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLSessionTask+Extension.m"; sourceTree = "<group>"; };
+		5BF79E132730DF5300BDCDE0 /* MYDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYDownloadManager.h; sourceTree = "<group>"; };
+		5BF79E142730DF5400BDCDE0 /* MYDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYDownload.h; sourceTree = "<group>"; };
+		5BF79E152730DF5600BDCDE0 /* NSURLSessionTask+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLSessionTask+Extension.h"; sourceTree = "<group>"; };
+		5BF79E162730DF5700BDCDE0 /* MYDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYDownloadManager.m; sourceTree = "<group>"; };
+		5BF79E172730DF5800BDCDE0 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		5BF79E182730DF5A00BDCDE0 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
+		5BF79E202730DFD200BDCDE0 /* TaskCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
+		5BF79E212730DFD200BDCDE0 /* TaskCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskCell.h; sourceTree = "<group>"; };
+		5BF79E2327321FB800BDCDE0 /* ComicDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicDownloadManager.h; sourceTree = "<group>"; };
+		5BF79E2427321FB800BDCDE0 /* ComicDownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicDownloadManager.m; sourceTree = "<group>"; };
+		5BF79E26273228AD00BDCDE0 /* TestDownloadViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestDownloadViewController.h; sourceTree = "<group>"; };
+		5BF79E27273228AD00BDCDE0 /* TestDownloadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestDownloadViewController.m; sourceTree = "<group>"; };
 		66BC0EFFDD95617FF43955EE /* Pods-DSComic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DSComic.debug.xcconfig"; path = "Target Support Files/Pods-DSComic/Pods-DSComic.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -342,8 +386,20 @@
 		5B51108026AF9DB800D5E28E /* DSComic */ = {
 			isa = PBXGroup;
 			children = (
+				5B240AED2733CB6F00B46676 /* ComicFileModel.h */,
+				5B240AEE2733CB6F00B46676 /* ComicFileModel.m */,
+				5BF79E26273228AD00BDCDE0 /* TestDownloadViewController.h */,
+				5BF79E27273228AD00BDCDE0 /* TestDownloadViewController.m */,
+				5BF79E212730DFD200BDCDE0 /* TaskCell.h */,
+				5BF79E202730DFD200BDCDE0 /* TaskCell.m */,
+				5BF79DFE272FDF1B00BDCDE0 /* DownLoadViewController.h */,
+				5BF79DFF272FDF1B00BDCDE0 /* DownLoadViewController.m */,
 				5B51108726AF9DB800D5E28E /* ViewController.h */,
 				5B51108826AF9DB800D5E28E /* ViewController.m */,
+				5B006109272F864C00AA76D8 /* PicReaderViewController.h */,
+				5B00610A272F864C00AA76D8 /* PicReaderViewController.m */,
+				5B00610C272F86FA00AA76D8 /* TableViewCell.h */,
+				5B00610D272F86FA00AA76D8 /* TableViewCell.m */,
 				5B4E7BEA26D8B6DE00FA3E35 /* Video */,
 				5B51F6A626B2C8330053B434 /* comic */,
 				5B51F69D26B2942D0053B434 /* customview */,
@@ -361,6 +417,7 @@
 		5B51109A26AFA97400D5E28E /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				5BB39B7B27297A17007C8A12 /* HiddenComic.json */,
 				5B91B672271FECCA0086C779 /* id_rsa.txt */,
 				5B6E8F3D26B3EEDE00DE699A /* filename1.json */,
 				5B51109B26AFA9B100D5E28E /* filename2.json */,
@@ -526,10 +583,14 @@
 			children = (
 				5B8D7EF826FAC2EA00DE6892 /* MainPageViewController.h */,
 				5B8D7EF926FAC2EA00DE6892 /* MainPageViewController.m */,
+				5BB3E1B12720FF1100A94CA2 /* NovelPageViewController.h */,
+				5BB3E1B22720FF1100A94CA2 /* NovelPageViewController.m */,
 				5BB186A827182F0100735E20 /* TopicViewController.h */,
 				5BB186A927182F0100735E20 /* TopicViewController.m */,
 				5B8D7F0C26FC0AB500DE6892 /* PersonalViewController.h */,
 				5B8D7F0D26FC0AB500DE6892 /* PersonalViewController.m */,
+				5BB39B7D27297AA0007C8A12 /* LocalFileViewController.h */,
+				5BB39B7E27297AA0007C8A12 /* LocalFileViewController.m */,
 				5BB3E1DE2728DF9400A94CA2 /* SubmitCommentViewController.h */,
 				5BB3E1DF2728DF9400A94CA2 /* SubmitCommentViewController.m */,
 			);
@@ -562,6 +623,8 @@
 				5BB186AF2719818700735E20 /* ChapterViewController.m */,
 				5BA51CE02713DB6300E08294 /* ComicSearchViewController.h */,
 				5BA51CE12713DB6300E08294 /* ComicSearchViewController.m */,
+				5BB39B80272A35AF007C8A12 /* LocalComicSearchViewController.h */,
+				5BB39B81272A35AF007C8A12 /* LocalComicSearchViewController.m */,
 				5B86112227118E260029339E /* SortViewController.h */,
 				5B86112327118E260029339E /* SortViewController.m */,
 				5BAB7C462701C2050093E9F3 /* ComicReaderViewController.h */,
@@ -575,8 +638,6 @@
 		5BB3E1BC2721371800A94CA2 /* Novel */ = {
 			isa = PBXGroup;
 			children = (
-				5BB3E1B12720FF1100A94CA2 /* NovelPageViewController.h */,
-				5BB3E1B22720FF1100A94CA2 /* NovelPageViewController.m */,
 				5BB3E1BD2721377F00A94CA2 /* NovelUpdateViewController.h */,
 				5BB3E1BE2721377F00A94CA2 /* NovelUpdateViewController.m */,
 				5BB3E1C627214E7300A94CA2 /* NovelDetailViewController.h */,
@@ -585,6 +646,8 @@
 				5BB3E1D3272268BE00A94CA2 /* NovelVolumeViewController.m */,
 				5BB3E1CF2722670900A94CA2 /* NovelReaderViewController.h */,
 				5BB3E1D02722670900A94CA2 /* NovelReaderViewController.m */,
+				5BB39B8C272A9623007C8A12 /* NovelSearchViewController.h */,
+				5BB39B8D272A9623007C8A12 /* NovelSearchViewController.m */,
 			);
 			path = Novel;
 			sourceTree = "<group>";
@@ -650,6 +713,7 @@
 		5BB9481D26AFF45600ABD6B8 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				5BF79E042730DDCD00BDCDE0 /* Download */,
 				5B53555D26F09AD300BBEBB9 /* JJCarousel */,
 				5BB9481C26AFF41700ABD6B8 /* PrefixHeader.pch */,
 				5BB9480C26AFF3FF00ABD6B8 /* Category */,
@@ -657,6 +721,23 @@
 				5B0E819C26D794B900F7AAAD /* HttpRequest.m */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		5BF79E042730DDCD00BDCDE0 /* Download */ = {
+			isa = PBXGroup;
+			children = (
+				5BF79E142730DF5400BDCDE0 /* MYDownload.h */,
+				5BF79E112730DF5000BDCDE0 /* MYDownload.m */,
+				5BF79E132730DF5300BDCDE0 /* MYDownloadManager.h */,
+				5BF79E162730DF5700BDCDE0 /* MYDownloadManager.m */,
+				5BF79E2327321FB800BDCDE0 /* ComicDownloadManager.h */,
+				5BF79E2427321FB800BDCDE0 /* ComicDownloadManager.m */,
+				5BF79E172730DF5800BDCDE0 /* NSString+MD5.h */,
+				5BF79E182730DF5A00BDCDE0 /* NSString+MD5.m */,
+				5BF79E152730DF5600BDCDE0 /* NSURLSessionTask+Extension.h */,
+				5BF79E122730DF5200BDCDE0 /* NSURLSessionTask+Extension.m */,
+			);
+			path = Download;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -723,6 +804,7 @@
 				5B51108E26AF9DBC00D5E28E /* Assets.xcassets in Resources */,
 				5B51109C26AFA9B100D5E28E /* filename2.json in Resources */,
 				5B91B673271FECCA0086C779 /* id_rsa.txt in Resources */,
+				5BB39B7C27297A17007C8A12 /* HiddenComic.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,8 +860,11 @@
 				5B4E7BFB26DE212A00FA3E35 /* VideoContentViewController.m in Sources */,
 				5B51F6A926B2C9130053B434 /* CoverView.m in Sources */,
 				5B8D7EFD26FB123700DE6892 /* MainPageItem.m in Sources */,
+				5BF79E222730DFD200BDCDE0 /* TaskCell.m in Sources */,
 				5BB3E1AD2720F8F100A94CA2 /* NovelDetail.pbobjc.m in Sources */,
 				5BB3E1C827214E7300A94CA2 /* NovelDetailViewController.m in Sources */,
+				5BF79E1A2730DF5A00BDCDE0 /* NSURLSessionTask+Extension.m in Sources */,
+				5B240AEF2733CB6F00B46676 /* ComicFileModel.m in Sources */,
 				5BA51CFB2716CE4E00E08294 /* UserCommentViewController.m in Sources */,
 				5B0E819D26D794B900F7AAAD /* HttpRequest.m in Sources */,
 				5BB9481B26AFF3FF00ABD6B8 /* UIColor+Expanded.m in Sources */,
@@ -787,22 +872,28 @@
 				5BA51CF5271673F100E08294 /* UserInfoViewController.m in Sources */,
 				5BD9C29327044395003DFF76 /* MySubscribeViewController.m in Sources */,
 				5B86112427118E260029339E /* SortViewController.m in Sources */,
+				5BF79E2527321FB800BDCDE0 /* ComicDownloadManager.m in Sources */,
 				5BB9481826AFF3FF00ABD6B8 /* UIView+LBExtension.m in Sources */,
+				5B00610E272F86FA00AA76D8 /* TableViewCell.m in Sources */,
+				5BF79E1B2730DF5A00BDCDE0 /* MYDownloadManager.m in Sources */,
 				5B8D7F0B26FB4E2C00DE6892 /* RSA.m in Sources */,
 				5BA51CF22715558300E08294 /* ComicSearchTableViewCell.m in Sources */,
 				5BB3E1DD2727F75D00A94CA2 /* NovelTextView.m in Sources */,
 				5BB186AD2719095D00735E20 /* TopicTableViewCell.m in Sources */,
 				5B51108926AF9DB800D5E28E /* ViewController.m in Sources */,
+				5BB39B7F27297AA0007C8A12 /* LocalFileViewController.m in Sources */,
 				5BB9482626B0023A00ABD6B8 /* itemModel.m in Sources */,
 				5BB9481726AFF3FF00ABD6B8 /* Tools.m in Sources */,
 				5B51F6A026B294720053B434 /* PanTableView.m in Sources */,
 				5BB3E1CE2722421200A94CA2 /* NovelVolumesTableViewCell.m in Sources */,
 				5B51108326AF9DB800D5E28E /* AppDelegate.m in Sources */,
 				5BB186A72717D8FC00735E20 /* AuthorComicTableViewCell.m in Sources */,
+				5B00610B272F864C00AA76D8 /* PicReaderViewController.m in Sources */,
 				5B4D779E26B12B9500A82A6A /* CustomProgressView.m in Sources */,
 				5B8D7F1B26FC9BED00DE6892 /* ComicDeatilViewController.m in Sources */,
 				5BB3E1D4272268BE00A94CA2 /* NovelVolumeViewController.m in Sources */,
 				5B8D7F0026FB1A1000DE6892 /* BannerTableViewCell.m in Sources */,
+				5BF79E192730DF5A00BDCDE0 /* MYDownload.m in Sources */,
 				5B53556026F09AD400BBEBB9 /* JJCarousel.m in Sources */,
 				5B4E7BF826DC848A00FA3E35 /* VideoItemModel.m in Sources */,
 				5B4E7BED26D8B74D00FA3E35 /* VideoViewController.m in Sources */,
@@ -815,10 +906,13 @@
 				5B8D7F0E26FC0AB500DE6892 /* PersonalViewController.m in Sources */,
 				5B8D7F2526FD7FAF00DE6892 /* CommentTableViewCell.m in Sources */,
 				5B51F6A326B2980B0053B434 /* ContentTableViewCell.m in Sources */,
+				5BB39B8E272A9623007C8A12 /* NovelSearchViewController.m in Sources */,
 				5B8D7F2226FD7F9A00DE6892 /* ComicChapterTableViewCell.m in Sources */,
+				5BB39B82272A35AF007C8A12 /* LocalComicSearchViewController.m in Sources */,
 				5BB3E1B32720FF1100A94CA2 /* NovelPageViewController.m in Sources */,
 				5BA51CE22713DB6300E08294 /* ComicSearchViewController.m in Sources */,
 				5BB3E1EA27293E5200A94CA2 /* CustomRightButton.m in Sources */,
+				5BF79E00272FDF1B00BDCDE0 /* DownLoadViewController.m in Sources */,
 				5B8D7F0826FB49FD00DE6892 /* RSAEncryptor.m in Sources */,
 				5B8D7F1126FC22E200DE6892 /* LoginViewController.m in Sources */,
 				5BAB7C4B27029F830093E9F3 /* ComicReaderTableViewCell.m in Sources */,
@@ -833,11 +927,13 @@
 				5BB3E1BF2721377F00A94CA2 /* NovelUpdateViewController.m in Sources */,
 				5BB3E1C5272143D100A94CA2 /* NovelUpdateTableViewCell.m in Sources */,
 				5B8D7F1726FC761900DE6892 /* UserInfo.m in Sources */,
+				5BF79E28273228AD00BDCDE0 /* TestDownloadViewController.m in Sources */,
 				5B51109426AF9DBC00D5E28E /* main.m in Sources */,
 				5BB186A42717C78400735E20 /* ComicAuthorViewController.m in Sources */,
 				5B51F69426B176A70053B434 /* PanCollectionView.m in Sources */,
 				5BB186B02719818700735E20 /* ChapterViewController.m in Sources */,
 				5BA51CF82716C26D00E08294 /* UserSubscribeViewController.m in Sources */,
+				5BF79E1C2730DF5A00BDCDE0 /* NSString+MD5.m in Sources */,
 				5B4634362700223C00EA6623 /* ChapterModel.m in Sources */,
 				5BA51CE627140FB500E08294 /* HotSearchTableViewCell.m in Sources */,
 				5BB3E1B727210E8500A94CA2 /* NovelPageTableViewCell.m in Sources */,
@@ -983,7 +1079,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = N648UCJ69N;
+				DEVELOPMENT_TEAM = 6G5K5485TB;
 				GCC_PREFIX_HEADER = /Users/js/Downloads/DSComic/DSComic/utils/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -996,11 +1092,12 @@
 					"$(PROJECT)/ProtocolBuffer",
 				);
 				INFOPLIST_FILE = DSComic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REZ_SEARCH_PATHS = "$(PROJECT)/ProtocolBuffer";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1013,7 +1110,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = N648UCJ69N;
+				DEVELOPMENT_TEAM = 6G5K5485TB;
 				GCC_PREFIX_HEADER = /Users/js/Downloads/DSComic/DSComic/utils/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1026,11 +1123,12 @@
 					"$(PROJECT)/ProtocolBuffer",
 				);
 				INFOPLIST_FILE = DSComic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oych.DSComic.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REZ_SEARCH_PATHS = "$(PROJECT)/ProtocolBuffer";
 				TARGETED_DEVICE_FAMILY = "1,2";

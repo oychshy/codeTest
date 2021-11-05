@@ -68,10 +68,14 @@
     
     self.NovelInfosArray = [[NSMutableArray alloc] init];
     self.pageIndex = 0;
-    [self getNovelUpDateInfoWithPage:self.pageIndex];
+    [self getNovelUpDateInfoWithPage:self.pageIndex isLoad:YES];
 }
 
--(void)getNovelUpDateInfoWithPage:(NSInteger)pageIndex{
+-(void)getNovelUpDateInfoWithPage:(NSInteger)pageIndex isLoad:(BOOL)isLoad{
+    if (isLoad) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+
     NSString *urlPath = [NSString stringWithFormat:@"http://nnv3api.muwai.com/novel/recentUpdate/%ld.json",pageIndex];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"app_channel":@(101),
@@ -93,10 +97,12 @@
             [self.MainPageTableView.mj_footer endRefreshing];
             [self.NovelInfosArray addObjectsFromArray:getData];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
         [self.MainPageTableView.mj_footer endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -112,7 +118,7 @@
         _MainPageTableView.dataSource = self;
         _MainPageTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             self.pageIndex += 1;
-            [self getNovelUpDateInfoWithPage:self.pageIndex];
+            [self getNovelUpDateInfoWithPage:self.pageIndex isLoad:NO];
         }];
         [self.view addSubview:_MainPageTableView];
     }

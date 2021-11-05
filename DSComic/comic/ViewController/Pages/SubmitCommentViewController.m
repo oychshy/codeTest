@@ -70,6 +70,8 @@
         [actionVC addAction:okAction];
         [self presentViewController:actionVC animated:YES completion:nil];
     }else{
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
         NSString *urlPath = @"http://nnv3comment.muwai.com/v1/4/new/add/app";
         NSDictionary *params = @{
             @"app_channel":@"101",
@@ -90,6 +92,8 @@
             @"version":@"4.5.2"
         };
         [HttpRequest postNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+
             NSDictionary *getData = data;
             NSInteger code = [getData[@"code"] integerValue];
             NSString *msg = getData[@"msg"];
@@ -106,6 +110,8 @@
             [actionVC addAction:okAction];
             [self presentViewController:actionVC animated:YES completion:nil];
         } failure:^(NSString * _Nonnull error) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+
             UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"network error!!!" message:nil preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
             [actionVC addAction:okAction];

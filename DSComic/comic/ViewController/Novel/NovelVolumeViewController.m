@@ -72,6 +72,8 @@
 }
 
 -(void)getNovelChapterInfo:(NSInteger)novelId{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     NSString *urlPath = [NSString stringWithFormat:@"http://nnv4api.muwai.com/novel/chapter/%ld",novelId];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"app_channel":@(101),
@@ -129,10 +131,14 @@
                 NSArray *volumeChapter = [getChapters subarrayWithRange:NSMakeRange(startIndex,splitLength)];
                 [self.ChaptersArray addObject:volumeChapter];
             }
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             [self configUI];
+        }else{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
         }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 

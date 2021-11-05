@@ -20,7 +20,9 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
+  - TYAttributedLabel (2.6.9)
   - YYText (1.0.7)
+  - zipzap (8.1.1)
 
 DEPENDENCIES:
   - AFNetworking
@@ -28,7 +30,9 @@ DEPENDENCIES:
   - MJRefresh
   - Protobuf
   - SDWebImage
+  - TYAttributedLabel (~> 2.6.2)
   - YYText
+  - zipzap (~> 8.1.1)
 
 SPEC REPOS:
   https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
@@ -37,7 +41,9 @@ SPEC REPOS:
     - MJRefresh
     - Protobuf
     - SDWebImage
+    - TYAttributedLabel
     - YYText
+    - zipzap
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
@@ -45,8 +51,10 @@ SPEC CHECKSUMS:
   MJRefresh: 30997d30b347c8e9508a4db11e3a690da0c9b85a
   Protobuf: 1a37ebea1338949e9ac35a3f06e80b3f536eec8d
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  TYAttributedLabel: 566d7503cf9e5460f409bb5d4c14690d25088972
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
+  zipzap: 940162d9c9c60472c2eab341385e4214da0fdf1c
 
-PODFILE CHECKSUM: edbec1493b9860b485e31caa6fc480f4ee69656e
+PODFILE CHECKSUM: 007246c01b05b502a2f4e359011df32873083eaf
 
 COCOAPODS: 1.10.1

@@ -65,6 +65,7 @@
 #import "SubmitCommentViewController.h"
 #import "NovelPageViewController.h"
 #import "NovelPageTableViewCell.h"
+#import "NovelSearchViewController.h"
 #import "NovelUpdateViewController.h"
 #import "NovelUpdateTableViewCell.h"
 #import "NovelDetailViewController.h"
@@ -73,7 +74,8 @@
 #import "NovelVolumeViewController.h"
 #import "NovelReaderViewController.h"
 #import "NovelTextView.h"
-
+#import "LocalFileViewController.h"
+#import "LocalComicSearchViewController.h"
 
 
 #import "ReaderViewController.h"
@@ -103,6 +105,15 @@
 #import "MidTextField.h"
 #import "YYLabel.h"
 #import "NSAttributedString+YYText.h"
+#import "TYAttributedLabel.h"
+
+#import "MYDownload.h"
+#import "MYDownloadManager.h"
+#import "NSString+MD5.h"
+#import "NSURLSessionTask+Extension.h"
+
+#import "TaskCell.h"
+
 
 #import "RSA.h"
 #import "NovelDetail.pbobjc.h"

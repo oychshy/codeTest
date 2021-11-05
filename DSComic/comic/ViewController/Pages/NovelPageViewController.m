@@ -57,7 +57,13 @@
 }
 
 -(void)SearchBtnAction{
-    
+    NovelSearchViewController *vc = [[NovelSearchViewController alloc] init];
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 - (void)viewDidLoad {
@@ -71,18 +77,18 @@
     if (!self.IDFA) {
         self.IDFA = @"00000000-0000-0000-0000-000000000000";
     }
-    
     [self getNovelPageInfo];
 }
 
 #pragma mark -- GetData
 -(void)getNovelPageInfo{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     NSString *urlPath = @"http://nnv3api.muwai.com/novel/recommend.json";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"version":@"4.5.2"
@@ -93,11 +99,12 @@
     
     [HttpRequest getNetWorkWithUrl:urlPath parameters:params success:^(id  _Nonnull data) {
         NSArray *getData = data;
-//        NSLog(@"OY===getData:%@",getData);
         self.NovelDataArray = [[NSMutableArray alloc] initWithArray:getData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -145,7 +152,6 @@
         [cell setCellWithDataDic:dataDic Row:indexPath.row];
         return cell;
     }
-    
 }
 
 
@@ -181,7 +187,6 @@
 -(void)SelectItem:(NSDictionary *)itemDic index:(NSInteger)index{
     NSArray *dataArray = itemDic[@"data"];
     NSDictionary *getDic = dataArray[index];
-//    NSLog(@"OY===obj_id:%@",getDic[@"obj_id"]);
     
     NSInteger getId = [getDic[@"obj_id"] integerValue];
     NSString *titleStr = getDic[@"title"];

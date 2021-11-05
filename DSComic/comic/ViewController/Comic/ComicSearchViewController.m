@@ -102,6 +102,24 @@
 
 //搜索
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *historySearchArray = [[NSMutableArray alloc] initWithArray:[defaults valueForKey:@"historyComicDatasInfo"]];
+    self.historyDatasArray = historySearchArray;
+        
+    for (int i=0;i<self.historyDatasArray.count;i++) {
+        NSDictionary *dataDic = self.historyDatasArray[i];
+        NSString *Name = dataDic[@"name"];
+        if ([Name isEqualToString:searchBar.text]) {
+            [self.historyDatasArray removeObjectAtIndex:i];
+            break;
+        }
+    }
+    
+    NSDictionary *dataDic = @{@"id":@"-1",@"name":searchBar.text};
+    [self.historyDatasArray insertObject:dataDic atIndex:0];
+    [defaults setObject:historySearchArray forKey:@"historyComicDatasInfo"];
+    [defaults synchronize];
+    
     self.pageIndex = 0;
     if (self.isShowSearchData) {
         [self.SearchResultArray removeAllObjects];
@@ -109,13 +127,13 @@
     }
     [self.searchBar resignFirstResponder];
     [_PreResultTableView setHidden:YES];
-    [self configSearchDatasWithKey:searchBar.text Page:self.pageIndex];
+    [self configSearchDatasWithKey:searchBar.text Page:self.pageIndex isLoad:YES];
 }
 
 //clear按钮
 -(void)searchBarClearBtnClick{
 //    [self.searchBar resignFirstResponder];
-//    [_PreResultTableView setHidden:YES];
+    [_PreResultTableView setHidden:YES];
 }
 
 #pragma mark -- gestureRecognizer delegate
@@ -159,17 +177,21 @@
 
 
 -(void)congfigDatas{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    NSMutableArray *historySearchArray = [defaults valueForKey:@"historyDatasInfo"];
+    NSMutableArray *historySearchArray = [defaults valueForKey:@"historyComicDatasInfo"];
     self.historyDatasArray = historySearchArray;
-    
-    NSMutableArray *hotSearchArray = [defaults valueForKey:@"hotDatasInfo"];
+    NSLog(@"OY===historyDatasArray:%@",self.historyDatasArray);
+
+    NSMutableArray *hotSearchArray = [defaults valueForKey:@"hotComicDatasInfo"];
     if (hotSearchArray.count == 0) {
         NSLog(@"OY===getData from api");
         [self configHotDatas];
     }else{
         NSLog(@"OY===getData from local");
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         self.hotDatasArray = hotSearchArray;
         [self SearchTableView];
         [self.SearchTableView reloadData];
@@ -180,55 +202,49 @@
     NSString *urlStr = @"http://nnv3api.muwai.com/search/hot/0.json";
     NSDictionary *params = [[NSDictionary alloc] init];
     if (self.isLogin) {
-        NSLog(@"OY===configHotDatas login");
         params = @{
             @"app_channel":@(101),
             @"channel":@"ios",
             @"imei":self.IDFA,
-            //@"iosId":@"89728b06283841e4a411c7cb600e4052",
             @"terminal_model":[Tools getDevice],
             @"timestamp":[Tools currentTimeStr],
             @"uid":[UserInfo shareUserInfo].uid,
             @"version":@"4.5.2"
         };
     }else{
-        NSLog(@"OY===configHotDatas logout");
         params = @{
             @"app_channel":@(101),
             @"channel":@"ios",
             @"imei":self.IDFA,
-            //@"iosId":@"89728b06283841e4a411c7cb600e4052",
             @"terminal_model":[Tools getDevice],
             @"timestamp":[Tools currentTimeStr],
             @"version":@"4.5.2"
         };
     }
-    
-    NSLog(@"OY===configHotDatas:%@",params);
-
+//    NSLog(@"OY===configHotDatas:%@",params);
     
     [HttpRequest getNetWorkWithUrl:urlStr parameters:params success:^(id  _Nonnull data) {
         NSArray *dataArray = data;
         self.hotDatasArray = [NSMutableArray arrayWithArray:dataArray];
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:dataArray forKey:@"hotDatasInfo"];
+        [defaults setObject:dataArray forKey:@"hotComicDatasInfo"];
         [defaults synchronize];
         [self SearchTableView];
         [self.SearchTableView reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
 -(void)configDynamicDataWithKey:(NSString*)key{
     NSString *encodeKey = [Tools URLEncodedString:key];
-    
     NSString *urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/search/fuzzyWithLevel/0/%@.json",encodeKey];
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"version":@"4.5.2"
@@ -245,14 +261,16 @@
     }];
 }
 
--(void)configSearchDatasWithKey:(NSString*)key Page:(NSInteger)pageIndex{
+-(void)configSearchDatasWithKey:(NSString*)key Page:(NSInteger)pageIndex isLoad:(BOOL)isLoad{
+    if (isLoad) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
     NSString *encodeKey = [Tools URLEncodedString:key];
     NSString *urlStr = [NSString stringWithFormat:@"http://nnv3api.muwai.com/search/showWithLevel/0/%@/%ld.json",encodeKey,pageIndex];
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"version":@"4.5.2"
@@ -261,7 +279,7 @@
         if (!self.isShowSearchData) {
             self.SearchTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
                 self.pageIndex += 1;
-                [self configSearchDatasWithKey:self.searchBar.text Page:self.pageIndex];
+                [self configSearchDatasWithKey:self.searchBar.text Page:self.pageIndex isLoad:NO];
             }];
         }
         NSArray *dataArray = data;
@@ -272,11 +290,13 @@
         }else{
             [self.SearchTableView.mj_footer endRefreshing];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self SearchTableView];
         [self.SearchTableView reloadData];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
         [self.SearchTableView.mj_footer endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
     
 }
@@ -383,6 +403,7 @@
         ComicInfo = self.PreResultArray[indexPath.row];
     }else if (tableView == self.SearchTableView){
         ComicInfo = self.SearchResultArray[indexPath.row];
+        [_PreResultTableView setHidden:YES];
     }
     
     ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
@@ -399,12 +420,45 @@
 }
 
 -(void)postTagComicInfo:(NSDictionary*)ComicInfo{
-    ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
+    NSLog(@"OY===ComicInfo:%@",ComicInfo);
     NSInteger getId = [ComicInfo[@"id"] integerValue];
-    vc.comicId = getId;
-    vc.titleStr = ComicInfo[@"name"];
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
+    NSString *getTitle = ComicInfo[@"name"];
+    
+    if (getId != -1) {
+        ComicDeatilViewController *vc = [[ComicDeatilViewController alloc] init];
+        vc.comicId = getId;
+        vc.titleStr = getTitle;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        NSMutableArray *historySearchArray = [[NSMutableArray alloc] initWithArray:[defaults valueForKey:@"historyComicDatasInfo"]];
+        self.historyDatasArray = historySearchArray;
+        
+        for (int i=0;i<self.historyDatasArray.count;i++) {
+            NSDictionary *dataDic = self.historyDatasArray[i];
+            NSString *Name = dataDic[@"name"];
+            if ([Name isEqualToString:getTitle]) {
+                [self.historyDatasArray removeObjectAtIndex:i];
+                break;
+            }
+        }
+                
+        NSDictionary *dataDic = @{@"id":@"-1",@"name":getTitle};
+        [self.historyDatasArray insertObject:dataDic atIndex:0];
+        [defaults setObject:historySearchArray forKey:@"historyComicDatasInfo"];
+        [defaults synchronize];
+
+        self.pageIndex = 0;
+        if (self.isShowSearchData) {
+            [self.SearchResultArray removeAllObjects];
+            [self.SearchTableView reloadData];
+        }
+        [self.searchBar resignFirstResponder];
+        [_PreResultTableView setHidden:YES];
+        [self configSearchDatasWithKey:getTitle Page:self.pageIndex isLoad:YES];
+    }
+    
 }
 
 

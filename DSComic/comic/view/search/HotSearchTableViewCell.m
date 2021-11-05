@@ -44,7 +44,7 @@
 
 -(void)setCellWithData:(NSArray*)datas{
     self.dataArray = datas;
-    NSLog(@"OY===datas:%@",datas);
+//    NSLog(@"OY===datas:%@",datas);
     
     TitleLabel.text = self.typeStr;
     
@@ -90,6 +90,9 @@
 -(void)tagButtonAction:(UIButton*)senderButton{
     NSInteger tagIndex = senderButton.tag - tagButtonTag;
     NSDictionary *dataDic = self.dataArray[tagIndex];
+    
+    NSLog(@"OY===dataDic:%@",dataDic);
+
 
     if (self.delegate&&[self.delegate respondsToSelector:@selector(postTagComicInfo:)]) {
         [self.delegate postTagComicInfo:dataDic];

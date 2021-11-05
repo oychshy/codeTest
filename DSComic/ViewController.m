@@ -49,32 +49,11 @@
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    NSString *linStr = @"https://images.dmzj.com/g/%E6%80%AA%E7%89%A9%E5%B0%91%E5%A5%B3%E5%9B%BE%E9%89%B4/%E7%AC%AC19%E8%AF%9D/094.jpg";
-    NSString *enUrl = [linStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-
-    SDWebImageDownloader *downloader = [SDWebImageManager sharedManager].imageLoader;
-    [downloader setValue:@"image/webp,image/png,image/svg+xml,image/*;q=0.8,video/*;q=0.8,*/*;q=0.5" forHTTPHeaderField:@"Accept"];
-    [downloader setValue:@"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/18B92 Ariver/1.0.0 AliApp(QUARK/5.2.9.1185) Nebula WK RVKType(0) InsidePlus/10.1.98 QUARK/5.2.9.1185 NebulaX/1.0.0" forHTTPHeaderField:@"User-Agent"];
-    [downloader setValue:@"zh-cn" forHTTPHeaderField:@"Accept-Language"];
-    [downloader setValue:@"https://2021002110654677.hybrid.alipay-eco.com/index.html" forHTTPHeaderField:@"Referer"];
-    [downloader setValue:@"gzip, deflate, br" forHTTPHeaderField:@"Accept-Encoding"];
     
-    
-    UIImageView *showImageView = [[UIImageView alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(20), YHEIGHT_SCALE(20), FUll_VIEW_WIDTH-YWIDTH_SCALE(40), YHEIGHT_SCALE(760))];
-    showImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [showImageView setBackgroundColor:[UIColor colorWithHexString:@"F6F6F6"]];
-    [self.view addSubview:showImageView];
-    
-    
-    [showImageView sd_setImageWithURL:[NSURL URLWithString:linStr] placeholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {} completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-        if (image.size.width!=0&&image.size.height!=0) {
-            CGFloat contentHeight = (FUll_VIEW_WIDTH-YWIDTH_SCALE(40))/ image.size.width * image.size.height;
-            showImageView.frame = CGRectMake(YWIDTH_SCALE(20), YHEIGHT_SCALE(20), FUll_VIEW_WIDTH-YWIDTH_SCALE(40), contentHeight);
-        }else{
-        }
-    }];
-    
+    UIButton *testButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 200, 100, 40)];
+    [testButton setTitle:@"Download" forState:UIControlStateNormal];
+    [testButton addTarget:self action:@selector(downloadBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:testButton];
 
 //    [self v4apiNovelInfo];
 //    [self v4apiNovelChapterInfo:2215];
@@ -82,6 +61,32 @@
 //    [self getChapterDeatil:48782 chapterId:116285];
 
 }
+
+-(void)downloadBtnAction{
+    NSDictionary *header = @{
+        @"User-Agent": @"%E5%8A%A8%E6%BC%AB%E4%B9%8B%E5%AE%B6/3 CFNetwork/1206 Darwin/20.1.0",
+        @"Referer": @"https://imgzip.muwai.com/",
+        @"Accept-Language": @"zh-cn",
+        @"Accept-Encoding": @"gzip, deflate, br",
+        @"Accept": @"*/*"
+    };
+    
+    NSString *urlPath = @"https://imgzip.muwai.com/d/1275/2046.zip";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -(void)v4apiNovelChapterInfo:(NSInteger)novelID{
     NSDictionary *params = [[NSDictionary alloc] init];
@@ -155,7 +160,7 @@
         NSDictionary *chapterDic = data;
         NSDictionary *ChapterDetailDic = chapterDic[@"chapter"];
         NSArray *pageUrlArray = ChapterDetailDic[@"page_url"];
-        NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
+//        NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
         
         NSString *umageUrlStr = pageUrlArray[0];
         

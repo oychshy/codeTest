@@ -98,6 +98,8 @@
 }
 
 -(void)v4apiNovelInfo:(NSInteger)novelID{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     NSString *urlPath = [NSString stringWithFormat:@"http://nnv4api.muwai.com/novel/detail/%ld",novelID];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"app_channel":@(101),
@@ -123,6 +125,7 @@
         }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -164,10 +167,12 @@
                 [self.MainPageTableView.mj_footer endRefreshingWithNoMoreData];
             }
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
         [self.MainPageTableView.mj_footer endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -376,10 +381,12 @@
 }
 
 -(void)PostSenderID:(NSInteger)senderID{
-    UserInfoViewController *vc = [[UserInfoViewController alloc] init];
-    vc.UserID = senderID;
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (senderID!=0) {
+        UserInfoViewController *vc = [[UserInfoViewController alloc] init];
+        vc.UserID = senderID;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 -(void)VolumeButtonAction{

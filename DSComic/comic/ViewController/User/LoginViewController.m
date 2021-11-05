@@ -285,7 +285,6 @@
         @"channel":@"ios",
         @"code":codeMsg,
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"phone":userName,
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
@@ -326,7 +325,6 @@
         @"channel":@"ios",
         @"debug":@(0),
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"terminal_model":[Tools getDevice],
         @"timestamp":[Tools currentTimeStr],
         @"version":@"4.5.2"
@@ -353,6 +351,8 @@
 }
 
 -(void)AccountLoginBtnAction{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     NSString *userName = _userName.text;
     NSString *psdStr = _userPassword.text;
     
@@ -363,7 +363,6 @@
         @"app_channel":@(101),
         @"channel":@"ios",
         @"imei":self.IDFA,
-        //@"iosId":@"89728b06283841e4a411c7cb600e4052",
         @"nickname":userName,
         @"passwd":psdStr,
         @"terminal_model":[Tools getDevice],
@@ -386,8 +385,10 @@
             [actionVC addAction:okAction];
             [self presentViewController:actionVC animated:YES completion:nil];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 

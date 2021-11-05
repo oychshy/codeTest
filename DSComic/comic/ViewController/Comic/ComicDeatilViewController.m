@@ -122,6 +122,7 @@
 
 #pragma mark --Comic Requests
 -(void)getComicLogChapter{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSString *urlPath = [NSString stringWithFormat:@"https://nninterface.muwai.com/api/getReInfo/comic/%@/%ld/",[UserInfo shareUserInfo].uid,self.comicId];
     NSDictionary *params = @{
         @"app_channel":@(101),
@@ -159,6 +160,7 @@
 //                self.ComicDetailDic = [NSMutableDictionary dictionaryWithDictionary:@{@"hexie":@(YES)}];
                 [self getComicDeatilV1];
             }else{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
                 [self.ErrorView setHidden:YES];
                 self.ComicDetailDic = nil;
                 self.ChapterArray = nil;
@@ -256,11 +258,13 @@
             }
         }
         [self.MainTabelView.mj_header endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self configUI];
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
         [self.MainTabelView.mj_header endRefreshing];
         [self.MainTabelView.mj_footer endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
     
 }
@@ -364,6 +368,7 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
+        NSLog(@"ComicDetailTableViewCell");
         ComicDetailTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if (!cell) {
             cell = [[ComicDetailTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Title"];
@@ -387,7 +392,7 @@
 
         return cell;
     }
-    else{
+    else if (indexPath.section == 2){
         NSString *commetIdStr = self.CommentIdsArray[indexPath.row];
         NSArray *commetIds = [commetIdStr componentsSeparatedByString:@","];
         
@@ -408,6 +413,14 @@
         cell.separatorInset = UIEdgeInsetsZero;
         [cell setCellWithData:CommetInfos];
 
+        return cell;
+    }else{
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"comment"];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.separatorInset = UIEdgeInsetsZero;
         return cell;
     }
 }
@@ -450,7 +463,7 @@
         }
     }else{
         if (self.CommentCellHeight == 0) {
-            return YHEIGHT_SCALE(400);
+            return YHEIGHT_SCALE(88);
         }else{
             return self.CommentCellHeight;
         }
@@ -510,10 +523,12 @@
 }
 
 -(void)PostSenderID:(NSInteger)senderID{
-    UserInfoViewController *vc = [[UserInfoViewController alloc] init];
-    vc.UserID = senderID;
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (senderID!=0) {
+        UserInfoViewController *vc = [[UserInfoViewController alloc] init];
+        vc.UserID = senderID;
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 -(void)SelectedChapter:(NSDictionary*)dataDic{
@@ -521,10 +536,10 @@
     if (isPost) {
         NSInteger comicId = [dataDic[@"comicId"] integerValue];
         NSInteger chapterId = [dataDic[@"chapterId"] integerValue];
-        [self getChapterDeatil:comicId chapterId:chapterId];
+        NSString *chapterTitle = dataDic[@"chapterTitle"];
+        [self getChapterDeatil:comicId chapterId:chapterId title:chapterTitle];
     }else{
-//        NSLog(@"OY===stop more");
-        
+        NSLog(@"OY===stop more");
     }
 }
 
@@ -549,7 +564,7 @@
 
 
 #pragma mark --Chapter Requests
--(void)getChapterDeatil:(NSInteger)comicId chapterId:(NSInteger)chapterId{
+-(void)getChapterDeatil:(NSInteger)comicId chapterId:(NSInteger)chapterId title:(NSString*)titleStr{
 //    self.comicId = 38890;
     NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/comic/chapter/%ld/%ld.html",comicId,chapterId];
     NSLog(@"OY===chapterId urlPath:%@",urlPath);
@@ -559,23 +574,29 @@
         NSDictionary *ChapterDetailDic = chapterDic[@"chapter"];
         if (ChapterDetailDic != nil) {
             NSArray *pageUrlArray = ChapterDetailDic[@"page_url"];
-            NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
+            
+            NSString *filePath = [self isExistComicFilePathComicID:comicId ChapterID:chapterId];
+            if (filePath) {
+                NSLog(@"OY===ComicFilePath:%@",filePath);
+            }else{
+                NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
+            }
             
             ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
             vc.imageArray = pageUrlArray;
-            vc.chapterTitle = self.title;
+            vc.chapterTitle = titleStr;
             vc.hidesBottomBarWhenPushed = YES;
             vc.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:vc animated:NO completion:nil];
         }else{
-            [self getChapterDeatilV1:comicId chapterId:chapterId];
+            [self getChapterDeatilV1:comicId chapterId:chapterId title:titleStr];
         }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
     }];
 }
 
--(void)getChapterDeatilV1:(NSInteger)comicId chapterId:(NSInteger)chapterId{
+-(void)getChapterDeatilV1:(NSInteger)comicId chapterId:(NSInteger)chapterId title:(NSString*)titleStr{
     NSString *urlPath = [NSString stringWithFormat:@"https://m.dmzj.com/chapinfo/%ld/%ld.html",comicId,chapterId];
     NSLog(@"OY===chapterId urlPath:%@",urlPath);
     
@@ -583,11 +604,18 @@
         NSDictionary *chapterDic = data;
         if (chapterDic != nil) {
             NSArray *pageUrlArray = chapterDic[@"page_url"];
-            NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
+            
+            NSString *filePath = [self isExistComicFilePathComicID:comicId ChapterID:chapterId];
+            if (filePath) {
+                NSLog(@"OY===ComicFilePath:%@",filePath);
+            }else{
+                NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
+            }
+            
             
             ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
             vc.imageArray = pageUrlArray;
-            vc.chapterTitle = self.title;
+            vc.chapterTitle = titleStr;
             vc.hidesBottomBarWhenPushed = YES;
             vc.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:vc animated:NO completion:nil];
@@ -595,9 +623,25 @@
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
     }];
-    
 }
 
+//判断是否下载
+-(NSString*)isExistComicFilePathComicID:(NSInteger)comicID ChapterID:(NSInteger)chapterID{
+    NSString *cachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"DSComicDownload"];
+
+    //comic文件夹是否存在
+    NSString *cachePathDir = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld",(long)comicID]];
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    if ([fileManager fileExistsAtPath:cachePathDir]) {
+        
+        //comic文件是否存在
+        NSString *filePath = [cachePathDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.zip",(long)chapterID]];
+        if ([fileManager fileExistsAtPath:filePath]) {
+            return filePath;
+        }
+    }
+    return nil;
+}
 
 -(void)setSubscribe:(BOOL)isSubscribe{
     self.IDFA = [Tools getIDFA];
@@ -613,7 +657,6 @@
             @"channel":@"ios",
             @"dmzj_token":[UserInfo shareUserInfo].dmzj_token,
             @"imei":self.IDFA,
-            //@"iosId":@"89728b06283841e4a411c7cb600e4052",
             @"obj_ids":@(self.comicId),
             @"terminal_model":[Tools getDevice],
             @"timestamp":[Tools currentTimeStr],
@@ -645,7 +688,6 @@
             @"app_channel":@(101),
             @"channel":@"ios",
             @"imei":self.IDFA,
-            //@"iosId":@"89728b06283841e4a411c7cb600e4052",
             @"terminal_model":[Tools getDevice],
             @"timestamp":[Tools currentTimeStr],
             @"version":@"4.5.2"
