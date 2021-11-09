@@ -92,6 +92,7 @@
 		5BB9481B26AFF3FF00ABD6B8 /* UIColor+Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9481626AFF3FF00ABD6B8 /* UIColor+Expanded.m */; };
 		5BB9482326AFFEBA00ABD6B8 /* ContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9482226AFFEBA00ABD6B8 /* ContentCollectionViewCell.m */; };
 		5BB9482626B0023A00ABD6B8 /* itemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9482526B0023A00ABD6B8 /* itemModel.m */; };
+		5BD7C5A7273A46C000B3DE3B /* CustomTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD7C5A6273A46C000B3DE3B /* CustomTabBarController.m */; };
 		5BD9C28D2702F089003DFF76 /* UpDateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C28C2702F089003DFF76 /* UpDateTableViewCell.m */; };
 		5BD9C2902703379B003DFF76 /* SortCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C28F2703379B003DFF76 /* SortCollectionViewCell.m */; };
 		5BD9C29327044395003DFF76 /* MySubscribeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9C29227044395003DFF76 /* MySubscribeViewController.m */; };
@@ -272,6 +273,8 @@
 		5BB9482226AFFEBA00ABD6B8 /* ContentCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContentCollectionViewCell.m; sourceTree = "<group>"; };
 		5BB9482426B0023A00ABD6B8 /* itemModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = itemModel.h; sourceTree = "<group>"; };
 		5BB9482526B0023A00ABD6B8 /* itemModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = itemModel.m; sourceTree = "<group>"; };
+		5BD7C5A5273A46C000B3DE3B /* CustomTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTabBarController.h; sourceTree = "<group>"; };
+		5BD7C5A6273A46C000B3DE3B /* CustomTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTabBarController.m; sourceTree = "<group>"; };
 		5BD9C28B2702F089003DFF76 /* UpDateTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpDateTableViewCell.h; sourceTree = "<group>"; };
 		5BD9C28C2702F089003DFF76 /* UpDateTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpDateTableViewCell.m; sourceTree = "<group>"; };
 		5BD9C28E2703379B003DFF76 /* SortCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortCollectionViewCell.h; sourceTree = "<group>"; };
@@ -434,6 +437,8 @@
 				5B51F69F26B294720053B434 /* PanTableView.m */,
 				5B4D779C26B12B9500A82A6A /* CustomProgressView.h */,
 				5B4D779D26B12B9500A82A6A /* CustomProgressView.m */,
+				5BD7C5A5273A46C000B3DE3B /* CustomTabBarController.h */,
+				5BD7C5A6273A46C000B3DE3B /* CustomTabBarController.m */,
 			);
 			path = customview;
 			sourceTree = "<group>";
@@ -925,6 +930,7 @@
 				5B53556326F17B3700BBEBB9 /* PDBannerViewWithURL.m in Sources */,
 				5BB3E1CB27215BC700A94CA2 /* NovelDetailTableViewCell.m in Sources */,
 				5BB3E1BF2721377F00A94CA2 /* NovelUpdateViewController.m in Sources */,
+				5BD7C5A7273A46C000B3DE3B /* CustomTabBarController.m in Sources */,
 				5BB3E1C5272143D100A94CA2 /* NovelUpdateTableViewCell.m in Sources */,
 				5B8D7F1726FC761900DE6892 /* UserInfo.m in Sources */,
 				5BF79E28273228AD00BDCDE0 /* TestDownloadViewController.m in Sources */,

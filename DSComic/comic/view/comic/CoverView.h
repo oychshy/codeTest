@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoverView : UIView
 @property (nonatomic, copy) void(^backBtnAction)(void);
+@property (nonatomic, copy) void(^HorizontalBtnAction)(void);
+@property (nonatomic, copy) void(^VerticalBtnAction)(void);
 @property (nonatomic, copy) void(^tapSend)(void);
 @property (nonatomic, copy) void(^slidePage)(NSInteger selectedPage);
 
@@ -20,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(retain,nonatomic)UIView *bottomView;
 
 -(void)setCoverViewWithTitle:(NSString*)title CurrentPage:(NSInteger)currentPage Totle:(NSInteger)totlePage;
-
+-(void)updateUIWithFrame:(CGRect)frame;
 @end
 
 NS_ASSUME_NONNULL_END

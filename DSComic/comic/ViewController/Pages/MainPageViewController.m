@@ -269,7 +269,6 @@
 }
 
 -(void)refreshBtnAction{
-//    [self getComicDeatil];
     [self getMainPageData];
 }
 
@@ -330,13 +329,11 @@
 
     [self MainPageTableView];
     
-//    NSLog(@"OY===Config");
     [self getMainPageData];
 }
 
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-//    NSLog(@"OY===scrollViewDidEndDecelerating");
 
     if (scrollView == _mainScrollView) {
         NSInteger pageIndex = scrollView.contentOffset.x/_mainScrollView.width;

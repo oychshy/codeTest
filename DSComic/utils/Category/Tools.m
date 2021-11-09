@@ -98,7 +98,7 @@
         [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
             if (status == ATTrackingManagerAuthorizationStatusAuthorized) {
                 idfa = [[ASIdentifierManager sharedManager].advertisingIdentifier UUIDString];
-                NSLog(@"LTTest === %@",idfa);
+//                NSLog(@"LTTest === %@",idfa);
             } else {
                 NSLog(@"LTTest === 未允许App请求跟踪");
             }
@@ -106,13 +106,13 @@
     } else {
         if ([[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]) {
             idfa = [[ASIdentifierManager sharedManager].advertisingIdentifier UUIDString];
-            NSLog(@"LTTest === %@",idfa);
+//            NSLog(@"LTTest === %@",idfa);
         } else {
             NSLog(@"LTTest === 请在设置-隐私-广告中打开广告跟踪功能");
         }
     }
     
-    NSLog(@"LTTest === idfa:%@",idfa);
+//    NSLog(@"LTTest === idfa:%@",idfa);
     return idfa;
 }
 

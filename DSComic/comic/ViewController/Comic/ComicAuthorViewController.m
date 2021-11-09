@@ -137,7 +137,7 @@
 }
 
 -(void)configUI{
-    NSLog(@"OY===self.ComicListInfos:%@",self.ComicListInfos);
+//    NSLog(@"OY===self.ComicListInfos:%@",self.ComicListInfos);
 
     [self MainPageTableView];
     [self.MainPageTableView reloadData];

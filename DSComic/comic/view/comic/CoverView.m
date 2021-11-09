@@ -17,6 +17,10 @@
 @property(assign,nonatomic)NSInteger totlePage;
 @property(assign,nonatomic)NSInteger tmpPage;
 
+@property(retain,nonatomic)UIButton *backButton;
+@property(retain,nonatomic)UIButton *HorizontalButton;
+@property(retain,nonatomic)UIButton *VerticalButton;
+@property(retain,nonatomic)UIView *lineView;
 @end
 
 @implementation CoverView
@@ -34,18 +38,18 @@
     [self.topView setBackgroundColor:[UIColor whiteColor]];
     [self addSubview:self.topView];
     
-    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(10), 20+(self.topView.height-20-YWIDTH_SCALE(60))/2, YWIDTH_SCALE(60), YWIDTH_SCALE(60))];
-    [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.topView addSubview:backButton];
+    self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(YWIDTH_SCALE(10), 20+(self.topView.height-20-YWIDTH_SCALE(60))/2, YWIDTH_SCALE(60), YWIDTH_SCALE(60))];
+    [self.backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [self.backButton addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.topView addSubview:self.backButton];
     
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake((FUll_VIEW_WIDTH-YWIDTH_SCALE(200))/2, backButton.y, YWIDTH_SCALE(200), backButton.height)];
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake((FUll_VIEW_WIDTH-YWIDTH_SCALE(200))/2, self.backButton.y, YWIDTH_SCALE(200), self.backButton.height)];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.topView addSubview:self.titleLabel];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.topView.height-1, self.topView.width, 1)];
-    [lineView setBackgroundColor:NavLineColor];
-    [self.topView addSubview:lineView];
+    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.topView.height-1, self.topView.width, 1)];
+    [self.lineView setBackgroundColor:NavLineColor];
+    [self.topView addSubview:self.lineView];
     
     
     self.clearView = [[UIView alloc] initWithFrame:CGRectMake(0, self.topView.height, FUll_VIEW_WIDTH, FUll_VIEW_HEIGHT-self.topView.height-YHEIGHT_SCALE(200))];
@@ -59,7 +63,7 @@
     [self.bottomView setBackgroundColor:[UIColor whiteColor]];
     [self addSubview:self.bottomView];
     
-    self.pageSlider = [[UISlider alloc] initWithFrame:CGRectMake(10, 10, self.bottomView.width-20-80, 50)];
+    self.pageSlider = [[UISlider alloc] initWithFrame:CGRectMake(10, 0, self.bottomView.width-20-80, 40)];
     self.pageSlider.minimumValue = 0;//设置最小值
     self.pageSlider.continuous = YES;//默认YES  如果设置为NO，则每次滑块停止移动后才触发事件
     [self.pageSlider addTarget:self action:@selector(sliderChange:) forControlEvents:UIControlEventValueChanged];
@@ -72,10 +76,30 @@
     self.pageInfo.textAlignment = NSTextAlignmentRight;
     [self.bottomView addSubview:self.pageInfo];
     
+    self.HorizontalButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bottomView.width-YWIDTH_SCALE(150), self.pageInfo.y+self.pageInfo.height, YWIDTH_SCALE(120), YWIDTH_SCALE(60))];
+    [self.HorizontalButton setTitle:@"横屏" forState:UIControlStateNormal];
+    [self.HorizontalButton setBackgroundColor:[UIColor lightGrayColor]];
+    [self.HorizontalButton addTarget:self action:@selector(HorizontalButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.bottomView addSubview:self.HorizontalButton];
+    
+    self.VerticalButton = [[UIButton alloc] initWithFrame:CGRectMake(self.HorizontalButton.x-YWIDTH_SCALE(140), self.HorizontalButton.y, YWIDTH_SCALE(120), YWIDTH_SCALE(60))];
+    [self.VerticalButton setTitle:@"竖屏" forState:UIControlStateNormal];
+    [self.VerticalButton setBackgroundColor:[UIColor lightGrayColor]];
+    [self.VerticalButton addTarget:self action:@selector(VerticalButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.bottomView addSubview:self.VerticalButton];
+    
 }
 
 -(void)backButtonAction{
     self.backBtnAction();
+}
+
+-(void)HorizontalButtonAction{
+    self.HorizontalBtnAction();
+}
+
+-(void)VerticalButtonAction{
+    self.VerticalBtnAction();
 }
 
 -(void)coverViewTappedClick:(UITapGestureRecognizer*)tap{
@@ -89,6 +113,27 @@
     self.totlePage = totlePage;
     [self.pageInfo setText:[NSString stringWithFormat:@"%ld/%ld页",currentPage,self.totlePage]];
 }
+
+-(void)updateUIWithFrame:(CGRect)frame{
+    self.topView.width = frame.size.width;
+    self.topView.height = 64;
+
+    self.backButton.frame = CGRectMake(5, 20+(self.topView.height-50)/2, 30, 30);
+    self.titleLabel.frame = CGRectMake((frame.size.width-100)/2, self.backButton.y, 100, self.backButton.height);
+    self.lineView.frame = CGRectMake(0, self.topView.height-1, self.topView.width, 1);
+
+
+    self.bottomView.frame = CGRectMake(0, frame.size.height-100, frame.size.width, 100);
+    self.pageSlider.frame = CGRectMake(10, 0, self.bottomView.width-20-80, 40);
+    self.pageInfo.frame = CGRectMake(self.pageSlider.x+self.pageSlider.width, self.pageSlider.y, frame.size.width-self.pageSlider.x-self.pageSlider.width-10, self.pageSlider.height);
+    self.HorizontalButton.frame = CGRectMake(self.bottomView.width-75, self.pageInfo.y+self.pageInfo.height, 60, 30);
+    self.VerticalButton.frame = CGRectMake(self.HorizontalButton.x-70, self.HorizontalButton.y, 60, 30);
+    
+    self.clearView.frame = CGRectMake(0, self.topView.height, frame.size.width, frame.size.height-self.topView.height-self.bottomView.height);
+
+
+}
+
 
 -(void)sliderChange:(UISlider*)slider {
     NSNumber *num=[NSNumber numberWithFloat:slider.value];

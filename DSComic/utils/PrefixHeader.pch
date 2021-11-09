@@ -124,6 +124,7 @@
 #import "MJRefresh.h"
 #import "UIImageView+WebCache.h"
 #import "SDWebImageDownloader.h"
+#import "CustomTabBarController.h"
 
 #import "CustomProgressView.h"
 #import "PanCollectionView.h"

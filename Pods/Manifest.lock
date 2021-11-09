@@ -14,6 +14,8 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
+  - JPNavigationController (2.0.2)
+  - JRSwizzle (1.0)
   - MBProgressHUD (1.2.0)
   - MJRefresh (3.7.2)
   - Protobuf (3.18.0)
@@ -26,6 +28,8 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - JPNavigationController (~> 2.0.1)
+  - JRSwizzle
   - MBProgressHUD
   - MJRefresh
   - Protobuf
@@ -37,6 +41,8 @@ DEPENDENCIES:
 SPEC REPOS:
   https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
     - AFNetworking
+    - JPNavigationController
+    - JRSwizzle
     - MBProgressHUD
     - MJRefresh
     - Protobuf
@@ -47,6 +53,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  JPNavigationController: 4bd27cad6d0bd559313d5c4d0ce2bf7d444c039c
+  JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJRefresh: 30997d30b347c8e9508a4db11e3a690da0c9b85a
   Protobuf: 1a37ebea1338949e9ac35a3f06e80b3f536eec8d
@@ -55,6 +63,6 @@ SPEC CHECKSUMS:
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
   zipzap: 940162d9c9c60472c2eab341385e4214da0fdf1c
 
-PODFILE CHECKSUM: 007246c01b05b502a2f4e359011df32873083eaf
+PODFILE CHECKSUM: 28286eb14924341c71b49d2b74a9170451c3209f
 
 COCOAPODS: 1.10.1

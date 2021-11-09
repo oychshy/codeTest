@@ -123,7 +123,7 @@
 #pragma mark --Comic Requests
 -(void)getComicLogChapter{
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    NSString *urlPath = [NSString stringWithFormat:@"https://nninterface.muwai.com/api/getReInfo/comic/%@/%ld/",[UserInfo shareUserInfo].uid,self.comicId];
+    NSString *urlPath = [NSString stringWithFormat:@"https://nninterface.muwai.com/api/getReInfo/comic/%@/%ld/",[UserInfo shareUserInfo].uid,(long)self.comicId];
     NSDictionary *params = @{
         @"app_channel":@(101),
         @"channel":@"ios",
@@ -145,7 +145,7 @@
 }
 
 -(void)getComicDeatil{
-    NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/info/%ld.html",self.comicId];
+    NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/info/%ld.html",(long)self.comicId];
     NSDictionary *params = @{
         @"version":@"1.0.2",
         @"channel":@"alipay_applets",
@@ -185,7 +185,7 @@
 }
 
 -(void)getComicDeatilV1{
-    NSString *urlPath = [NSString stringWithFormat:@"https://api.dmzj.com/dynamic/comicinfo/%ld.json",self.comicId];
+    NSString *urlPath = [NSString stringWithFormat:@"https://api.dmzj.com/dynamic/comicinfo/%ld.json",(long)self.comicId];
     [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
         [self.ErrorView setHidden:YES];
         NSDictionary *getData = data;
@@ -208,7 +208,7 @@
 }
 
 -(void)getComicCommentsWith:(NSInteger)pageIndex{
-    NSString *urlPath = [NSString stringWithFormat:@"http://nnv3comment.muwai.com/v1/4/latest/%ld",self.comicId];
+    NSString *urlPath = [NSString stringWithFormat:@"http://nnv3comment.muwai.com/v1/4/latest/%ld",(long)self.comicId];
     
     NSDictionary *params = [[NSDictionary alloc] init];
     if (self.isLogin) {
@@ -368,7 +368,6 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
-        NSLog(@"ComicDetailTableViewCell");
         ComicDetailTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if (!cell) {
             cell = [[ComicDetailTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Title"];
@@ -532,27 +531,46 @@
 }
 
 -(void)SelectedChapter:(NSDictionary*)dataDic{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     BOOL isPost = [dataDic[@"isPost"] boolValue];
     if (isPost) {
         NSInteger comicId = [dataDic[@"comicId"] integerValue];
         NSInteger chapterId = [dataDic[@"chapterId"] integerValue];
         NSString *chapterTitle = dataDic[@"chapterTitle"];
-        [self getChapterDeatil:comicId chapterId:chapterId title:chapterTitle];
+        
+        NSString *filePath = [self isExistComicFilePathComicID:comicId ChapterID:chapterId];
+        if (filePath) {
+            ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
+            vc.chapterTitle = chapterTitle;
+            vc.chapterID = chapterId;
+            vc.comicID = comicId;
+            vc.isLocal = YES;
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:vc animated:NO completion:^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            }];
+            
+        }else{
+            [self getChapterDeatil:comicId chapterId:chapterId title:chapterTitle];
+        }
     }else{
         NSLog(@"OY===stop more");
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+
     }
 }
 
 -(void)PostAuthorIsUser:(BOOL)isUser ID:(NSInteger)ID{
     if (ID != 0) {
         if (isUser) {
-            NSLog(@"OY===User:%ld",ID);
+//            NSLog(@"OY===User:%ld",(long)ID);
             UserInfoViewController *vc = [[UserInfoViewController alloc] init];
             vc.UserID = ID;
             self.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }else{
-            NSLog(@"OY===Author:%ld",ID);
+//            NSLog(@"OY===Author:%ld",(long)ID);
             ComicAuthorViewController *vc = [[ComicAuthorViewController alloc] init];
             vc.AuthorID = ID;
             vc.isUser = isUser;
@@ -566,8 +584,8 @@
 #pragma mark --Chapter Requests
 -(void)getChapterDeatil:(NSInteger)comicId chapterId:(NSInteger)chapterId title:(NSString*)titleStr{
 //    self.comicId = 38890;
-    NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/comic/chapter/%ld/%ld.html",comicId,chapterId];
-    NSLog(@"OY===chapterId urlPath:%@",urlPath);
+    NSString *urlPath = [NSString stringWithFormat:@"https://api.m.dmzj.com/comic/chapter/%ld/%ld.html",(long)comicId,chapterId];
+//    NSLog(@"OY===chapterId urlPath:%@",urlPath);
 
     [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
         NSDictionary *chapterDic = data;
@@ -575,53 +593,45 @@
         if (ChapterDetailDic != nil) {
             NSArray *pageUrlArray = ChapterDetailDic[@"page_url"];
             
-            NSString *filePath = [self isExistComicFilePathComicID:comicId ChapterID:chapterId];
-            if (filePath) {
-                NSLog(@"OY===ComicFilePath:%@",filePath);
-            }else{
-                NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
-            }
-            
             ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
             vc.imageArray = pageUrlArray;
             vc.chapterTitle = titleStr;
+            vc.isLocal = NO;
             vc.hidesBottomBarWhenPushed = YES;
             vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:vc animated:NO completion:nil];
+            [self presentViewController:vc animated:NO completion:^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            }];
         }else{
             [self getChapterDeatilV1:comicId chapterId:chapterId title:titleStr];
         }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
 -(void)getChapterDeatilV1:(NSInteger)comicId chapterId:(NSInteger)chapterId title:(NSString*)titleStr{
-    NSString *urlPath = [NSString stringWithFormat:@"https://m.dmzj.com/chapinfo/%ld/%ld.html",comicId,chapterId];
+    NSString *urlPath = [NSString stringWithFormat:@"https://m.dmzj.com/chapinfo/%ld/%ld.html",(long)comicId,chapterId];
     NSLog(@"OY===chapterId urlPath:%@",urlPath);
     
     [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
         NSDictionary *chapterDic = data;
         if (chapterDic != nil) {
             NSArray *pageUrlArray = chapterDic[@"page_url"];
-            
-            NSString *filePath = [self isExistComicFilePathComicID:comicId ChapterID:chapterId];
-            if (filePath) {
-                NSLog(@"OY===ComicFilePath:%@",filePath);
-            }else{
-                NSLog(@"OY===pageUrlArray:%@",pageUrlArray);
-            }
-            
-            
             ComicReaderViewController *vc = [[ComicReaderViewController alloc] init];
             vc.imageArray = pageUrlArray;
             vc.chapterTitle = titleStr;
+            vc.isLocal = NO;
             vc.hidesBottomBarWhenPushed = YES;
             vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:vc animated:NO completion:nil];
+            [self presentViewController:vc animated:NO completion:^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            }];
         }
     } failure:^(NSString * _Nonnull error) {
         NSLog(@"OY===error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -668,7 +678,7 @@
             NSDictionary *retDic = data;
             NSInteger code = [retDic[@"code"] integerValue];
             if (code==0) {
-                [getMySubscribe addObject:[NSString stringWithFormat:@"%ld",self.comicId]];
+                [getMySubscribe addObject:[NSString stringWithFormat:@"%ld",(long)self.comicId]];
                 [UserInfo shareUserInfo].mySubscribe = getMySubscribe;
                 UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:retDic[@"msg"] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
@@ -696,7 +706,7 @@
             NSDictionary *retDic = data;
             NSInteger code = [retDic[@"code"] integerValue];
             if (code==0) {
-                [getMySubscribe removeObject:[NSString stringWithFormat:@"%ld",self.comicId]];
+                [getMySubscribe removeObject:[NSString stringWithFormat:@"%ld",(long)self.comicId]];
                 [UserInfo shareUserInfo].mySubscribe = getMySubscribe;
                 UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:retDic[@"msg"] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];

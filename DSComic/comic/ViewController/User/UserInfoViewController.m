@@ -194,7 +194,7 @@
 }
 
 -(void)configUI{
-    NSLog(@"OY===self.titleListInfos:%@",self.titleListInfos);
+//    NSLog(@"OY===self.titleListInfos:%@",self.titleListInfos);
     [self MainPageTableView];
     [self.MainPageTableView reloadData];
 }

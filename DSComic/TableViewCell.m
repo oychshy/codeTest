@@ -35,23 +35,42 @@
     [self addSubview:_zoomImageView];
 }
 
--(void)setCellWithImageUrlStr:(NSString*)urlStr Row:(NSInteger)row{
-    [self addProgressView:nil];
-    [_zoomImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:nil options:SDWebImageQueryMemoryData progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
-        CGFloat progress = ((CGFloat)receivedSize / (CGFloat)expectedSize);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self updateProgress:progress];
-        });
-    } completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-        [self removeProgressView];
-        if (image.size.width!=0&&image.size.height!=0) {
-            CGFloat contentHeight = (FUll_VIEW_WIDTH-YWIDTH_SCALE(40))/ image.size.width * image.size.height;
+-(void)setCellWithImageUrlStr:(id)imageData Row:(NSInteger)row isLocal:(BOOL)isLocal{
+    
+    if (isLocal) {
+        UIImage *setImage = [UIImage imageWithData:imageData];
+        [_zoomImageView setImage:setImage];
+        if (setImage.size.width!=0&&setImage.size.height!=0) {
+            CGFloat contentHeight = (FUll_VIEW_WIDTH-YWIDTH_SCALE(40))/ setImage.size.width * setImage.size.height;
             self.zoomImageView.frame = CGRectMake(YWIDTH_SCALE(20), YHEIGHT_SCALE(20), FUll_VIEW_WIDTH-YWIDTH_SCALE(40), contentHeight);
         }
         if (self.delegate&&[self.delegate respondsToSelector:@selector(postCellHeight:Row:)]) {
             [self.delegate postCellHeight:self.zoomImageView.y+self.zoomImageView.height+YHEIGHT_SCALE(20) Row:row];
         }
-    }];
+    }else{
+        [self addProgressView:nil];
+        NSString *imageUrl = [NSString stringWithFormat:@"%@",imageData];
+        
+        if ([Tools isChinese:imageUrl]) {
+            imageUrl = [imageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        }
+        
+        [_zoomImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageWithColor:[UIColor lightGrayColor]] options:SDWebImageQueryMemoryData progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+              CGFloat progress = ((CGFloat)receivedSize / (CGFloat)expectedSize);
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  [self updateProgress:progress];
+              });
+          } completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+              [self removeProgressView];
+              if (image.size.width!=0&&image.size.height!=0) {
+                  CGFloat contentHeight = (FUll_VIEW_WIDTH-YWIDTH_SCALE(40))/ image.size.width * image.size.height;
+                  self.zoomImageView.frame = CGRectMake(YWIDTH_SCALE(20), YHEIGHT_SCALE(20), FUll_VIEW_WIDTH-YWIDTH_SCALE(40), contentHeight);
+              }
+              if (self.delegate&&[self.delegate respondsToSelector:@selector(postCellHeight:Row:)]) {
+                  [self.delegate postCellHeight:self.zoomImageView.y+self.zoomImageView.height+YHEIGHT_SCALE(20) Row:row];
+              }
+          }];
+    }
 }
 
 

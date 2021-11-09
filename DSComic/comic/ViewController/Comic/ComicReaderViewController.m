@@ -8,6 +8,7 @@
 #define minScale  1
 #define maxScale  5
 
+#import<ZipZap/ZipZap.h>
 #import "ComicReaderViewController.h"
 #import "TableViewCell.h"
 
@@ -17,6 +18,9 @@
 @property(nonatomic,assign) BOOL zoomOut_In;
 @property(nonatomic,assign) BOOL statusHiden;
 @property(nonatomic, strong) NSMutableArray *dataAry;
+
+
+@property(nonatomic,assign) NSInteger tmpPage;
 
 @property(nonatomic, strong) UITableView *tableView;
 @property(nonatomic, strong) UIScrollView *scrollView;
@@ -50,14 +54,95 @@
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.cellHeightDic = [[NSMutableDictionary alloc] init];
-    self.dataAry = [NSMutableArray arrayWithArray:self.imageArray];
-    [self instansView];
+    self.dataAry = @[].mutableCopy;
+    
+    if (self.isLocal) {
+        [self GetZipDataWithComicID:self.comicID ChapterID:self.chapterID];
+    }else{
+        [self.dataAry addObjectsFromArray:self.imageArray];
+        [self instansView];
+    }
 }
 
+#pragma mark -- NetWorkDatas
+-(void)GetNetWorkDataWithComicID:(NSInteger)comicID ChapterID:(NSInteger)chapterID{
+    NSString *urlPath = [NSString stringWithFormat:@"https://m.dmzj.com/chapinfo/%ld/%ld.html",(long)comicID,(long)chapterID];
+    NSLog(@"OY===chapterId urlPath:%@",urlPath);
+    
+    [HttpRequest getNetWorkWithUrl:urlPath parameters:nil success:^(id  _Nonnull data) {
+        NSDictionary *chapterDic = data;
+        if (chapterDic != nil) {
+            NSArray *pageUrlArray = chapterDic[@"page_url"];
+            [self.dataAry addObjectsFromArray:pageUrlArray];
+            [self instansView];
+        }
+    } failure:^(NSString * _Nonnull error) {
+        NSLog(@"OY===error:%@",error);
+    }];
+}
+
+#pragma mark -- LocalDatas
+-(void)GetZipDataWithComicID:(NSInteger)comicID ChapterID:(NSInteger)chapterID{
+    NSError *error;
+    NSString *path = [self GetComicFilePathWithComicID:comicID ChapterID:chapterID];
+    NSLog(@"path:%@",path);
+
+    NSData *zipData = [NSData dataWithContentsOfFile:path];
+    ZZArchive *archive = [ZZArchive archiveWithData:zipData error:&error];
+    if (!error) {
+        NSMutableArray *ary = [NSMutableArray arrayWithArray:archive.entries];
+        for (int i = 0; i < [ary count] ; i++) {
+            for (int j = 0; j < [ary count] - i - 1; j++) {
+                ZZArchiveEntry *ectry1 = ary[j];
+                ZZArchiveEntry *ectry2 = ary[j+1];
+                NSInteger data1 = [[Tools getOnlyNum:ectry1.fileName][0] intValue];
+                NSInteger data2 = [[Tools getOnlyNum:ectry2.fileName][0] intValue];
+                if (data1 > data2) {
+                    ZZArchiveEntry *temp = ary[j];
+                    ary[j] = ary[j+1];
+                    ary[j+1] = temp;
+                }
+            }
+        }
+        
+        for (ZZArchiveEntry * ectry in ary) {
+            NSData * data = [ectry newDataWithError:&error];
+            [self.dataAry addObject:data];
+        }
+        [self instansView];
+    }else{
+        NSLog(@"文件不存在,切换到网络");
+        [self GetNetWorkDataWithComicID:self.comicID ChapterID:self.chapterID];
+    }
+}
+
+// 获取comic文件夹路径
+-(NSString*)GetComicPathWithComicID:(NSInteger)comicID{
+    NSString *cachePathDir = [[self getFileCacheDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld",(long)comicID]];
+    return cachePathDir;
+}
+
+// 获取comic文件路径
+-(NSString*)GetComicFilePathWithComicID:(NSInteger)comicID ChapterID:(NSInteger)chapterID{
+    NSString *filePath = [[self GetComicPathWithComicID:comicID] stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.zip",(long)chapterID]];
+    return filePath;
+}
+
+// 获取缓存Cache路径
+- (NSString *)getFileCacheDirectory {
+    NSString *cachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"DSComicDownload"];
+    return cachePath;
+}
+
+#pragma mark -- ui
 - (void)instansView{
     _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     _scrollView.backgroundColor = UIColor.blackColor;
-    _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    if (@available(iOS 11.0, *)) {
+        _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        // Fallback on earlier versions
+    }
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.minimumZoomScale = minScale;
@@ -68,7 +153,15 @@
     _scrollView.contentSize = self.view.frame.size;
 
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    if (@available(iOS 11.0, *)) {
+        _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        _tableView.estimatedRowHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 0;
+    } else {
+        // Fallback on earlier versions
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.dataSource = self;
     _tableView.delegate = self;
@@ -84,7 +177,7 @@
     UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapGesAction:)];
     [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
     [_tableView addGestureRecognizer:doubleTapGestureRecognizer];
-    
+
     [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
 
     _tableView.userInteractionEnabled = YES;
@@ -104,7 +197,6 @@
     }
     NSInteger minPage = [[sortCellArray valueForKeyPath:@"@min.floatValue"] integerValue];
     NSInteger maxPage = [[sortCellArray valueForKeyPath:@"@max.intValue"] integerValue];
-    NSLog(@"OY===minPage:%ld ,maxPage:%ld",minPage,maxPage);
 
     CGPoint point = [tapGesture locationInView:_tableView];
     CGFloat xs = (FUll_VIEW_WIDTH-YWIDTH_SCALE(300))/2;
@@ -119,6 +211,13 @@
         [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:selectedCheckRow inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 
     }else if (point.x>xe){
+        if (maxPage == minPage) {
+            maxPage += 1;
+        }
+        if (maxPage == self.tmpPage) {
+            maxPage += 1;
+        }
+        self.tmpPage = maxPage;
         NSInteger selectedCheckRow = maxPage;
         [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:selectedCheckRow inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         
@@ -133,9 +232,7 @@
             }else{
                 [self.coverView setHidden:NO];
             }
-            
             [self.coverView setCoverViewWithTitle:self.chapterTitle CurrentPage:minPage Totle:self.dataAry.count-1];
-            
             
             __weak typeof (self)weakSelf = self;
             self.coverView.tapSend = ^{
@@ -155,16 +252,41 @@
                 [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:selectedPage inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
             };
             self.coverView.backBtnAction = ^{
+                [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+                self.view.transform = CGAffineTransformMakeRotation(0);
+                [self.view setBounds:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.coverView setFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.coverView updateUIWithFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.scrollView setFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.tableView setFrame:CGRectMake(0, 0, weakSelf.scrollView.width, weakSelf.scrollView.height)];
+                [weakSelf.tableView reloadData];
+
                 [weakSelf dismissViewControllerAnimated:YES completion:^{
                     weakSelf.statusHiden = NO;
                     [weakSelf performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
                 }];
             };
-            
-            
+            self.coverView.HorizontalBtnAction = ^{
+                [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeLeft];
+                self.view.transform = CGAffineTransformMakeRotation(M_PI/2*3);
+                [self.view setBounds:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.coverView setFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.coverView updateUIWithFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.scrollView setFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.tableView setFrame:CGRectMake(0, 0, weakSelf.scrollView.width, weakSelf.scrollView.height)];
+                [weakSelf.tableView reloadData];
+            };
+            self.coverView.VerticalBtnAction = ^{
+                [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+                self.view.transform = CGAffineTransformMakeRotation(0);
+                [self.view setBounds:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.coverView setFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.coverView updateUIWithFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.scrollView setFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH,FUll_VIEW_HEIGHT)];
+                [weakSelf.tableView setFrame:CGRectMake(0, 0, weakSelf.scrollView.width, weakSelf.scrollView.height)];
+                [weakSelf.tableView reloadData];
+            };
         }
-        
-        
     }
 }
 
@@ -207,27 +329,16 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    if (self.cellHeight == 0) {
-//        return YHEIGHT_SCALE(800);
-//    }else{
-//        CGFloat cellHeightCache = [[self.cellHeightDic valueForKey:[NSString stringWithFormat:@"%ld",indexPath.row]] floatValue];
-//        if (cellHeightCache>0) {
-//            return cellHeightCache;
-//        }
-//        return self.cellHeight;
-//    }
-    
     CGFloat cellHeightCache = [[self.cellHeightDic valueForKey:[NSString stringWithFormat:@"%ld",indexPath.row]] floatValue];
     if (cellHeightCache>0) {
         return cellHeightCache;
     }else{
-        return YHEIGHT_SCALE(800);
+        return 400;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *urlStr = self.dataAry[indexPath.row];
     TableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
         cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
@@ -235,7 +346,13 @@
     cell.delegate = self;
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     cell.indexPath = indexPath;
-    [cell setCellWithImageUrlStr:urlStr Row:indexPath.row];
+    if (self.isLocal) {
+        NSData *getData = self.dataAry[indexPath.row];
+        [cell setCellWithImageUrlStr:getData Row:indexPath.row isLocal:self.isLocal];
+    }else{
+        NSString *getData = self.dataAry[indexPath.row];
+        [cell setCellWithImageUrlStr:getData Row:indexPath.row isLocal:self.isLocal];
+    }
     return cell;
 }
 
@@ -245,7 +362,12 @@
 
     self.cellHeight = CellHeight;
     [_tableView beginUpdates];
-    [_tableView.delegate tableView:_tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+    
+    [UIView animateWithDuration:0 delay:1.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+        
+    }completion:^(BOOL finished) {
+        [self->_tableView.delegate tableView:self->_tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+    }];
     [_tableView endUpdates];
 }
 
@@ -259,7 +381,7 @@
 
 // 即将开始缩放的时候调用
 - (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(nullable UIView *)view NS_AVAILABLE_IOS(3_2){
-    NSLog(@"OY===即将缩放  %s",__func__);
+//    NSLog(@"OY===即将缩放  %s",__func__);
 }
 
 // 缩放时调用
@@ -274,6 +396,12 @@
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
 //    [_tableView reloadData];
+}
+
+
+#pragma mark -- utils
+- (BOOL)shouldAutorotate{
+    return NO;
 }
 
 /*

@@ -21,7 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) UIImageView *zoomImageView;
 @property (nonatomic,strong)NSIndexPath *indexPath;
 
--(void)setCellWithImageUrlStr:(NSString*)urlStr Row:(NSInteger)row;
+//-(void)setCellWithImageUrlStr:(NSString*)urlStr Row:(NSInteger)row;
+-(void)setCellWithImageUrlStr:(id)imageData Row:(NSInteger)row isLocal:(BOOL)isLocal;
 - (void)addProgressView:(CustomProgressView *)progressView;
 - (void)updateProgress:(CGFloat)progress;
 - (void)removeProgressView;

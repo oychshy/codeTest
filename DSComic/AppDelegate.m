@@ -35,14 +35,11 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-////    UITabBarController *tb=[[UITabBarController alloc]init];
-//    DownLoadViewController *c1=[[DownLoadViewController alloc]init];
-////    UINavigationController *PersonalNavi = [[UINavigationController alloc] initWithRootViewController:c1];
-////    tb.viewControllers=@[PersonalNavi];
+//    PicReaderViewController *c1=[[PicReaderViewController alloc]init];
 //    self.window.rootViewController=c1;
     
     [self getUserInfo];
-    UITabBarController *tb=[[UITabBarController alloc]init];
+    CustomTabBarController *tb=[[CustomTabBarController alloc]init];
     MainPageViewController *c1 = [[MainPageViewController alloc] init];
     NovelPageViewController *c2 = [[NovelPageViewController alloc] init];
     LocalFileViewController *c3 = [[LocalFileViewController alloc] init];
@@ -70,6 +67,7 @@
     return YES;
 
 }
+
 
 -(void)getUserInfo{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
